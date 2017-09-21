@@ -1,4 +1,20 @@
-<p>
-  workspace works!
-</p>
-<router-outlet></router-outlet>
+<nav class="header navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+  <div class="navbar-header">
+      <span class="glyphicon glyphicon-cloud tasklogo"></span>
+  </div>
+  <div>
+      <ul class="nav navbar-nav">
+          <li class="active"><a>我的任务</a></li>
+          <li><a>新建任务</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="userStyle"><a>中午好 谁谁谁</a></li>
+        <li><a>切换账号</a></li>
+      </ul>
+  </div>
+  </div>
+</nav>
+<div  class="content">
+    <router-outlet></router-outlet>
+</div>

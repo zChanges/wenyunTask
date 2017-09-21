@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
+// import { FormBuilder, FormGroup, Validator } from '@angular/forms';
+import { LoginService } from './login.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -7,20 +9,23 @@ import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStat
 })
 export class LoginComponent implements OnInit {
 
-  userName=null;
-  passWord=null;
-  constructor(private router:Router) { 
-    
+  userName= null;
+  passWord= null;
+
+  constructor(private router: Router, private loginService: LoginService) {
   }
 
 
   ngOnInit() {
-    // this.userName="11";
-    // this.passWord="222"
+    // this.loginService.login('11', '2').subscribe( res => {
+    //   console.log(res);
+    // });
   }
 
   login() {
-    this.router.navigateByUrl('Task')
+    this.router.navigateByUrl('Task');
   }
+
+
 
 }

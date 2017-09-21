@@ -2,3 +2,15 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/_bootstrap';
 @import '~font-awesome/css/font-awesome.css';
+
+body{
+    font-size:14px !important;
+}
+.content-header{
+    background-color: #f6f8f8;
+    padding:5px 10px;
+    h3{
+        margin-top: 10px; 
+        color: #58666e;
+    }
+}

@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'wenyunTask';
-  ckeditorContent="111"
+  ckeditorContent= '111';
 }

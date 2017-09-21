@@ -4,14 +4,22 @@ import { RouterModule } from '@angular/router';
 import { TestComponent } from './test/test.component';
 import { WorkspaceRoutes } from './workspace.routing';
 import { WorkspaceComponent } from './workspace.component';
+import { AddTaskComponent } from './addTask/addTask.component';
+
+
+// 插件
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+
 @NgModule({
   imports: [
     CommonModule,
-    WorkspaceRoutes
+    WorkspaceRoutes,
+    NgZorroAntdModule.forRoot()
   ],
   declarations: [
     TestComponent,
-    WorkspaceComponent
-  ]
+    WorkspaceComponent,
+    AddTaskComponent
+]
 })
 export class WorkspaceModule { }
