@@ -6,6 +6,7 @@ import { WorkspaceRoutes } from './workspace.routing';
 import { WorkspaceComponent } from './workspace.component';
 import { AddTaskComponent } from './addTask/addTask.component';
 
+import { FormsModule } from '@angular/forms';
 
 // 插件
 import { NgZorroAntdModule } from 'ng-zorro-antd';
@@ -14,6 +15,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
   imports: [
     CommonModule,
     WorkspaceRoutes,
+    FormsModule,
     NgZorroAntdModule.forRoot()
   ],
   declarations: [

@@ -33,4 +33,8 @@ export class AddTaskComponent implements OnInit {
   save(){
     this.isLoading = true;
   }
+
+  changeTask() {
+    this.radioValue == 'A' ? this.isTaskState = true : this.isTaskState = false;
+  }
 }
