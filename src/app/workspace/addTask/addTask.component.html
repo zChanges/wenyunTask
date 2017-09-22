@@ -1,6 +1,3 @@
-<!-- <div class="content-header">
-  <h3 class="h3">新增任务</h3>
-</div> -->
 <nz-tabset>
   <nz-tab>
     <ng-template #nzTabHeading>
@@ -11,15 +8,20 @@
       <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
         <div class="col-sm-6">
-          <nz-input [nzSize]="'large'"  [nzPlaceHolder]="'请输入标题'"></nz-input>
+          <nz-input [nzSize]="'large'" [(ngModel)]="title" name="title"  [nzPlaceHolder]="'请输入标题'"></nz-input>
         </div>
       </div>
 
       <div class="form-group">
         <label class="col-sm-2 control-label">产品</label>
         <div class="col-sm-4">
-            <nz-select style="width: 100%;" nzAllowClear [nzSize]="'large'">
-                <nz-option>请选择</nz-option>
+            <nz-select style="width: 100%;" name="productId" [(ngModel)]="productId" nzAllowClear [nzSize]="'large'">
+              <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>    
+              <nz-option 
+                *ngFor="let item of searchOptions" 
+                [nzLabel]="item.label"
+                [nzValue]="item.value"
+                ></nz-option>
             </nz-select>
         </div>
       </div>
@@ -27,8 +29,13 @@
       <div class="form-group">
           <label class="col-sm-2 control-label">项目</label>
           <div class="col-sm-4">
-              <nz-select style="width: 100%;" nzAllowClear [nzSize]="'large'">
-                  <nz-option>请选择</nz-option>
+              <nz-select style="width: 100%;" name="projectId" [(ngModel)]="projectId" nzAllowClear [nzSize]="'large'">
+                <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                <nz-option 
+                *ngFor="let item of searchOptions" 
+                [nzLabel]="item.label"
+                [nzValue]="item.value"
+                ></nz-option>
               </nz-select>
           </div>
         </div>
@@ -36,8 +43,13 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">版本</label>
         <div class="col-sm-4">
-            <nz-select style="width: 100%;" nzAllowClear [nzSize]="'large'">
-                <nz-option>请选择</nz-option>
+            <nz-select style="width: 100%;" name="versionId" [(ngModel)]="versionId" nzAllowClear [nzSize]="'large'">
+              <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+              <nz-option 
+              *ngFor="let item of searchOptions" 
+              [nzLabel]="item.label"
+              [nzValue]="item.value"
+              ></nz-option>
             </nz-select>
         </div>
       </div>
@@ -45,104 +57,146 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">联调时间</label>
         <div class="col-sm-2">
-          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'联调时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'联调时间'" name="devFinish" [(ngModel)]="devFinish"  [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
         </div>
 
         <label class="col-sm-1 control-label">提测时间</label>
         <div class="col-sm-2">
-          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'提测时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'提测时间'" name="testStart" [(ngModel)]="testStart" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
         </div>
       </div>
 
       <div class="form-group">
         <label class="col-sm-2 control-label">测试完成时间</label>
         <div class="col-sm-2">
-          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'测试完成时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'测试完成时间'" name="testFinish" [(ngModel)]="testFinish" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
         </div>
 
         <label class="col-sm-1 control-label">验收完成时间</label>
         <div class="col-sm-2">
-          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'验收完成时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'验收完成时间'" name="acceptFinish" [(ngModel)]="acceptFinish" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
         </div>
       </div>
 
       <div class="form-group">
         <label class="col-sm-2 control-label">详细描述</label>
         <div class="col-sm-6">
-            <!-- <nz-input formControlName="comment" [nzRows]="5" [nzType]="'textarea'" [nzPlaceHolder]="'详细描述'" [nzSize]="'large'"> -->
-            <!-- </nz-input> -->
+            <nz-input [(ngModel)]="description" name="description" [nzType]="'textarea'" [nzRows]="'5'" [nzPlaceHolder]="''"></nz-input>
         </div>
       </div>
 
       <div class="form-group">
           <label class="col-sm-2 control-label">任务类型</label>
           <div class="col-sm-6">
-              <nz-radio-group [(ngModel)]="radioValue" name="taskState" (click)="changeTask()">
-                  <label nz-radio [nzValue]="'A'">
+              <nz-radio-group [(ngModel)]="type" name="taskState" (click)="changeTask()">
+                  <label nz-radio [nzValue]="'200'">
                     <span>需求</span>
                   </label>
-                  <label nz-radio [nzValue]="'B'">
+                  <label nz-radio [nzValue]="'201'">
                     <span>BUG</span>
                   </label>
                 </nz-radio-group>
           </div>
       </div>
 
+
       <div class="form-group" *ngIf="isTaskState">
           <label class="col-sm-2 control-label"></label>
-          <div class="col-sm-10">
-            <nz-select style="width: 155px;"
-              [nzMode]="'multiple'"
-              [nzPlaceHolder]="'开发'"
-              [nzNotFoundContent]="'无法找到'">
-                <nz-option
-                *ngFor="let option of searchOptions"
-                [nzLabel]="option.label"
-                [nzValue]="option.value"
-                >
-              </nz-option>
-            </nz-select>
+          <div class="col-sm-2">
+            <tree-select name="multipleSelect"
+            [items]="searchOptions"
+            [multiple]="true"
+            [(ngModel)]="multipleSelected"
+            filterPlaceholder="请选择开发人员"
+            required=true
+            minlength="2"
+            maxlength="4"
+            #multipleSelect="ngModel"
+            idField='value'
+            textField='label'
+            [maxVisibleItemCount]="5"
+            >
+            </tree-select>
+          </div>
 
-            <nz-select style="width: 155px;"
-              [nzMode]="'multiple'"
-              [nzPlaceHolder]="'联调'"
-              [nzNotFoundContent]="'无法找到'">
-                <nz-option
-                *ngFor="let option of searchOptions"
-                [nzLabel]="option.label"
-                [nzValue]="option.value"
-                >
-              </nz-option>
-            </nz-select>
+          <!-- <div class="col-sm-2">
+            <tree-select name="multipleSelect"
+            [items]="searchOptions"
+            [multiple]="true"
+            [(ngModel)]="multipleSelected"
+            filterPlaceholder="请选择开发人员"
+            required=true
+            minlength="2"
+            maxlength="4"
+            #multipleSelect="ngModel"
+            idField='value'
+            textField='label'
+            [maxVisibleItemCount]="5"
+            >
+            </tree-select>
+          </div>
 
-            <nz-select style="width: 155px;"
-              [nzMode]="'multiple'"
-              [nzPlaceHolder]="'测试'"
-              [nzNotFoundContent]="'无法找到'">
-                <nz-option
-                *ngFor="let option of searchOptions"
-                [nzLabel]="option.label"
-                [nzValue]="option.value"
-                >
-              </nz-option>
-            </nz-select>
+          <div class="col-sm-2">
+            <tree-select name="multipleSelect"
+            [items]="searchOptions"
+            [multiple]="true"
+            [(ngModel)]="multipleSelected"
+            filterPlaceholder="请选择开发人员"
+            required=true
+            minlength="2"
+            maxlength="4"
+            #multipleSelect="ngModel"
+            idField='value'
+            textField='label'
+            [maxVisibleItemCount]="5"
+            >
+            </tree-select>
+          </div> -->
 
-            <nz-select style="width: 155px;"
-              [nzMode]="'multiple'"
-              [nzPlaceHolder]="'产品'"
-              [nzNotFoundContent]="'无法找到'">
-                <nz-option
-                *ngFor="let option of searchOptions"
-                [nzLabel]="option.label"
-                [nzValue]="option.value"
-                >
-              </nz-option>
-            </nz-select>
+          <!-- <div class="col-sm-2">
+            <tree-select name="multipleSelect"
+            [items]="searchOptions"
+            [multiple]="true"
+            [(ngModel)]="multipleSelected"
+            filterPlaceholder="请选择开发人员"
+            required=true
+            minlength="2"
+            maxlength="4"
+            #multipleSelect="ngModel"
+            idField='value'
+            textField='label'
+            [maxVisibleItemCount]="5"
+            >
+            </tree-select>
+          </div> -->
+          <!-- <div *ngIf="multipleSelect.errors && (multipleSelect.dirty || multipleSelect.touched)" class="alert alert-danger">
+              <div [hidden]="!multipleSelect.errors.required">Multiple select is required</div>
+              <div [hidden]="!multipleSelect.errors.minlength">You must choose at least 2 items on Multiple select</div>
+              <div [hidden]="!multipleSelect.errors.maxlength">You must choose maximum 4 items on Multiple select</div>
+            </div> -->
+        
+      </div>
+
+      <div class="form-group" *ngIf="isTaskState">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+           <div *ngFor="let item of multipleSelected">
+             <div class="form-group">
+                <div class="col-sm-2">
+                    <label class="control-label">{{item.label}}</label>
+                    <select  class="form-control days">
+                      <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
+                    </select>
+                </div>
+                <!-- <nz-select style="width: 120px;" [(ngModel)]="userWork" nzAllowClear [nzSize]="'large'">
+                    <nz-option>1天</nz-option>
+                </nz-select> -->
+             </div>
+           </div>
         </div>
       </div>
 
-      
-      <div class="form-group" *ngIf="!isTaskState">
+      <!-- <div class="form-group" *ngIf="!isTaskState">
         <label class="col-sm-2 control-label"></label>
         <div class="col-sm-10">
           <nz-select style="width: 155px;"
@@ -169,14 +223,19 @@
             </nz-option>
           </nz-select>
 
-      </div>
-    </div>
+      </div> -->
+
       
       <div class="form-group">
           <label class="col-sm-2 control-label">工作量</label>
           <div class="col-sm-4">
-              <nz-select style="width: 100%;" nzAllowClear [nzSize]="'large'">
-                  <nz-option>请选择</nz-option>
+              <nz-select [(ngModel)]="workLoad" name="workLoad" style="width: 100%;"  nzAllowClear [nzSize]="'large'">
+                <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                <nz-option 
+                    *ngFor='let item of workLoadList'
+                    [nzLabel]="item.text"
+                    [nzValue]="item.value"
+                  >{{item.text}}</nz-option>
               </nz-select>
           </div>
       </div>

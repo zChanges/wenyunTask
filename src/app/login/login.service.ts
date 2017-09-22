@@ -6,6 +6,8 @@ export class LoginService {
 
     constructor(private http: Http, private routerService: RouterService) { }
     login(userCode, password) {
-        return this.http.get(this.routerService.baseUrl + `user/login?userCode=${userCode}&password=${password}`);
+        return this.http.get(
+            this.routerService.baseUrl + `user/login?userCode=${userCode}&password=${password}`)
+        .map(res=>res.json());
     }
 }

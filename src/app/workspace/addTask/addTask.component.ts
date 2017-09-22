@@ -1,19 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { FormBuilder,FormGroup,Validators,FormControl} from '@angular/forms';
+import { ValueService } from '../../service/value.service';
+import * as $ from 'jQuery';
 @Component({
   selector: 'app-addTask',
   templateUrl: './addTask.component.html',
   styleUrls: ['./addTask.component.scss']
 })
 export class AddTaskComponent implements OnInit {
-  validateForm:FormBuilder;
-  inputValue:string;
-  radioValue = 'A'
-  isLoading = false;
-  selectedMultipleOption;
-  isTaskState = true;
-  constructor() { }
 
+  createUserId:string;//登陆人id
+  webId:string;//登陆后
+  title:string;
+  productId = '';
+  projectId ='';
+  versionId = '';
+
+
+  devFinish:string;//联调时间
+  testStart:string;//提测时间
+  testFinish:string; // 测试完成时间
+  acceptFinish: string;// 验收完成时间
+  description:string;
+  type = '200'//任务类型（200需求，201bug）
+  multipleSelected:any;
+  
+  workLoad= "";
+  taskFile:any;//附件
+
+  workLoadList = [];
+
+
+
+
+  validateForm:FormBuilder;
+  isLoading = false;
+  isTaskState = true;
+  selectedMultipleOption;
+
+  newData = [];
   searchOptions = [
     { value: '1', label: '杰克1' },
     { value: '2', label: '露2' },
@@ -24,17 +49,45 @@ export class AddTaskComponent implements OnInit {
     { value: '7', label: '杰克7' },
     { value: '8', label: '露西8' },
     { value: '9', label: '汤姆9' }
-  ]
+  ];
+  constructor(private valueService: ValueService) {
+    // this.selectedMultipleOption = [ '1', '5' ];
+    this.workLoadList = this.valueService.Days;
+   }
+
+
+  
+  selectMenu = null;
 
   ngOnInit() {
+ 
   }
+
 
 
   save(){
-    this.isLoading = true;
+    let workLoadList = [];
+
+    // this.isLoading = true;
+    // console.log(this.createUserId,this.title,this.description,this.projectId,
+    //   this.versionId,this.productId,this.workLoad,this.type,this.devFinish,this.testStart,
+    //   this.testFinish,this.acceptFinish,this.webId,this.taskFile)
+    console.log(this.multipleSelected)
+    const $dats = $('.days')
+    if($dats.length>1){
+      this.multipleSelected.forEach((item,index)=>{
+        console.log($dats[index].val());
+      })
+    }
+
   }
 
+  /**
+   * 改变任务类型切换tab
+   */
   changeTask() {
-    this.radioValue == 'A' ? this.isTaskState = true : this.isTaskState = false;
+    this.type == '200' ? this.isTaskState = true : this.isTaskState = false;
   }
+
+ 
 }

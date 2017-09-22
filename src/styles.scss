@@ -14,3 +14,24 @@ body{
         color: #58666e;
     }
 }
+
+/* Tree select css */
+.selected-item-item{
+    font-size: 12px !important;
+}
+.btn-default{
+    color: rgba(0, 0, 0, 0.65);
+    border: 1px solid #d9d9d9;   
+    border-radius: 4px;
+    transition: all .3s;
+}
+.btn{
+    padding: 2px 10px;  
+}
+.close{
+    padding-top: 1px !important;
+}
+
+.ant-tabs-tabpane{
+    margin-bottom: 50px;
+}
