@@ -28,7 +28,7 @@ export class AddTaskService {
             acceptFinish:acceptFinish,
             webId:webId,
             taskFile:taskFile
-        }).map(res=>res.json());
+        });
         
     }
 
@@ -42,7 +42,7 @@ export class AddTaskService {
             webId:webId,
             createUser:createUser,
             taskUser:taskUser
-        }).map(res=>res.json());
+        });
     }
 
     /**
@@ -51,7 +51,7 @@ export class AddTaskService {
     getProduct() {
         return this.http.get(
             this.routerService.baseUrl + `product/getProduct`)
-        .map(res=>res.json());
+        
     }
 
     /**
@@ -60,7 +60,6 @@ export class AddTaskService {
     getProject() {
         return this.http.get(
             this.routerService.baseUrl + `project/getProject`)
-        .map(res=>res.json());
     }
 
     /**
@@ -69,7 +68,6 @@ export class AddTaskService {
     getProjectVersion() {
         return this.http.get(
             this.routerService.baseUrl + `projectVersion/getProjectVersion`)
-        .map(res=>res.json());
     }
 
 
@@ -80,7 +78,6 @@ export class AddTaskService {
     getDevelopUser() {
         return this.http.get(
             this.routerService.baseUrl + `user/getDevelopUser`)
-        .map(res=>res.json());
     }
 
     /**
@@ -89,7 +86,6 @@ export class AddTaskService {
     getTestUser() {
         return this.http.get(
             this.routerService.baseUrl + `user/getTestUser`)
-        .map(res=>res.json());
     }
 
     /**
@@ -99,7 +95,6 @@ export class AddTaskService {
     getProductUser(){
         return this.http.get(
             this.routerService.baseUrl + `user/getProductUser`)
-        .map(res=>res.json());
     }
 
   

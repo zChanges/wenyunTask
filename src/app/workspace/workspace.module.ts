@@ -6,11 +6,10 @@ import { WorkspaceRoutes } from './workspace.routing';
 import { WorkspaceComponent } from './workspace.component';
 import { AddTaskComponent } from './addTask/addTask.component';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 
 // 插件
 import { NgZorroAntdModule } from 'ng-zorro-antd';
-import {NgxTreeSelectModule} from 'ngx-tree-select';
 
 @NgModule({
   imports: [
@@ -18,15 +17,7 @@ import {NgxTreeSelectModule} from 'ngx-tree-select';
     WorkspaceRoutes,
     FormsModule,
     NgZorroAntdModule.forRoot(),
-    NgxTreeSelectModule.forRoot({
-      allowFilter: true,
-      filterPlaceholder: 'Type your filter here...',
-      maxVisibleItemCount: 5,
-      idField: 'id',
-      textField: 'name',
-      childrenField: 'children',
-      allowParentSelection: true
-    })
+    ReactiveFormsModule
   ],
   declarations: [
     TestComponent,
