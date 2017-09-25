@@ -1,0 +1,207 @@
+<form nz-form class="search-header ant-advanced-search-form">
+  <div class="search-context">
+  <div nz-form-item nz-row>
+      <div nz-col [nzSm]="24" [nzXs]="24" class="context-title">
+          <label>查询</label>
+      </div>
+  </div>
+
+  <div nz-row [nzGutter]="40">
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>任务单类型</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+            <nz-select>
+                <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                <nz-option 
+                *ngFor="let item of searchOptions" 
+                [nzLabel]="item.label"
+                [nzValue]="item.value"
+                ></nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>创建时间</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+            <nz-datepicker style="width:100%"  [nzShowTime]="true" [nzPlaceHolder]="'创建时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>状态</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+              <nz-select>
+                  <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                  <nz-option 
+                  *ngFor="let item of searchOptions" 
+                  [nzLabel]="item.label"
+                  [nzValue]="item.value"
+                  ></nz-option>
+              </nz-select>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>产品</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+              <nz-select>
+                  <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                  <nz-option 
+                  *ngFor="let item of searchOptions" 
+                  [nzLabel]="item.label"
+                  [nzValue]="item.value"
+                  ></nz-option>
+              </nz-select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分割 -->
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>项目</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+              <nz-select>
+                  <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                  <nz-option 
+                  *ngFor="let item of searchOptions" 
+                  [nzLabel]="item.label"
+                  [nzValue]="item.value"
+                  ></nz-option>
+              </nz-select>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>版本</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+              <nz-select>
+                  <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                  <nz-option 
+                  *ngFor="let item of searchOptions" 
+                  [nzLabel]="item.label"
+                  [nzValue]="item.value"
+                  ></nz-option>
+              </nz-select>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>类型</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+              <nz-select>
+                  <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                  <nz-option 
+                  *ngFor="let item of searchOptions" 
+                  [nzLabel]="item.label"
+                  [nzValue]="item.value"
+                  ></nz-option>
+              </nz-select>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="5">
+            <label>所有岗位</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="19">
+            <nz-cascader
+              [class.class123]="true"
+              [nzOptions]="_options"
+            >
+            </nz-cascader>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+
+  <div nz-row>
+    <div nz-col [nzSpan]="24" style="text-align: right; padding:10px 20px">
+      <button nz-button [nzType]="'primary'" [nzLoading]="isSearch">
+        <i class="anticon anticon-search"></i>
+        <span>查询</span>
+      </button>
+    </div>
+  </div>
+
+  </div>
+
+  </form>
+  
+  <div class="search-result-list">
+      <div nz-form-item nz-row>
+          <div nz-col [nzSm]="24" [nzXs]="24" class="context-title">
+              <label><h4>任务单列表</h4></label>
+          </div>
+      </div>
+      <div class="table">
+        <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
+            <thead nz-thead>
+              <tr>
+                <!-- <th nz-th [nzWidth]="'25%'"><span>name</span></th>
+                <th nz-th [nzWidth]="'15%'"><span>age</span></th>
+                <th nz-th [nzWidth]="'40%'"><span>address</span></th> -->
+                <th nz-th><span>标题</span></th>
+                <th nz-th><span>描述</span></th>
+                <th nz-th><span>类型</span></th>
+                <th nz-th><span>当前状态</span></th>
+                <th nz-th><span>工作量</span></th>
+                <th nz-th><span>联调时间</span></th>
+                <th nz-th><span>提测时间</span></th>
+                <th nz-th><span>测试完成时间</span></th>
+                <th nz-th><span>验收完成时间</span></th>
+                <th nz-th><span>创建用户</span></th>
+                <th nz-th><span>创建日期</span></th>
+                <th nz-th><span>编辑</span></th>
+              </tr>
+            </thead>
+            <tbody nz-tbody>
+              <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                <td nz-td>
+                  <span *ngIf="editRow!==data.key">{{data.name}}</span>
+                </td>
+                <td nz-td>
+                  <span *ngIf="editRow!==data.key">{{data.age}}</span>
+                </td>
+                <td nz-td>{{data.address}}</td>
+                <td nz-td>
+                  <span *ngIf="editRow!==data.key">
+                    <a (click)="edit(data)">Edit</a>
+                  </span>
+                </td>
+              </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      
+  </div>

@@ -1,0 +1,93 @@
+<nz-tabset>
+  <nz-tab>
+    <ng-template #nzTabHeading>
+      新增任务流程
+    </ng-template>
+
+    <form class="form-horizontal" nz-form [formGroup]="validateForm" >
+        
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="3" [nzXs]="24">
+                <label for="标题">标题</label>
+            </div>
+            <div nz-form-control  nz-col [nzSm]="12" [nzXs]="24" [nzValidateStatus]="validateForm.controls.title">
+                <nz-input formControlName="title" [nzPlaceHolder]="'请填写标题'" [nzSize]="'large'">
+                </nz-input>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="3" [nzXs]="24">
+                    <label for="详细描述">详细描述</label>
+            </div>
+            <div nz-form-control  nz-col [nzSm]="12" [nzXs]="24" [nzValidateStatus]="validateForm.controls.description">
+                <!-- <nz-input [(ngModel)]="description" formControlName="description" [nzType]="'textarea'" [nzRows]="'5'" [nzPlaceHolder]="''"></nz-input> -->
+                <div [froalaEditor]='textOptions'></div>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzOffset]='3'></div>
+            <nz-button-group>
+                <button nz-button [nzType]="'primary'" (click)="setDispose(false)">
+                    <span>移交</span>
+                </button>
+                <button nz-button [nzType]="'primary'" (click)="setDispose(true)">
+                    <span>处理</span>
+                </button>
+            </nz-button-group>
+        </div>
+
+        <div nz-form-item nz-row *ngIf="!isDispose">
+            <div nz-form-control [nzOffset]='3'  nz-col [nzSm]="8" [nzXs]="24" >
+            <div>
+                <nz-radio-group [(ngModel)]="radioValue" formControlName='radioValue'> 
+                    <label nz-radio *ngFor="let item of searchOptions" [nzValue]="item.value" >
+                        <span>{{item.label}}</span>
+                    </label>
+                    </nz-radio-group>
+            </div>
+            {{radioValue}}
+            </div>
+        </div>
+
+        <div nz-form-item nz-row *ngIf="isDispose">
+            <div nz-form-control [nzOffset]='3'  nz-col [nzSm]="21" [nzXs]="24">
+            <nz-radio-group [(ngModel)]="isPass" formControlName='isPass'> 
+                <label nz-radio [nzValue]="true" >
+                    <span>通过</span>
+                </label>
+                <label nz-radio [nzValue]="false" >
+                    <span>不通过</span>
+                    </label>
+            </nz-radio-group>
+            </div>
+            <div *ngIf="!isPass" >
+                <div nz-form-control  nz-col [nzOffset]='3' [nzSm]="21" [nzXs]="24">
+                    <nz-checkbox-group formControlName="people" [(ngModel)]="searchOptions" (ngModelChange)="_log(searchOptions)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-form-item>
+                <div nz-form-label nz-col [nzSm]="3" [nzXs]="24">
+                    <label for="附件">附件</label>
+                </div>
+                <div nz-form-control  nz-col [nzSm]="21" [nzXs]="24">
+                    <input type="file"/>
+                    <!-- <i class="anticon anticon-upload"></i> -->
+                </div>
+            </div> 
+        </div>
+
+        <div nz-form-item>
+            <div nz-form-label nz-col [nzOffset]='3'></div>
+            <button  nz-button [nzType]="'primary'" (click)="save($event)" [nzSize]="'large'" [nzLoading]="isLoading">
+                <i class="anticon anticon-save"></i>
+                <span>确定</span>
+            </button>
+        </div>
+      
+    </form>
+
+  </nz-tab>
+</nz-tabset>

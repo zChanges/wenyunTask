@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TestComponent } from './test/test.component';
 import { WorkspaceRoutes } from './workspace.routing';
-import { WorkspaceComponent } from './workspace.component';
-import { AddTaskComponent } from './addTask/addTask.component';
-
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 
 // 插件
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
+
+// Component
+import { WorkspaceComponent } from './workspace.component';
+import { AddTaskComponent } from './addTask/addTask.component';
+import { AddTaskFlowComponent } from './addTaskFlow/addTaskFlow.component';
+import { WorkOrderComponent } from './workOrder/workOrder.component';
+import { ProcessFlowComponent } from './processFlow/processFlow.component';
 
 @NgModule({
   imports: [
@@ -17,12 +21,16 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
     WorkspaceRoutes,
     FormsModule,
     NgZorroAntdModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FroalaEditorModule.forRoot(), 
+    FroalaViewModule.forRoot()
   ],
   declarations: [
-    TestComponent,
     WorkspaceComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    AddTaskFlowComponent,
+    WorkOrderComponent,
+    ProcessFlowComponent
 ]
 })
 export class WorkspaceModule { }

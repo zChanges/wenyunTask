@@ -6,7 +6,7 @@ import {
   FormControl
 } from "@angular/forms";
 import { ValueService } from "../../service/value.service";
-import * as $ from "jQuery";
+import * as $ from 'jquery';
 @Component({
   selector: "app-addTask",
   templateUrl: "./addTask.component.html",
@@ -83,11 +83,11 @@ export class AddTaskComponent implements OnInit {
 
   }
 
-  _submitForm() {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[ i ].markAsDirty();
-    }
-  }
+  // _submitForm() {
+  //   for (const i in this.validateForm.controls) {
+  //     this.validateForm.controls[ i ].markAsDirty();
+  //   }
+  // }
 
 
   save() {
@@ -103,11 +103,11 @@ export class AddTaskComponent implements OnInit {
     const $dats = $(".days");
     if ($dats.length > 1) {
       this.multipleSelected.forEach((item, index) => {
-        console.log($dats[index].value);
+        console.log($dats[index].nodeValue);
         taskUserList.push({
           userId: item.value,
           duty: item.label,
-          userWork: $dats[index].value
+          userWork: $dats[index].nodeValue
         });
       });
       console.log(taskUserList);

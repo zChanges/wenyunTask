@@ -68,7 +68,7 @@
       <div class="form-group" nz-form-item>
         <label class="col-sm-2 control-label">联调时间</label>
         <div class="col-sm-2" nz-form-control [nzValidateStatus]="validateForm.controls.devFinish">
-          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'联调时间'" formControlName="devFinish" [(ngModel)]="devFinish"  [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+           <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'联调时间'" formControlName="devFinish" [(ngModel)]="devFinish"  [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
         </div>
 
         <label class="col-sm-1 control-label">提测时间</label>
@@ -185,6 +185,7 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-8">
           <button  nz-button [disabled]="!validateForm.valid" [nzType]="'primary'" (click)="save($event)" [nzLoading]="isLoading">
+            <i class="anticon anticon-save"></i>
             <span>确定</span>
           </button>
         </div>

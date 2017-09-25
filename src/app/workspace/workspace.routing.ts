@@ -1,7 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
 import { WorkspaceComponent } from './workspace.component';
-import { TestComponent } from './test/test.component';
 import { AddTaskComponent } from './addTask/addTask.component';
+import { AddTaskFlowComponent } from './addTaskFlow/addTaskFlow.component';
+import { WorkOrderComponent } from './workOrder/workOrder.component';
+import { ProcessFlowComponent } from './processFlow/processFlow.component';
 
 const routes: Routes = [
   {
@@ -9,8 +11,11 @@ const routes: Routes = [
     component: WorkspaceComponent,
     children: [
       {path: '', redirectTo: 'addTask', pathMatch: 'full'},
-      {path:'test',component: TestComponent },
-      {path: 'addTask', component: AddTaskComponent}
+      {path: 'addTask', component: AddTaskComponent},
+      {path: 'addTaskFlow', component: AddTaskFlowComponent},
+      {path: 'workOrder', component: WorkOrderComponent},
+      {path: 'processFlow', component: ProcessFlowComponent},
+      
     ]
   }
   

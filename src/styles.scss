@@ -2,9 +2,14 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/_bootstrap';
 @import '~font-awesome/css/font-awesome.css';
+@import '../node_modules/froala-editor/css/froala_style.min.css';
+@import '../node_modules/froala-editor/css/froala_editor.pkgd.min.css';
+@import '~froala-editor/css/froala_style.min.css';
 
 body{
     font-size:14px !important;
+    background: #fafbfc !important;
+    height:0px !important;
 }
 .content-header{
     background-color: #f6f8f8;
@@ -35,3 +40,30 @@ body{
 .ant-tabs-tabpane{
     margin-bottom: 50px;
 }
+
+// 列表查询区域
+.ant-advanced-search-form {
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #e9e9e9;
+  }
+.context-title{
+    padding: 10px 0px;
+    background: #edf1f2;
+    text-indent: 15px;
+}
+.search-result-list {
+    margin-top: 16px;
+    border: 1px solid #e9e9e9;
+    border-radius: 6px;
+    // background-color: #fafafa;
+    min-height: 200px;
+    text-align: left;
+    padding-top: 25px;
+    .table{
+        padding: 0px 20px;
+    }
+}
+
+
+
