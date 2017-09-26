@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
-// import { FormBuilder, FormGroup, Validator } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { LoginService } from './login.service';
 @Component({
   selector: 'app-login',
@@ -8,11 +13,12 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  validateForm: FormGroup;
   userName= null;
   passWord= null;
+  isLoading = false;
 
-  constructor(private router: Router, private loginService: LoginService) {
+  constructor(private router: Router, private loginService: LoginService,private fb: FormBuilder) {
   }
 
 
@@ -20,10 +26,15 @@ export class LoginComponent implements OnInit {
     // this.loginService.login('11', '2').subscribe( res => {
     //   console.log(res);
     // });
+    this.validateForm = this.fb.group({
+      userName: [ null, [ Validators.required ] ],
+      password: [ null, [ Validators.required ] ]
+    });
   }
 
   login() {
-    this.router.navigateByUrl('Task');
+    this.isLoading = true;
+    this.router.navigateByUrl('task');
   }
 
 

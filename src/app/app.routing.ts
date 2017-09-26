@@ -9,7 +9,7 @@ const routes: Routes = [
 		pathMatch: 'full'
 	},
 	{
-		path: 'Task',
+		path: 'task',
 		loadChildren: './workspace/workspace.module#WorkspaceModule'
 	},
 	{

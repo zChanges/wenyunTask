@@ -1,5 +1,41 @@
 .rowFlow{
     margin-bottom: 20px;
+    .guideColor{
+        background:#108ee9;
+    }
+    .borderColor{
+        border-color:#108ee9;
+    }
+    .flowChart{
+        height:50px;
+        .disabledFlow{
+            color: rgba(0, 0, 0, 0.25);
+            background-color: #f7f7f7;
+            border-color: #d9d9d9;
+        }
+    }
+    .guide{
+        position: relative;
+        width: 120px;
+        float: left;
+        height: 3px;
+        margin: 15px;
+        .arrows{
+            border: 6px solid transparent;
+            border-left: 7px solid #108ee9;
+            width: 0;
+            height: 0;
+            position: absolute;
+            right: -13px;
+            top: -5px;
+        }
+        .guideTime{
+            position: absolute;
+            left:13px;
+            top:8px;
+        }
+    }
+    
 }
 .search-result-list{
     padding-top:0px;

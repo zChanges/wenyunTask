@@ -1,5 +1,5 @@
 <div class="bodyer container">
-  <form class="form-horizontal">
+  <!-- <form class="form-horizontal">
     <h2 class="header-word text-center">欢迎使用 云问 任务跟踪系统</h2>
     <div class="login-content col-md-4 col-md-offset-4">
         <div class="form-group">
@@ -14,5 +14,36 @@
             <button type="button" class="loginin btn btn-success btn-sm" (click)="login()">　登　录　</button>
         </div>
     </div>
+  </form> -->
+  <h2 class="header-word text-center">欢迎使用 云问 任务跟踪系统</h2>
+  <form nz-form [formGroup]="validateForm" class="login-form">
+    <div nz-form-item>
+      <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
+        <nz-input formControlName="userName" [nzPlaceHolder]="'用户名'" [nzSize]="'large'">
+          <ng-template #prefix>
+            <i class="anticon anticon-user"></i>
+          </ng-template>
+        </nz-input>
+      </div>
+    </div>
+    <div nz-form-item>
+      <div nz-form-control [nzValidateStatus]="validateForm.controls.password">
+        <nz-input formControlName="password" [nzType]="'密码'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
+          <ng-template #prefix>
+            <i class="anticon anticon-lock"></i>
+          </ng-template>
+        </nz-input>
+      </div>
+    </div>
+    
+    <div nz-form-item>
+      <div nz-form-control>
+        <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'" (click)="login()" [nzLoading]="isLoading">
+            <i class="anticon anticon-login"></i>
+            <span>登陆</span>
+        </button>
+      </div>
+    </div>
+
   </form>
 </div>

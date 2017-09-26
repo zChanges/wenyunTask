@@ -1,12 +1,6 @@
-import { Component, OnInit, DoCheck } from "@angular/core";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl
-} from "@angular/forms";
+import { Component, OnInit, ElementRef, ViewChildren } from "@angular/core";
+import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { ValueService } from "../../service/value.service";
-import * as $ from 'jquery';
 @Component({
   selector: "app-addTask",
   templateUrl: "./addTask.component.html",
@@ -56,7 +50,7 @@ export class AddTaskComponent implements OnInit {
     { value: "8", label: "露西8" },
     { value: "9", label: "汤姆9" }
   ];
-  constructor(private valueService: ValueService, private fb: FormBuilder) {
+  constructor(private valueService: ValueService, private fb: FormBuilder,private elementRef: ElementRef) {
     // this.selectedMultipleOption = [ '1', '5' ];
     this.workLoadList = this.valueService.Days;
   }
@@ -100,14 +94,14 @@ export class AddTaskComponent implements OnInit {
     //   this.testFinish,this.acceptFinish,this.webId,this.taskFile)
     //获取任务数组
     console.log(this.multipleSelected);
-    const $dats = $(".days");
-    if ($dats.length > 1) {
+    const $dats = this.elementRef.nativeElement.querySelectorAll('.days');
+    if ($dats.length > 0) {
       this.multipleSelected.forEach((item, index) => {
-        console.log($dats[index].nodeValue);
+        console.log($dats[index].value);
         taskUserList.push({
           userId: item.value,
           duty: item.label,
-          userWork: $dats[index].nodeValue
+          userWork: $dats[index].value
         });
       });
       console.log(taskUserList);
@@ -120,4 +114,5 @@ export class AddTaskComponent implements OnInit {
   changeTask() {
     this.type == "200" ? (this.isTaskState = true) : (this.isTaskState = false);
   }
+  
 }

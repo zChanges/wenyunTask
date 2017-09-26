@@ -27,35 +27,12 @@ export class WorkOrderComponent implements OnInit {
         {
           value: "2-1",
           label: "2-1",
-          children: [
-            {
-              value: "3",
-              label: "3",
-              isLeaf: true
-            }
-          ]
+          isLeaf: true
         },
         {
           value: "2-2",
           label: "2-2",
           isLeaf: true
-        }
-      ]
-    },
-    {
-      value: "a1",
-      label: "a1",
-      children: [
-        {
-          value: "a2-1",
-          label: "a2-1",
-          children: [
-            {
-              value: "a3-1",
-              label: "a3-1",
-              isLeaf: true
-            }
-          ]
         }
       ]
     }

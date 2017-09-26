@@ -10,7 +10,7 @@ const routes: Routes = [
     path: '',
     component: WorkspaceComponent,
     children: [
-      {path: '', redirectTo: 'addTask', pathMatch: 'full'},
+      {path: '', redirectTo: 'workOrder', pathMatch: 'full'},
       {path: 'addTask', component: AddTaskComponent},
       {path: 'addTaskFlow', component: AddTaskFlowComponent},
       {path: 'workOrder', component: WorkOrderComponent},

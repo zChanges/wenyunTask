@@ -8,7 +8,9 @@
         <nz-collapseset [nzAccordion]="true">
             <nz-collapse  [nzTitle]="'流程图'" [nzActive]="true">
 
-                <nz-popover [nzTitle]="'开发'">
+              <div class="flowChart">
+                    
+                <nz-popover [nzTitle]="'开发'" style="float:left">
                     <button nz-button nz-popover [nzType]="'primary'" [nzSize]="'large'">
                         <span>开发</span>
                     </button>
@@ -16,8 +18,13 @@
                         <span>开发人员</span>
                     </ng-template>
                 </nz-popover>
-                ——————>
-                <nz-popover [nzTitle]="'联调'">
+
+                <div class="guide guideColor">
+                  <div class="arrows"></div>
+                  <span class="guideTime">2017.9.25.11:55</span>
+                </div>
+
+                <nz-popover [nzTitle]="'联调'" style="float:left">
                     <button nz-button nz-popover [nzType]="'primary'" [nzSize]="'large'">
                         <span>责任人</span>
                     </button>
@@ -27,8 +34,12 @@
                       <span>开发人员</span>
                     </ng-template>
                 </nz-popover>
-                ——————>
-                <nz-popover [nzTitle]="'测试'">
+
+                <div class="guide guideColor">
+                  <div class="arrows"></div>
+                </div>
+
+                <nz-popover [nzTitle]="'测试'" style="float:left">
                     <button nz-button nz-popover [nzType]="'primary'" [nzSize]="'large'">
                         <span>测试人员</span>
                     </button>
@@ -38,8 +49,12 @@
                       <span>开发人员</span>
                     </ng-template>
                 </nz-popover>
-                ——————>
-                <nz-popover [nzTitle]="'产品人员'">
+               
+                <div class="guide guideColor" >
+                  <div class="arrows"></div>
+                </div>
+
+                <nz-popover [nzTitle]="'产品人员'" style="float:left">
                     <button nz-button nz-popover [nzType]="'primary'" [nzSize]="'large'">
                         <span>产品人员</span>
                     </button>
@@ -49,6 +64,9 @@
                       <span>开发人员</span>
                     </ng-template>
                 </nz-popover>
+
+              </div>
+
 
             </nz-collapse>
         </nz-collapseset>

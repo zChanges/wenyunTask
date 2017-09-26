@@ -1,14 +1,15 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { NgModule, ModuleWithProviders } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-import { AppComponent } from "./app.component";
 import { AppRoutesModule } from "./app.routing";
+
+// Component
+import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
-import { ValueService } from "./service/value.service";
 
 // AJAX拦截器
 import {
@@ -16,31 +17,39 @@ import {
   HttpRequest,
   HTTP_INTERCEPTORS
 } from "@angular/common/http";
-import { TaskInterceptorService } from './taskInterceptor.service';
+import { TaskInterceptorService } from "./taskInterceptor.service";
 
 // 插件
-// import { CKEditorModule } from 'ng2-ckeditor';
+import { NgZorroAntdModule } from "ng-zorro-antd";
 
 // Service
 import { RouterService } from "./service/router.service";
 import { LoginService } from "./login/login.service";
+import { ValueService } from "./service/value.service";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutesModule,
+    NgZorroAntdModule.forRoot(),
     HttpModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    // CKEditorModule,
     BrowserAnimationsModule
   ],
   providers: [
-    RouterService, 
-    LoginService, 
+    RouterService,
+    LoginService,
     ValueService,
-    [ { provide: HTTP_INTERCEPTORS, useClass: TaskInterceptorService, multi: true } ]
+    [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: TaskInterceptorService,
+        multi: true
+      }
+    ]
   ],
   bootstrap: [AppComponent]
 })
