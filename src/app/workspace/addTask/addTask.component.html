@@ -19,9 +19,9 @@
             <nz-select style="width: 100%;" formControlName="productId" [(ngModel)]="productId" nzAllowClear [nzSize]="'large'">
               <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>    
               <nz-option 
-                *ngFor="let item of searchOptions" 
-                [nzLabel]="item.label"
-                [nzValue]="item.value"
+                *ngFor="let item of productList" 
+                [nzLabel]="item.name"
+                [nzValue]="item.id"
                 ></nz-option>
             </nz-select>
         </div>
@@ -36,13 +36,13 @@
               <nz-select style="width: 100%;" formControlName="projectId" [(ngModel)]="projectId" nzAllowClear [nzSize]="'large'">
                 <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                 <nz-option 
-                *ngFor="let item of searchOptions" 
-                [nzLabel]="item.label"
-                [nzValue]="item.value"
+                *ngFor="let item of projectList" 
+                [nzLabel]="item.name"
+                [nzValue]="item.id"
                 ></nz-option>
               </nz-select>
           </div>
-          <button nz-button (click)="isProject=true"  [nzType]="'primary'" [nzGhost]="true">
+          <button  nz-button (click)="isProject=true"  [nzType]="'primary'" [nzGhost]="true">
             <span>修改</span>
           </button>
         </div>
@@ -54,13 +54,13 @@
             <nz-select style="width: 100%;" formControlName="versionId" [(ngModel)]="versionId" nzAllowClear [nzSize]="'large'">
               <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
               <nz-option 
-              *ngFor="let item of searchOptions" 
-              [nzLabel]="item.label"
-              [nzValue]="item.value"
+              *ngFor="let item of versionList" 
+              [nzLabel]="item.name"
+              [nzValue]="item.id"
               ></nz-option>
             </nz-select>
         </div>
-        <button nz-button (click)="isVersion=true"  [nzType]="'primary'" [nzGhost]="true">
+        <button nz-button  (click)="isVersion=true"  [nzType]="'primary'" [nzGhost]="true">
           <span>修改</span>
         </button>
       </div>
@@ -114,10 +114,50 @@
       <div class="form-group" *ngIf="isTaskState">
           <label class="col-sm-2 control-label"></label>
           <div class="col-sm-2">
-            <nz-select style="width: 175px;" [nzPlaceHolder]="'开发'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="multipleSelected" [nzSize]="size">
+            <nz-select style="width: 175px;" 
+              [nzPlaceHolder]="'开发'" 
+              [nzMode]="'multiple'" 
+              formControlName='multipleSelect' 
+              [(ngModel)]="developUsers" 
+              [nzSize]="size"
+              (nzOpenChange)="developChange($event,developUsers)" 
+            >
                 <nz-option
-                  *ngFor="let option of searchOptions"
-                  [nzLabel]="option.label"
+                  *ngFor="let option of developUserList"
+                  [nzLabel]="option.userName"
+                  [nzValue]="option"
+                  >
+                </nz-option>
+              </nz-select>
+          </div>
+
+          <div class="col-sm-2">
+            <nz-select style="width: 175px;" [nzPlaceHolder]="'联调'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="debuggers" [nzSize]="size">
+                <nz-option
+                  *ngFor="let option of debuggerOption"
+                  [nzLabel]="option.userName"
+                  [nzValue]="option"
+                  >
+                </nz-option>
+              </nz-select>
+          </div>
+
+          <div class="col-sm-2">
+            <nz-select style="width: 175px;" [nzPlaceHolder]="'测试'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="testUsers" [nzSize]="size">
+                <nz-option
+                  *ngFor="let option of testUserList"
+                  [nzLabel]="option.userName"
+                  [nzValue]="option"
+                  >
+                </nz-option>
+              </nz-select>
+          </div>
+
+          <div class="col-sm-2">
+            <nz-select style="width: 175px;" [nzPlaceHolder]="'产品'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="productUsers" [nzSize]="size">
+                <nz-option
+                  *ngFor="let option of productUserList"
+                  [nzLabel]="option.userName"
                   [nzValue]="option"
                   >
                 </nz-option>
@@ -125,14 +165,47 @@
           </div>
       </div>
 
-      <div class="form-group" *ngIf="isTaskState">
+      <div class="form-group" *ngIf="!isTaskState">
         <label class="col-sm-2 control-label"></label>
-        <div class="col-sm-10">
-           <div *ngFor="let item of multipleSelected">
+        <div class="col-sm-2">
+          <nz-select style="width: 175px;" 
+            [nzPlaceHolder]="'开发'" 
+            [nzMode]="'multiple'" 
+            formControlName='multipleSelect' 
+            [(ngModel)]="developUsers" 
+            [nzSize]="size"
+            (nzOpenChange)="developChange($event,developUsers)" 
+          >
+              <nz-option
+                *ngFor="let option of developUserList"
+                [nzLabel]="option.userName"
+                [nzValue]="option"
+                >
+              </nz-option>
+            </nz-select>
+        </div>
+
+        <div class="col-sm-2">
+          <nz-select style="width: 175px;" [nzPlaceHolder]="'测试'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="testUsers" [nzSize]="size">
+              <nz-option
+                *ngFor="let option of testUserList"
+                [nzLabel]="option.userName"
+                [nzValue]="option"
+                >
+              </nz-option>
+            </nz-select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+
+        <div class="col-sm-2" *ngIf="developUsers.length > 0">
+           <div *ngFor="let item of developUsers">
              <div class="form-group">
-                <div class="col-sm-3">
-                      <label class="col-sm-3 control-label">{{item.label}}</label>
-                      <div class="col-sm-5">
+                <div class="col-sm-12">
+                      <label class="col-sm-4 control-label">{{item.userName}}</label>
+                      <div class="col-sm-6">
                           <select  class="form-control days input-sm">
                               <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
                           </select>
@@ -141,6 +214,53 @@
              </div>
            </div>
         </div>
+
+        <div class="col-sm-2" *ngIf="debuggers.length > 0">
+           <div *ngFor="let item of debuggers">
+             <div class="form-group">
+                <div class="col-sm-12">
+                      <label class="col-sm-4 control-label">{{item.userName}}</label>
+                      <div class="col-sm-6">
+                          <select  class="form-control debugger input-sm">
+                              <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
+                          </select>
+                      </div>
+                </div>
+             </div>
+           </div>
+        </div>
+
+        <div class="col-sm-2" *ngIf="testUsers.length > 0">
+            <div *ngFor="let item of testUsers">
+              <div class="form-group">
+                 <div class="col-sm-12">
+                       <label class="col-sm-4 control-label">{{item.userName}}</label>
+                       <div class="col-sm-6">
+                           <select  class="form-control test input-sm">
+                               <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
+                           </select>
+                       </div>
+                 </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-sm-2" *ngIf="productUsers.length > 0">
+            <div *ngFor="let item of productUsers">
+              <div class="form-group">
+                 <div class="col-sm-12">
+                       <label class="col-sm-4 control-label">{{item.userName}}</label>
+                       <div class="col-sm-6">
+                           <select  class="form-control produc input-sm">
+                               <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
+                           </select>
+                       </div>
+                 </div>
+              </div>
+            </div>
+        </div>
+
+
       </div>
       
       <div class="form-group" nz-form-item>
@@ -160,7 +280,7 @@
       <div class="form-group" nz-form-item>
           <label class="col-sm-2 control-label">附件</label>
           <div class="col-sm-4">
-              <input type="file">
+              <input type="file" [(ngModel)]="taskFile" formControlName="taskFile">
           </div>
       </div>
 
@@ -168,7 +288,7 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-8">
           <!-- [disabled]="!validateForm.valid" -->
-          <button  nz-button  [nzType]="'primary'" (click)="save($event)" [nzLoading]="isLoading">
+          <button [disabled]="!validateForm.valid"   nz-button  [nzType]="'primary'" (click)="save($event)" [nzLoading]="isLoading">
             <i class="anticon anticon-save"></i>
             <span>确定</span>
           </button>

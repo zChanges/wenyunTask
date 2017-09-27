@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, HttpModule } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+
 import { RouterService } from './../../service/router.service';
 
 @Injectable()
 export class AddTaskService {
     baseUrl:string;
-    constructor(private http:Http, private routerService: RouterService) { 
+    constructor(private http: HttpClient, private routerService: RouterService) { 
         this.baseUrl = routerService.baseUrl;
     }
 
@@ -27,22 +28,26 @@ export class AddTaskService {
      * @param taskFile   任务文件
      */
     createTask(createUserId,title,description,projectId,versionId,productId,workLoad,type,devFinish,testStart,testFinish,acceptFinish,webId,taskFile) {
-        return this.http.post(this.baseUrl+`task/createTask`,{
-            createUserId:createUserId,
-            title:title,
-            description:description,
-            projectId:projectId,
-            versionId:versionId,
-            productId:productId,
-            workLoad:workLoad,
-            type:type,
-            devFinish:devFinish,
-            testStart:testStart,
-            testFinish:testFinish,
-            acceptFinish:acceptFinish,
-            webId:webId,
-            taskFile:taskFile
-        });
+        return this.http.get(this.baseUrl+`task/createTask?createUserId=${createUserId}&title=${title}&description=${description}&projectId=${projectId}
+        &versionId=${versionId}&productId=${productId}&workLoad=${workLoad}&type=${type}&devFinish=${devFinish}
+        &testStart=${testStart}&testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}&taskFile=${taskFile}`
+        // {
+        //     createUserId:createUserId,
+        //     title:title,
+        //     description:description,
+        //     projectId:projectId,
+        //     versionId:versionId,
+        //     productId:productId,
+        //     workLoad:workLoad,
+        //     type:type,
+        //     devFinish:devFinish,
+        //     testStart:testStart,
+        //     testFinish:testFinish,
+        //     acceptFinish:acceptFinish,
+        //     webId:webId,
+        //     taskFile:taskFile
+        // }
+    );
         
     }
 
@@ -65,28 +70,27 @@ export class AddTaskService {
     }
 
     /**
-     * 
+     * 产品
      */
-    getProduct() {
+    getProduct(webId) {
         return this.http.get(
-            this.routerService.baseUrl + `product/getProduct`)
-        
+            this.routerService.baseUrl + `product/getProduct?webId=${webId}`)
     }
 
     /**
      * 获取所有项目
      */
-    getProject() {
+    getProject(webId) {
         return this.http.get(
-            this.routerService.baseUrl + `project/getProject`)
+            this.routerService.baseUrl + `project/getProject?webId=${webId}`)
     }
 
     /**
      * 获取所有版本
      */
-    getProjectVersion() {
+    getProjectVersion(webId) {
         return this.http.get(
-            this.routerService.baseUrl + `projectVersion/getProjectVersion`)
+            this.routerService.baseUrl + `projectVersion/getProjectVersion?webId=${webId}`)
     }
 
 
@@ -94,26 +98,26 @@ export class AddTaskService {
     /**
      * 获取开发人
      */
-    getDevelopUser() {
+    getDevelopUser(webId) {
         return this.http.get(
-            this.routerService.baseUrl + `user/getDevelopUser`)
+            this.routerService.baseUrl + `user/getDevelopUser?webId=${webId}`)
     }
 
     /**
      * 获取测试人
      */
-    getTestUser() {
+    getTestUser(webId) {
         return this.http.get(
-            this.routerService.baseUrl + `user/getTestUser`)
+            this.routerService.baseUrl + `user/getTestUser?webId=${webId}`)
     }
 
     /**
      * 获取产品人
      */
 
-    getProductUser(){
+    getProductUser(webId){
         return this.http.get(
-            this.routerService.baseUrl + `user/getProductUser`)
+            this.routerService.baseUrl + `user/getProductUser?webId=${webId}`)
     }
 
   

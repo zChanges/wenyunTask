@@ -15,6 +15,10 @@ import { AddTaskFlowComponent } from './addTaskFlow/addTaskFlow.component';
 import { WorkOrderComponent } from './workOrder/workOrder.component';
 import { ProcessFlowComponent } from './processFlow/processFlow.component';
 
+// service
+import { AddTaskService } from './addTask/addTask.service';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -31,6 +35,9 @@ import { ProcessFlowComponent } from './processFlow/processFlow.component';
     AddTaskFlowComponent,
     WorkOrderComponent,
     ProcessFlowComponent
-]
+  ],
+  providers:[
+    AddTaskService
+  ]
 })
 export class WorkspaceModule { }

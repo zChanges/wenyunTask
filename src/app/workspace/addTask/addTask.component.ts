@@ -1,16 +1,22 @@
-import { Component, OnInit, ElementRef, ViewChildren } from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChildren, ChangeDetectorRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { ValueService } from "../../service/value.service";
+import { AddTaskService } from './addTask.service';
+import { PublicMethodService } from './../../service/publicMethod.service';
+
 @Component({
   selector: "app-addTask",
   templateUrl: "./addTask.component.html",
   styleUrls: ["./addTask.component.scss"]
 })
 export class AddTaskComponent implements OnInit {
+
+  // isEdit = false;
+  userList:any;
   validateForm: FormGroup;
 
   createUserId: string; //登陆人id
-  webId: string; //登陆后
+  webId: string;
   title: string;
   productId = "";
   projectId = "";
@@ -27,7 +33,24 @@ export class AddTaskComponent implements OnInit {
   workLoad = "";
   taskFile: any; //附件
 
+  // 下拉数组
+  productList = [];
+  projectList = [];
+  versionList = [];
   workLoadList = [];
+
+  // 人
+  developUserList = [];
+  testUserList = [];
+  productUserList = [];
+
+  developUsers = [];
+
+  debuggerOption = [];
+  debuggers = [];
+
+  testUsers = [];
+  productUsers = [];
 
   // isVisible 模态框modal
   isProduct = false;
@@ -36,28 +59,66 @@ export class AddTaskComponent implements OnInit {
 
   isLoading = false;
   isTaskState = true;
-  selectedMultipleOption;
 
   newData = [];
-  searchOptions = [
-    { value: "1", label: "杰克1" },
-    { value: "2", label: "露2" },
-    { value: "3", label: "汤姆3" },
-    { value: "4", label: "杰克4" },
-    { value: "5", label: "露西5" },
-    { value: "6", label: "汤姆6" },
-    { value: "7", label: "杰克7" },
-    { value: "8", label: "露西8" },
-    { value: "9", label: "汤姆9" }
-  ];
-  constructor(private valueService: ValueService, private fb: FormBuilder,private elementRef: ElementRef) {
-    // this.selectedMultipleOption = [ '1', '5' ];
+
+  constructor(
+    private valueService: ValueService, 
+    private fb: FormBuilder,
+    private elementRef: ElementRef,
+    private addTaskService: AddTaskService,
+    private cdr: ChangeDetectorRef,
+    private PMService: PublicMethodService
+  ) {
     this.workLoadList = this.valueService.Days;
   }
 
   selectMenu = null;
 
   ngOnInit() {
+    this.userList = JSON.parse(window.localStorage.getItem('user'))
+    this.webId = this.userList.webId;
+    this.initValidateForm();
+    this.getDownLoad();
+  }
+
+  /**
+   * 获取下拉
+   */
+  getDownLoad() {
+    this.addTaskService.getProduct(this.webId).subscribe((res:any)=>{
+      this.productList = res;
+    })
+
+    this.addTaskService.getProject(this.webId).subscribe((res:any)=>{
+      this.projectList = res;
+    })
+
+    this.addTaskService.getProjectVersion(this.webId).subscribe((res:any)=>{
+      this.versionList = res;
+    })
+
+    // 人
+    this.addTaskService.getDevelopUser(this.webId).subscribe((res:any)=>{
+      this.developUserList = res;
+    })
+
+    this.addTaskService.getTestUser(this.webId).subscribe((res:any)=>{
+      this.testUserList = res;
+    })
+
+    this.addTaskService.getProductUser(this.webId).subscribe((res:any)=>{
+      this.productUserList = res;
+    })
+    this.cdr.detectChanges();
+    
+
+  }
+
+  /**
+   * 初始化数组
+   */
+  initValidateForm(){
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       productId: [null, [Validators.required]],
@@ -71,48 +132,91 @@ export class AddTaskComponent implements OnInit {
       taskState: [null, [Validators.required]],
       workLoad: [null, [Validators.required]],
       multipleSelect: [null, [Validators.required]],
+      taskFile:[null]
     });
-
-
-
   }
 
-  // _submitForm() {
-  //   for (const i in this.validateForm.controls) {
-  //     this.validateForm.controls[ i ].markAsDirty();
-  //   }
-  // }
 
-
-  save() {
-    let taskUserList = [];
-    console.log(this.validateForm)
-
-    // this.isLoading = true;
-    // console.log(this.createUserId,this.title,this.description,this.projectId,
-    //   this.versionId,this.productId,this.workLoad,this.type,this.devFinish,this.testStart,
-    //   this.testFinish,this.acceptFinish,this.webId,this.taskFile)
-    //获取任务数组
-    console.log(this.multipleSelected);
-    const $dats = this.elementRef.nativeElement.querySelectorAll('.days');
-    if ($dats.length > 0) {
-      this.multipleSelected.forEach((item, index) => {
-        console.log($dats[index].value);
-        taskUserList.push({
-          userId: item.value,
-          duty: item.label,
-          userWork: $dats[index].value
-        });
-      });
-      console.log(taskUserList);
+  // change 开发
+  developChange (isClose,data){
+    console.log(data)
+    if(!isClose){
+      this.debuggerOption = data.concat();
     }
+  }
+
+  /**
+   * 保存
+   */
+  save() {
+
+    this.addTaskService.createTask(
+      this.userList.id,
+      this.title,
+      this.description,
+      this.projectId,
+      this.versionId,
+      this.productId,
+      this.workLoad,
+      this.type,
+      this.PMService.dateUTC(this.devFinish),
+      this.PMService.dateUTC(this.testStart),
+      this.PMService.dateUTC(this.testFinish),
+      this.PMService.dateUTC(this.acceptFinish),
+      this.webId,
+      this.taskFile
+    ).subscribe( (res:any)=>{
+      const data = res;
+
+      //获取任务数组
+      const $days = this.elementRef.nativeElement.querySelectorAll('.days');
+      const $debugger = this.elementRef.nativeElement.querySelectorAll('.debugger');
+      const $test = this.elementRef.nativeElement.querySelectorAll('.test');
+      const $produc = this.elementRef.nativeElement.querySelectorAll('.produc');
+      // 重组 获取数据 
+      const developData = this.taskUserRegroup(this.developUsers,$days,1)
+      const debuggerData = this.taskUserRegroup(this.debuggers,$debugger,2)
+      const testData = this.taskUserRegroup(this.testUsers,$test,3)
+      const productData = this.taskUserRegroup(this.productUsers,$produc,4)
+      // 合并
+      const concatTaskData = developData.concat(debuggerData,testData,productData)
+
+      this.addTaskService.saveTaskUser(data.taskId,this.type,this.webId,this.userList.id,concatTaskData).subscribe( (request: any)=>{
+          console.log(request)
+      })
+    
+    })
+
   }
 
   /**
    * 改变任务类型切换tab
    */
   changeTask() {
-    this.type == "200" ? (this.isTaskState = true) : (this.isTaskState = false);
+    if(this.type == "200"){
+      this.isTaskState = true
+    }else{
+      this.isTaskState = false;
+    }
+    this.developUsers = [];
+    this.debuggers = [];
+    this.testUsers = [];
+    this.productUsers = [];
+  }
+
+  /**
+   * 重组数组
+   */
+  taskUserRegroup(arr,$dom,duty) {
+    const newArr = [];
+    arr.forEach((item,index)=>{
+      newArr.push({
+        userId: item.userId,
+        duty: duty,
+        userWork: $dom[index].value
+      })
+    });
+    return newArr;
   }
   
 }

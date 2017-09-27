@@ -26,6 +26,7 @@ import { NgZorroAntdModule } from "ng-zorro-antd";
 import { RouterService } from "./service/router.service";
 import { LoginService } from "./login/login.service";
 import { ValueService } from "./service/value.service";
+import { PublicMethodService } from "./service/publicMethod.service";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -43,6 +44,7 @@ import { ValueService } from "./service/value.service";
     RouterService,
     LoginService,
     ValueService,
+    PublicMethodService,
     [
       {
         provide: HTTP_INTERCEPTORS,

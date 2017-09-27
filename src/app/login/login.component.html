@@ -1,25 +1,9 @@
 <div class="bodyer container">
-  <!-- <form class="form-horizontal">
-    <h2 class="header-word text-center">欢迎使用 云问 任务跟踪系统</h2>
-    <div class="login-content col-md-4 col-md-offset-4">
-        <div class="form-group">
-            <label>用户名</label>
-            <input class="form-control" name="userName" type="text" [(ngModel)]="userName" placeholder="输入用户名">
-        </div>
-        <div class="form-group">
-            <label>密码</label>
-            <input class="form-control" name="passWord" type="password" [(ngModel)]="passWord"  placeholder="输入密码">
-        </div>
-        <div>
-            <button type="button" class="loginin btn btn-success btn-sm" (click)="login()">　登　录　</button>
-        </div>
-    </div>
-  </form> -->
   <h2 class="header-word text-center">欢迎使用 云问 任务跟踪系统</h2>
   <form nz-form [formGroup]="validateForm" class="login-form">
     <div nz-form-item>
       <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
-        <nz-input formControlName="userName" [nzPlaceHolder]="'用户名'" [nzSize]="'large'">
+        <nz-input formControlName="userName" [(ngModel)]="userName" [nzPlaceHolder]="'用户名'" [nzSize]="'large'">
           <ng-template #prefix>
             <i class="anticon anticon-user"></i>
           </ng-template>
@@ -28,7 +12,7 @@
     </div>
     <div nz-form-item>
       <div nz-form-control [nzValidateStatus]="validateForm.controls.password">
-        <nz-input formControlName="password" [nzType]="'密码'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
+        <nz-input formControlName="password" [(ngModel)]="passWord" [nzType]="'password'" [nzPlaceHolder]="'密码'" [nzSize]="'large'">
           <ng-template #prefix>
             <i class="anticon anticon-lock"></i>
           </ng-template>
