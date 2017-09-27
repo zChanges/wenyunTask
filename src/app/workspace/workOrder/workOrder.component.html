@@ -30,10 +30,14 @@
         <div nz-col [nzSpan]="6">
           <div nz-form-item nz-row>
             <div nz-form-label nz-col [nzSpan]="5">
-              <label>创建时间</label>
+              <label>搜索范围</label>
             </div>
-            <div nz-form-control nz-col [nzSpan]="19">
-              <nz-datepicker style="width:100%"  [nzShowTime]="true" [nzPlaceHolder]="'创建时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+            <div nz-form-control nz-col [nzSpan]="9">
+              <nz-datepicker style="width:100%"  [nzShowTime]="true" [nzPlaceHolder]="'开始时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="1"></div>
+            <div nz-form-control nz-col [nzSpan]="9">
+              <nz-datepicker style="width:100%"  [nzShowTime]="true" [nzPlaceHolder]="'结束时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
             </div>
           </div>
         </div>

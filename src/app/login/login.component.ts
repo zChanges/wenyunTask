@@ -33,8 +33,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.isLoading = true;
-    this.router.navigateByUrl('task');
+    // this.isLoading = true;
+    // this.router.navigateByUrl('task');
+    this.loginService.login('11', '2').subscribe( res => {
+      console.log(res);
+    });
   }
 
 
