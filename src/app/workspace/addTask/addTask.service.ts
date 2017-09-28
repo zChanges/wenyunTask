@@ -27,10 +27,19 @@ export class AddTaskService {
      * @param webId 
      * @param taskFile   任务文件
      */
-    createTask(createUserId,title,description,projectId,versionId,productId,workLoad,type,devFinish,testStart,testFinish,acceptFinish,webId,taskFile) {
-        return this.http.get(this.baseUrl+`task/createTask?createUserId=${createUserId}&title=${title}&description=${description}&projectId=${projectId}
-        &versionId=${versionId}&productId=${productId}&workLoad=${workLoad}&type=${type}&devFinish=${devFinish}
-        &testStart=${testStart}&testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}&taskFile=${taskFile}`
+    // createTask(createUserId,title,description,projectId,versionId,productId,workLoad,type,devFinish,testStart,testFinish,acceptFinish,webId,taskFile) {
+    createTask() {
+        
+        // return this.baseUrl+`task/createTask?createUserId=${createUserId}&title=${title}&description=${description}&projectId=${projectId}
+        // &versionId=${versionId}&productId=${productId}&workLoad=${workLoad}&type=${type}&devFinish=${devFinish}
+        // &testStart=${testStart}&testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}`;
+
+        return this.baseUrl+`task/createTask`;
+        // return this.http.post(this.baseUrl+`task/createTask?createUserId=${createUserId}&title=${title}&description=${description}&projectId=${projectId}
+        // &versionId=${versionId}&productId=${productId}&workLoad=${workLoad}&type=${type}&devFinish=${devFinish}
+        // &testStart=${testStart}&testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}`,{
+        //     taskFile:taskFile
+        // }
         // {
         //     createUserId:createUserId,
         //     title:title,
@@ -47,7 +56,7 @@ export class AddTaskService {
         //     webId:webId,
         //     taskFile:taskFile
         // }
-    );
+    // );
         
     }
 
@@ -60,13 +69,16 @@ export class AddTaskService {
      * @param taskUser 
      */
     saveTaskUser(taskId,type,webId,createUser,taskUser){
-        return this.http.post(this.baseUrl+`task/saveTaskUser`,{
-            taskId:taskId,
-            type:type,
-            webId:webId,
-            createUser:createUser,
-            taskUser:taskUser
-        });
+        return this.http.get(this.baseUrl+`task/saveTaskUser?taskId=${taskId}&type=${type}
+        &webId=${webId}&createUser=${createUser}&taskUser=${taskUser}`
+        // ,{
+        //     taskId:taskId,
+        //     type:type,
+        //     webId:webId,
+        //     createUser:createUser,
+        //     taskUser:taskUser
+        // }
+        );
     }
 
     /**

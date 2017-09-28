@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 // 插件
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { FroalaEditorModule, FroalaViewModule } from 'angular2-froala-wysiwyg';
-
+import { NgUploaderModule } from 'ngx-uploader';
 // Component
 import { WorkspaceComponent } from './workspace.component';
 import { AddTaskComponent } from './addTask/addTask.component';
@@ -17,6 +17,7 @@ import { ProcessFlowComponent } from './processFlow/processFlow.component';
 
 // service
 import { AddTaskService } from './addTask/addTask.service';
+import { WorkOrderService } from './workOrder/workOrder.service';
 
 
 @NgModule({
@@ -27,17 +28,19 @@ import { AddTaskService } from './addTask/addTask.service';
     NgZorroAntdModule.forRoot(),
     ReactiveFormsModule,
     FroalaEditorModule.forRoot(), 
-    FroalaViewModule.forRoot()
+    FroalaViewModule.forRoot(),
+    NgUploaderModule
   ],
   declarations: [
     WorkspaceComponent,
     AddTaskComponent,
     AddTaskFlowComponent,
     WorkOrderComponent,
-    ProcessFlowComponent
+    ProcessFlowComponent,
   ],
   providers:[
-    AddTaskService
+    AddTaskService,
+    WorkOrderService
   ]
 })
 export class WorkspaceModule { }

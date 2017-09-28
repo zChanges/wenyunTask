@@ -15,10 +15,9 @@
               <label>任务单类型</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-              <nz-select>
-                  <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+              <nz-select [(ngModel)]="taskType" name='taskType' (nzOpenChange)='changeOption($event)'>
                   <nz-option 
-                  *ngFor="let item of searchOptions" 
+                  *ngFor="let item of taskTypeList" 
                   [nzLabel]="item.label"
                   [nzValue]="item.value"
                   ></nz-option>
@@ -33,11 +32,11 @@
               <label>搜索范围</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="9">
-              <nz-datepicker style="width:100%"  [nzShowTime]="true" [nzPlaceHolder]="'开始时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+              <nz-datepicker [nzDisabled]="isDisabled" name='startTime' [(ngModel)]="startTime"  [nzShowTime]="true" [nzPlaceHolder]="'开始时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
             </div>
             <div nz-form-control nz-col [nzSpan]="1"></div>
             <div nz-form-control nz-col [nzSpan]="9">
-              <nz-datepicker style="width:100%"  [nzShowTime]="true" [nzPlaceHolder]="'结束时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+              <nz-datepicker [nzDisabled]="isDisabled"  name='finishTime' [(ngModel)]="finishTime" [nzShowTime]="true" [nzPlaceHolder]="'结束时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
             </div>
           </div>
         </div>
@@ -48,10 +47,10 @@
               <label>状态</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select>
+                <nz-select name="taskStatus" [(ngModel)]="taskStatus" [nzDisabled]="isDisabled">
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
-                    *ngFor="let item of searchOptions" 
+                    *ngFor="let item of taskStateList" 
                     [nzLabel]="item.label"
                     [nzValue]="item.value"
                     ></nz-option>
@@ -66,12 +65,12 @@
               <label>产品</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select>
+                <nz-select name="productId" [(ngModel)]="productId" [nzDisabled]="isDisabled">
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
-                    *ngFor="let item of searchOptions" 
-                    [nzLabel]="item.label"
-                    [nzValue]="item.value"
+                    *ngFor="let item of productList" 
+                    [nzLabel]="item.name"
+                    [nzValue]="item.id"
                     ></nz-option>
                 </nz-select>
             </div>
@@ -85,12 +84,12 @@
               <label>项目</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select>
+                <nz-select name="projectId" [(ngModel)]="projectId" [nzDisabled]="isDisabled">
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
-                    *ngFor="let item of searchOptions" 
-                    [nzLabel]="item.label"
-                    [nzValue]="item.value"
+                    *ngFor="let item of projectList" 
+                    [nzLabel]="item.name"
+                    [nzValue]="item.id"
                     ></nz-option>
                 </nz-select>
             </div>
@@ -103,12 +102,12 @@
               <label>版本</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select>
+                <nz-select name="versionId" [(ngModel)]="versionId" [nzDisabled]="isDisabled">
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
-                    *ngFor="let item of searchOptions" 
-                    [nzLabel]="item.label"
-                    [nzValue]="item.value"
+                    *ngFor="let item of versionList" 
+                    [nzLabel]="item.name"
+                    [nzValue]="item.id"
                     ></nz-option>
                 </nz-select>
             </div>
@@ -121,10 +120,10 @@
               <label>类型</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select>
+                <nz-select name="type" [(ngModel)]="type" [nzDisabled]="isDisabled">
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
-                    *ngFor="let item of searchOptions" 
+                    *ngFor="let item of typeList" 
                     [nzLabel]="item.label"
                     [nzValue]="item.value"
                     ></nz-option>
@@ -139,7 +138,7 @@
               <label>所有岗位</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-              <nz-cascader
+              <nz-cascader [nzDisabled]="isDisabled" name='taskUserId' [(ngModel)]='taskUserId'
                 [class.class123]="true"
                 [nzOptions]="_options"
               >
@@ -154,7 +153,7 @@
   <!-- 查询按钮 -->
   <div nz-row>
     <div nz-col [nzSpan]="24" style="text-align: right; padding:10px 20px">
-      <button nz-button [nzType]="'primary'" [nzLoading]="isSearch">
+      <button nz-button [nzType]="'primary'" [nzLoading]="isSearch" (click)="searchTask()">
         <i class="anticon anticon-search"></i>
         <span>查询</span>
       </button>

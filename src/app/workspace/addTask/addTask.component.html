@@ -4,7 +4,7 @@
       新增任务
     </ng-template>
 
-    <form class="form-horizontal" nz-form [formGroup]="validateForm" >
+    <form class="form-horizontal" nz-form [formGroup]="validateForm">
       <div class="form-group" nz-form-item>
         <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
         <div class="col-sm-6" nz-form-control [nzValidateStatus]="validateForm.controls.title">
@@ -100,10 +100,10 @@
           <label class="col-sm-2 control-label">任务类型</label>
           <div class="col-sm-6" nz-form-control [nzValidateStatus]="validateForm.controls.taskState">
               <nz-radio-group [(ngModel)]="type" formControlName="taskState" (click)="changeTask()">
-                  <label nz-radio [nzValue]="'200'">
+                  <label nz-radio [nzValue]="200">
                     <span>需求</span>
                   </label>
-                  <label nz-radio [nzValue]="'201'">
+                  <label nz-radio [nzValue]="201">
                     <span>BUG</span>
                   </label>
                 </nz-radio-group>
@@ -117,7 +117,7 @@
             <nz-select style="width: 175px;" 
               [nzPlaceHolder]="'开发'" 
               [nzMode]="'multiple'" 
-              formControlName='multipleSelect' 
+              formControlName='developUsers' 
               [(ngModel)]="developUsers" 
               [nzSize]="size"
               (nzOpenChange)="developChange($event,developUsers)" 
@@ -132,7 +132,12 @@
           </div>
 
           <div class="col-sm-2">
-            <nz-select style="width: 175px;" [nzPlaceHolder]="'联调'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="debuggers" [nzSize]="size">
+            <nz-select style="width: 175px;" 
+              [nzPlaceHolder]="'联调'" 
+              [nzMode]="'multiple'" 
+              formControlName='debuggers' 
+              [(ngModel)]="debuggers" 
+              [nzSize]="size">
                 <nz-option
                   *ngFor="let option of debuggerOption"
                   [nzLabel]="option.userName"
@@ -143,7 +148,12 @@
           </div>
 
           <div class="col-sm-2">
-            <nz-select style="width: 175px;" [nzPlaceHolder]="'测试'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="testUsers" [nzSize]="size">
+            <nz-select style="width: 175px;" 
+            [nzPlaceHolder]="'测试'" 
+            [nzMode]="'multiple'" 
+            formControlName='testUsers' 
+            [(ngModel)]="testUsers" 
+            [nzSize]="size">
                 <nz-option
                   *ngFor="let option of testUserList"
                   [nzLabel]="option.userName"
@@ -154,7 +164,12 @@
           </div>
 
           <div class="col-sm-2">
-            <nz-select style="width: 175px;" [nzPlaceHolder]="'产品'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="productUsers" [nzSize]="size">
+            <nz-select style="width: 175px;" 
+            [nzPlaceHolder]="'产品'" 
+            [nzMode]="'multiple'" 
+            formControlName='productUsers' 
+            [(ngModel)]="productUsers" 
+            [nzSize]="size">
                 <nz-option
                   *ngFor="let option of productUserList"
                   [nzLabel]="option.userName"
@@ -171,7 +186,7 @@
           <nz-select style="width: 175px;" 
             [nzPlaceHolder]="'开发'" 
             [nzMode]="'multiple'" 
-            formControlName='multipleSelect' 
+            formControlName='developUsers' 
             [(ngModel)]="developUsers" 
             [nzSize]="size"
             (nzOpenChange)="developChange($event,developUsers)" 
@@ -186,7 +201,12 @@
         </div>
 
         <div class="col-sm-2">
-          <nz-select style="width: 175px;" [nzPlaceHolder]="'测试'" [nzMode]="'multiple'" formControlName='multipleSelect' [(ngModel)]="testUsers" [nzSize]="size">
+          <nz-select style="width: 175px;" 
+          [nzPlaceHolder]="'测试'" 
+          [nzMode]="'multiple'" 
+          formControlName='testUsers' 
+          [(ngModel)]="testUsers" 
+          [nzSize]="size">
               <nz-option
                 *ngFor="let option of testUserList"
                 [nzLabel]="option.userName"
@@ -280,7 +300,8 @@
       <div class="form-group" nz-form-item>
           <label class="col-sm-2 control-label">附件</label>
           <div class="col-sm-4">
-              <input type="file" [(ngModel)]="taskFile" formControlName="taskFile">
+              <!-- <input type="file" [(ngModel)]="taskFile" (change)='getUpload($event)' formControlName="taskFile"> -->
+              <input type="file" ngFileSelect (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
           </div>
       </div>
 
@@ -288,12 +309,13 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-8">
           <!-- [disabled]="!validateForm.valid" -->
-          <button [disabled]="!validateForm.valid"   nz-button  [nzType]="'primary'" (click)="save($event)" [nzLoading]="isLoading">
+          <button  nz-button [disabled]="!validateForm.valid"  [nzType]="'primary'" (click)="save($event)" [nzLoading]="isLoading">
             <i class="anticon anticon-save"></i>
             <span>确定</span>
           </button>
         </div>
       </div>
+
     </form>
 
   </nz-tab>

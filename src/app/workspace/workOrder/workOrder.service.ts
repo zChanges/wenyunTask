@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Http, HttpModule } from "@angular/http";
 import { RouterService } from "./../../service/router.service";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class WorkOrderService {
   baseUrl: string;
-  constructor(private routerSerivce: RouterService, private http: Http) {
+  constructor(private routerSerivce: RouterService, private http: HttpClient) {
       this.baseUrl = this.routerSerivce.baseUrl;
   }
 
@@ -27,13 +27,14 @@ export class WorkOrderService {
   /**
    * 由我创建，已关闭，未关闭
    */
-  getTaskByProperty(createUserId,createTime,taskStatus,productId,projectId,versionId,taskUserId,webId,taskType,pageNumber, pageSize, taskCount){
+  getTaskByProperty(createUserId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,taskType){
     return this.http.get(
-        this.baseUrl + `task/getTaskByProperty?createUserId=${createUserId}&createTime=${createTime}&taskStatus=${taskStatus}
-        &productId=${productId}&projectId=${projectId}&versionId=${versionId}&taskUserId=${taskUserId}&webId=${webId}
-        &taskType=${taskType}&pageNumber=${pageNumber} &pageSize=${pageSize}&taskCount=${taskCount}`
+        this.baseUrl + `task/getTaskByProperty?createUserId=${createUserId}&startTime=${startTime}&finishTime=${finishTime}&taskStatus=${taskStatus}
+        &productId=${productId}&projectId=${projectId}&versionId=${versionId}&taskUserId=${taskUserId}&webId=${webId}&taskType=${taskType}`
     );
   }
+
+
 
 
 }

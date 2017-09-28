@@ -22,6 +22,7 @@ import { TaskInterceptorService } from "./taskInterceptor.service";
 // 插件
 import { NgZorroAntdModule } from "ng-zorro-antd";
 
+
 // Service
 import { RouterService } from "./service/router.service";
 import { LoginService } from "./login/login.service";
@@ -38,7 +39,7 @@ import { PublicMethodService } from "./service/publicMethod.service";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     RouterService,

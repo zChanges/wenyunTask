@@ -9,6 +9,7 @@ export class TaskInterceptorService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const clonedRequest = req.clone({
             headers: req.headers.set('Content-Type', 'application/json'),
+            // headers: req.headers.set('Content-Type', 'application/x-www-form-urlencoded'),
             withCredentials: true 
         });
         return next.handle(clonedRequest).map(event=>{

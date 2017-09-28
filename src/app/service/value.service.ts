@@ -4,7 +4,9 @@ import { Injectable } from '@angular/core';
 export class ValueService {
 
 constructor() { }
-
+    /**
+     * 工作量
+     */
     Days = [
         {value:1,text:'1天'},{value:2,text:'2天'},
         {value:3,text:'3天'},{value:4,text:'4天'},
@@ -21,6 +23,43 @@ constructor() { }
         {value:25,text:'25天'},{value:26,text:'26天'},
         {value:27,text:'27天'},{value:28,text:'28天'},
         {value:29,text:'29天'},{value:30,text:'30天'}
-    ]
+    ];
+
+    /**
+     * 任务单类型
+     */
+    getDownTaskType() {
+        return  [
+            { value: "1", label: "待处理任务" },
+            { value: "2", label: "本周已处理任务" },
+            { value: "3", label: "我的创建" },
+            { value: "4", label: "查询所有" }
+        ]
+    }
+
+    /**
+     * 状态
+     */
+    getDownState(){
+        return [
+            { value: "102", label: "开发" },
+            { value: "108", label: "联调" },
+            { value: "103", label: "测试" },
+            { value: "105", label: "产品" },
+            { value: "106", label: "关闭" }
+        ]
+    }
+
+    /**
+     * Task类型 
+     * 需求 200
+     * bug 201
+     */
+    getDownType(){
+        return [
+            { value: "200", label: "需求" },
+            { value: "201", label: "BUG" },
+        ]
+    }
 
 }
