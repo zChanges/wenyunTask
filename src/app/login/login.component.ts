@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     });
     this.isLoading = false;
 
-    // this.router.navigateByUrl('task');
+    this.router.navigateByUrl('task');
     
   }
 

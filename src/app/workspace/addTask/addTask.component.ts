@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { RouterService } from './../../service/router.service';
 import { Component, OnInit, ElementRef, ViewChildren, ChangeDetectorRef, EventEmitter  } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
@@ -64,6 +65,9 @@ export class AddTaskComponent implements OnInit {
   isLoading = false;
   isTaskState = true;
 
+  // edit
+  taskId = null;
+
 
   constructor(
     private valueService: ValueService, 
@@ -72,7 +76,8 @@ export class AddTaskComponent implements OnInit {
     private addTaskService: AddTaskService,
     private cdr: ChangeDetectorRef,
     private PMService: PublicMethodService,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private router: Router
   ) {
     this.workLoadList = this.valueService.Days;
   }
@@ -182,6 +187,7 @@ export class AddTaskComponent implements OnInit {
             const taskId =  res;
             this.addTaskService.saveTaskUser(taskId,this.type,this.webId,this.userList.id,JSON.stringify(concatTaskData)).subscribe( (request: any)=>{
                 console.log(request)
+                this.router.navigateByUrl('task/workOrder');
             });
     })
   }
@@ -252,6 +258,26 @@ export class AddTaskComponent implements OnInit {
       fieldName:'taskFile'
     };
     this.uploadInput.emit(event);
+  }
+
+
+  //编辑
+  editGetData() {
+    this.addTaskService.getCommonTask(this.taskId).subscribe(res=>{
+      console.log(res);
+    });
+
+    this.addTaskService.getTaskUserList(this.taskId).subscribe(res=>{
+      console.log(res);
+    });
+  }
+
+  upDataTask(){
+    this.addTaskService.editTask(this.taskId,this.devFinish,this.testStart,this.testFinish,
+    this.acceptFinish,this.userList.webId).subscribe(res=>{
+      console.log(res);
+      this.router.navigateByUrl('task/workOrder');
+    })
   }
 
 }

@@ -126,5 +126,37 @@ export class AddTaskService {
             this.routerService.baseUrl + `user/getProductUser?webId=${webId}`)
     }
 
+
+    /****************
+     *   编 辑 接 口
+     *****************/
+
+
+     /**
+      * 获取task
+      */
+    getCommonTask(taskId){
+        return this.http.get(
+            this.routerService.baseUrl + `task/getCommonTask?taskId=${taskId}`)
+    }
+
+    /**
+     * 根据taskId获取职责，人员，工作量等
+     */
+    getTaskUserList(taskId){
+        return this.http.get(
+            this.routerService.baseUrl + `task/getTaskUserList?taskId=${taskId}`)
+    }
+
+    /**
+     * 编辑更新task
+     */
+    editTask(id,devFinish,testStart,testFinish,acceptFinish,webId ){
+        return this.http.get(
+            this.routerService.baseUrl + `task/editTask?id=${id}&devFinish=${devFinish}&testStart=${testStart}
+            &testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}`)
+    }
+
+    
   
 }

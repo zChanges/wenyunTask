@@ -1,3 +1,4 @@
+import { ValueService } from './../../service/value.service';
 import { Component, OnInit } from '@angular/core';
 import { ProcessFlowService } from './processFlow.service';
 import {ActivatedRoute} from "@angular/router";
@@ -30,7 +31,10 @@ export class ProcessFlowComponent implements OnInit {
     { value: "8", label: "露西8" },
     { value: "9", label: "汤姆9" }
   ];
-  constructor(private processFlowService: ProcessFlowService,private activatedRoute: ActivatedRoute,) {
+  constructor(private processFlowService: ProcessFlowService,
+    private activatedRoute: ActivatedRoute,
+    private valService: ValueService
+  ) {
     this.activatedRoute.params.subscribe( res => {
       this.taskId = res.taskId;
     });
@@ -45,9 +49,30 @@ export class ProcessFlowComponent implements OnInit {
     })
 
     this.processFlowService.getTaskProcess(this.taskId).subscribe( (res:any)=>{
-      this.data = res;
+      // this.data = res;
+      this.data = this.regroupData(res);
     })
 
+  }
+
+
+  regroupData(data) {
+    data.forEach(ele => {
+      // ele['testStart'] = ele['testStart'] + '000';
+      // ele['testFinish'] = ele['testFinish'] + '000';
+      // ele['devFinish'] = ele['devFinish'] + '000';
+      // ele['acceptFinish'] = ele['acceptFinish'] + '000';
+      ele['createData'] = ele['createData'] + '000';
+
+      ele.type == 200 ? ele.type = '需求' : ele.type = 'BUG' ;
+
+      this.valService.getDownState().forEach((item)=>{
+        if(ele.todoStatusId == item.value){
+          ele['todoStatusStr'] = item.label;
+        }
+      });
+    });
+    return data;
   }
 
 
