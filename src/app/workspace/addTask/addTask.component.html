@@ -25,7 +25,7 @@
                 ></nz-option>
             </nz-select>
         </div>
-        <button nz-button (click)="isProduct=true"  [nzType]="'primary'" [nzGhost]="true">
+        <button *ngIf="isEdit"  nz-button (click)="isProduct=true"  [nzType]="'primary'" [nzGhost]="true">
           <span>修改</span>
         </button>
       </div>
@@ -42,7 +42,7 @@
                 ></nz-option>
               </nz-select>
           </div>
-          <button  nz-button (click)="isProject=true"  [nzType]="'primary'" [nzGhost]="true">
+          <button *ngIf="isEdit"   nz-button (click)="isProject=true"  [nzType]="'primary'" [nzGhost]="true">
             <span>修改</span>
           </button>
         </div>
@@ -60,7 +60,7 @@
               ></nz-option>
             </nz-select>
         </div>
-        <button nz-button  (click)="isVersion=true"  [nzType]="'primary'" [nzGhost]="true">
+        <button *ngIf="isEdit"  nz-button  (click)="isVersion=true"  [nzType]="'primary'" [nzGhost]="true">
           <span>修改</span>
         </button>
       </div>

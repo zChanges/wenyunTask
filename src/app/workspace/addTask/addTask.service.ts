@@ -10,6 +10,7 @@ export class AddTaskService {
         this.baseUrl = routerService.baseUrl;
     }
 
+
     /**
      * 保存主任务单，返回task_id
      * @param createUserId 登陆人id
@@ -27,20 +28,13 @@ export class AddTaskService {
      * @param webId 
      * @param taskFile   任务文件
      */
-    // createTask(createUserId,title,description,projectId,versionId,productId,workLoad,type,devFinish,testStart,testFinish,acceptFinish,webId,taskFile) {
-    createTask() {
-        
-        // return this.baseUrl+`task/createTask?createUserId=${createUserId}&title=${title}&description=${description}&projectId=${projectId}
-        // &versionId=${versionId}&productId=${productId}&workLoad=${workLoad}&type=${type}&devFinish=${devFinish}
-        // &testStart=${testStart}&testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}`;
+    createTask(createUserId,title,description,projectId,versionId,productId,workLoad,type,devFinish,testStart,testFinish,acceptFinish,webId,fileId) {
+    // createTask() {
+        return this.http.get(this.baseUrl+`task/createTask?createUserId=${createUserId}&title=${title}&description=${description}&projectId=${projectId}
+        &versionId=${versionId}&productId=${productId}&workLoad=${workLoad}&type=${type}&devFinish=${devFinish}
+        &testStart=${testStart}&testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}&fileId=${fileId}`);
 
-        return this.baseUrl+`task/createTask`;
-        // return this.http.post(this.baseUrl+`task/createTask?createUserId=${createUserId}&title=${title}&description=${description}&projectId=${projectId}
-        // &versionId=${versionId}&productId=${productId}&workLoad=${workLoad}&type=${type}&devFinish=${devFinish}
-        // &testStart=${testStart}&testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}`,{
-        //     taskFile:taskFile
-        // }
-        // {
+        // return this.http.post(this.baseUrl+`task/createTask`,{
         //     createUserId:createUserId,
         //     title:title,
         //     description:description,
@@ -54,9 +48,9 @@ export class AddTaskService {
         //     testFinish:testFinish,
         //     acceptFinish:acceptFinish,
         //     webId:webId,
-        //     taskFile:taskFile
+        //     fileId:fileId
         // }
-    // );
+        // );
         
     }
 

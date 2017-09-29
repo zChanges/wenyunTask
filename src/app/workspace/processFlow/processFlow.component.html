@@ -75,14 +75,14 @@
   <div class="rowFlow">
     <nz-collapseset [nzAccordion]="true">
         <nz-collapse  [nzTitle]="'标题'" [nzActive]="true">
-            <div nz-row style="text-align: right;" [nzGutter]="40">
+            <div nz-row  [nzGutter]="40">
                 <div nz-col [nzSpan]="6">
                   <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="8">
                       <label>标题:</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
-                      bala……bala……bala……bala……
+                      {{detialData.title}}
                     </div>
                   </div>
                 </div>
@@ -93,7 +93,7 @@
                       <label>描述:</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
-                        bala……bala……bala……bala……
+                      {{detialData.description}}
                     </div>
                   </div>
                 </div>
@@ -104,7 +104,7 @@
                       <label>项目:</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
-                        bala……bala……bala……bala……
+                      {{detialData.projectId}}
                     </div>
                   </div>
                 </div>
@@ -115,7 +115,7 @@
                       <label>版本:</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
-                        bala……bala……bala……bala……
+                        {{detialData.versionId}}
                     </div>
                   </div>
                 </div>
@@ -138,7 +138,7 @@
                         <label>当前状态:</label>
                       </div>
                       <div nz-form-control nz-col [nzSpan]="16">
-                          bala……bala……bala……bala……
+                        {{detialData.todoStatusId}}
                       </div>
                     </div>
                   </div>
@@ -149,7 +149,7 @@
                           <label>工作量:</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="16">
-                            bala……bala……bala……bala……
+                          {{detialData.workLoad}}天
                         </div>
                       </div>
                     </div>
@@ -160,7 +160,7 @@
                             <label>开发完成时间:</label>
                           </div>
                           <div nz-form-control nz-col [nzSpan]="16">
-                              bala……bala……bala……bala……
+                            {{detialData.devFinish | date:'y-MM-dd HH:mm:ss'}}
                           </div>
                         </div>
                       </div>
@@ -171,7 +171,7 @@
                               <label>测试完成时间:</label>
                             </div>
                             <div nz-form-control nz-col [nzSpan]="16">
-                                bala……bala……bala……bala……
+                              {{detialData.testFinish | date:'y-MM-dd HH:mm:ss'}}
                             </div>
                           </div>
                         </div>
@@ -192,7 +192,6 @@
         <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
             <thead nz-thead>
               <tr>
-                <th nz-th><span>序号</span></th>
                 <th nz-th><span>开发人员</span></th>
                 <th nz-th><span>处理时间</span></th>
                 <th nz-th><span>当前状态</span></th>
@@ -202,17 +201,12 @@
             </thead>
             <tbody nz-tbody>
               <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                <td nz-td>{{data.createUserName}}</td>
+                <td nz-td>{{data.createData | date:'y-MM-dd HH:mm:ss'}}</td>
+                <td nz-td>{{data.status}}</td>
+                <td nz-td>{{data.todoStatusId}}</td>
                 <td nz-td>
-                  <span *ngIf="editRow!==data.key">{{data.name}}</span>
-                </td>
-                <td nz-td>
-                  <span *ngIf="editRow!==data.key">{{data.age}}</span>
-                </td>
-                <td nz-td>{{data.address}}</td>
-                <td nz-td>
-                  <span *ngIf="editRow!==data.key">
-                    <a (click)="edit(data)">Edit</a>
-                  </span>
+                    <a (click)="edit(data)">下载附件</a>
                 </td>
               </tr>
           </tbody>

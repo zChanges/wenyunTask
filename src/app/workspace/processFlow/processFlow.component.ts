@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ProcessFlowService } from './processFlow.service';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-processFlow',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProcessFlowComponent implements OnInit {
 
-
+  taskId = '';
+  detialData = '';
   data = [
     {
       key    : 0,
@@ -27,9 +30,25 @@ export class ProcessFlowComponent implements OnInit {
     { value: "8", label: "露西8" },
     { value: "9", label: "汤姆9" }
   ];
-  constructor() { }
+  constructor(private processFlowService: ProcessFlowService,private activatedRoute: ActivatedRoute,) {
+    this.activatedRoute.params.subscribe( res => {
+      this.taskId = res.taskId;
+    });
+
+  }
 
   ngOnInit() {
+
+    this.processFlowService.getTask(this.taskId).subscribe( (res:any)=>{
+      console.log(res);
+      this.detialData = res;
+    })
+
+    this.processFlowService.getTaskProcess(this.taskId).subscribe( (res:any)=>{
+      this.data = res;
+    })
+
   }
+
 
 }

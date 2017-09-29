@@ -8,11 +8,16 @@ export class PublicMethodService {
    * new Data 转时间戳
    * @param date 时间
    */
-  dateUTC(date){
+  dateUTC(date:any){
+    if(date =='' || date == 0){ return '' };
     const str = String(Date.parse(date));
     return Number(str.substr(0,str.length - 3));
   }
 
+  /**
+   * base64转Blob
+   * @param dataurl base64
+   */
   base64TransformBlob(dataurl) {
     var arr = dataurl.split(',');
     var mime = arr[0].match(/:(.*?);/)[1];
@@ -25,5 +30,7 @@ export class PublicMethodService {
     }
     return new Blob([u8arr], { type: mime });
   }
+
+
 
 }

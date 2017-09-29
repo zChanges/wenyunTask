@@ -11,7 +11,7 @@
                 <label for="标题">标题</label>
             </div>
             <div nz-form-control  nz-col [nzSm]="12" [nzXs]="24" [nzValidateStatus]="validateForm.controls.title">
-                <nz-input formControlName="title" [nzPlaceHolder]="'请填写标题'" [nzSize]="'large'">
+                <nz-input formControlName="title" [(ngModel)]="title"  [nzPlaceHolder]="'请填写标题'" [nzSize]="'large'">
                 </nz-input>
             </div>
         </div>
@@ -21,50 +21,66 @@
                     <label for="详细描述">详细描述</label>
             </div>
             <div nz-form-control  nz-col [nzSm]="12" [nzXs]="24" [nzValidateStatus]="validateForm.controls.description">
-                <!-- <nz-input [(ngModel)]="description" formControlName="description" [nzType]="'textarea'" [nzRows]="'5'" [nzPlaceHolder]="''"></nz-input> -->
-                <div [froalaEditor]='textOptions'></div>
+                <nz-input [(ngModel)]="description" formControlName="description" [nzType]="'textarea'" [nzRows]="'18'" [nzPlaceHolder]="''"></nz-input>
+                <!-- <div [froalaEditor]='textOptions'  [(froalaModel)]="description" ></div> -->
             </div>
         </div>
 
         <div nz-form-item nz-row>
             <div nz-form-label nz-col [nzOffset]='3'></div>
             <nz-button-group>
-                <button nz-button [nzType]="'primary'" (click)="setDispose(false)">
+                <!-- <button nz-button [nzType]="'primary'" (click)="setDispose(false)"> -->
+                <button nz-button [nzType]="'primary'" (click)="changePass(2)">
                     <span>移交</span>
                 </button>
-                <button nz-button [nzType]="'primary'" (click)="setDispose(true)">
+                <button nz-button [nzType]="'primary'" (click)="changePass(3)">
                     <span>处理</span>
                 </button>
             </nz-button-group>
         </div>
 
-        <div nz-form-item nz-row *ngIf="!isDispose">
-            <div nz-form-control [nzOffset]='3'  nz-col [nzSm]="8" [nzXs]="24" >
+        <div nz-form-item nz-row *ngIf="isDispose==2">
+            <div nz-form-control [nzOffset]='3'  nz-col [nzSm]="6" [nzXs]="24" >
             <div>
-                <nz-radio-group [(ngModel)]="radioValue" formControlName='radioValue'> 
-                    <label nz-radio *ngFor="let item of searchOptions" [nzValue]="item.value" >
+                <!-- <nz-radio-group [(ngModel)]="radioValue" formControlName='radioValue'> 
+                    <label nz-radio *ngFor="let item of `" [nzValue]="item.value" >
                         <span>{{item.label}}</span>
                     </label>
-                    </nz-radio-group>
+                    </nz-radio-group> -->
+                    <nz-select  formControlName="newUserId" [(ngModel)]="newUserId" nzAllowClear [nzSize]="'large'">
+                            <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                            <nz-option 
+                        *ngFor="let item of samePostUserList" 
+                        [nzLabel]="item.userName"
+                        [nzValue]="item.userId"
+                        ></nz-option>
+                    </nz-select>
             </div>
-            {{radioValue}}
             </div>
         </div>
 
-        <div nz-form-item nz-row *ngIf="isDispose">
+        <div nz-form-item nz-row *ngIf="isDispose==3">
             <div nz-form-control [nzOffset]='3'  nz-col [nzSm]="21" [nzXs]="24">
             <nz-radio-group [(ngModel)]="isPass" formControlName='isPass'> 
-                <label nz-radio [nzValue]="true" >
+                <label nz-radio [nzValue]="1" >
                     <span>通过</span>
                 </label>
-                <label nz-radio [nzValue]="false" >
+                <label nz-radio [nzValue]="0" *ngIf="nullNotGo">
                     <span>不通过</span>
-                    </label>
+                </label>
             </nz-radio-group>
             </div>
-            <div *ngIf="!isPass" >
+            <div *ngIf="isPass == 0" >
                 <div nz-form-control  nz-col [nzOffset]='3' [nzSm]="21" [nzXs]="24">
-                    <nz-checkbox-group formControlName="people" [(ngModel)]="searchOptions" (ngModelChange)="_log(searchOptions)"></nz-checkbox-group>
+                    <!-- <nz-checkbox-group formControlName="people" [(ngModel)]="searchOptions" (ngModelChange)="_log(searchOptions)"></nz-checkbox-group> -->
+                    <nz-select  formControlName="strUserId" [(ngModel)]="strUserId" nzAllowClear [nzSize]="'large'">
+                        <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
+                        <nz-option 
+                        *ngFor="let item of samePostUserList" 
+                        [nzLabel]="item.userName"
+                        [nzValue]="item.userId"
+                        ></nz-option>
+                    </nz-select>
                 </div>
             </div>
 
@@ -73,7 +89,7 @@
                     <label for="附件">附件</label>
                 </div>
                 <div nz-form-control  nz-col [nzSm]="21" [nzXs]="24">
-                    <input type="file"/>
+                    <input type="file" ngFileSelect (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
                     <!-- <i class="anticon anticon-upload"></i> -->
                 </div>
             </div> 

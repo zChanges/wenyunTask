@@ -1,12 +1,12 @@
-import { Http } from "@angular/http";
 import { Injectable } from "@angular/core";
 import { RouterService } from "./../../service/router.service";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ProcessFlowService {
   baseUrl: string;
-  constructor(private routerService: RouterService, private http: Http) {
-    this.baseUrl = this.routerService.baseUrl();
+  constructor(private routerService: RouterService, private http: HttpClient) {
+    this.baseUrl = this.routerService.baseUrl;
   }
 
   /**
@@ -26,4 +26,5 @@ export class ProcessFlowService {
       this.baseUrl + `taskProcess/getTaskProcess?taskId=${taskId}`
     );
   }
+
 }

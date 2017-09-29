@@ -1,3 +1,4 @@
+import { RouterService } from './../../service/router.service';
 import { Component, OnInit, ElementRef, ViewChildren, ChangeDetectorRef, EventEmitter  } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { ValueService } from "../../service/value.service";
@@ -12,7 +13,7 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes } from 'ngx-upload
 })
 export class AddTaskComponent implements OnInit {
 
-  // isEdit = false;
+  isEdit = false;
   userList:any;
   validateForm: FormGroup;
   uploadInput: EventEmitter<UploadInput>;
@@ -33,7 +34,7 @@ export class AddTaskComponent implements OnInit {
   multipleSelected: any;
 
   workLoad = "";
-  taskFile: any; //附件
+  taskFile = -1; //附件
 
 
   // 下拉数组
@@ -70,7 +71,8 @@ export class AddTaskComponent implements OnInit {
     private elementRef: ElementRef,
     private addTaskService: AddTaskService,
     private cdr: ChangeDetectorRef,
-    private PMService: PublicMethodService
+    private PMService: PublicMethodService,
+    private routerService: RouterService
   ) {
     this.workLoadList = this.valueService.Days;
   }
@@ -152,30 +154,36 @@ export class AddTaskComponent implements OnInit {
    * 保存
    */
   save() {
-    const event: any = {
-      type: 'uploadAll',
-      url: this.addTaskService.createTask(),
-      method: 'POST',
-      data: { 
-        createUserId: this.userList.id,
-        title: this.title,
-        description: this.description,
-        projectId: this.projectId,
-        versionId: this.versionId,
-        productId: this.productId,
-        workLoad: this.workLoad,
-        type: this.type,
-        devFinish: this.PMService.dateUTC(this.devFinish),
-        testStart: this.PMService.dateUTC(this.testStart),
-        testFinish: this.PMService.dateUTC(this.testFinish),
-        acceptFinish: this.PMService.dateUTC(this.acceptFinish),
-        webId: this.webId
-      },
-      concurrency: 1,
-      withCredentials:true,
-      fieldName:'taskFile'
-    };
-    this.uploadInput.emit(event);
+    this.addTaskService.createTask(
+      this.userList.id,this.title,this.description,this.projectId,this.versionId,
+      this.productId,this.workLoad,this.type,this.PMService.dateUTC(this.devFinish),
+      this.PMService.dateUTC(this.testStart),this.PMService.dateUTC(this.testFinish),
+      this.PMService.dateUTC(this.acceptFinish),this.webId,this.taskFile
+    ).subscribe( (res:any) => {
+
+            //获取任务数组
+            const $days = this.elementRef.nativeElement.querySelectorAll('.days');
+            const $debugger = this.elementRef.nativeElement.querySelectorAll('.debugger');
+            const $test = this.elementRef.nativeElement.querySelectorAll('.test');
+            const $produc = this.elementRef.nativeElement.querySelectorAll('.produc');
+            // 重组 获取数据 
+            const developData = this.taskUserRegroup(this.developUsers,$days,1)
+            const debuggerData = this.taskUserRegroup(this.debuggers,$debugger,2)
+            const testData = this.taskUserRegroup(this.testUsers,$test,3)
+            const productData = this.taskUserRegroup(this.productUsers,$produc,4)
+            // 合并
+            var concatTaskData 
+            if(this.type == 201){
+               concatTaskData = developData.concat(testData);
+            }else{
+               concatTaskData = developData.concat(debuggerData,testData,productData);
+            }
+      
+            const taskId =  res;
+            this.addTaskService.saveTaskUser(taskId,this.type,this.webId,this.userList.id,JSON.stringify(concatTaskData)).subscribe( (request: any)=>{
+                console.log(request)
+            });
+    })
   }
 
   /**
@@ -199,11 +207,6 @@ export class AddTaskComponent implements OnInit {
   taskUserRegroup(arr,$dom,duty) {
     const newArr = [];
     arr.forEach((item,index)=>{
-      // newArr.push({
-      //   userId: item.userId,
-      //   duty: duty,
-      //   userWork: $dom[index].value
-      // })
       newArr.push([item.userId,duty,Number($dom[index].value)])
     });
     return newArr;
@@ -211,37 +214,44 @@ export class AddTaskComponent implements OnInit {
 
 
   onUploadOutput(output: UploadOutput): void {
-    console.log(output)
-    if(output.type === 'addedToQueue'){
-      this.taskFile = output.file;
+    // console.log(output) 
+    if(output.type === 'allAddedToQueue'){
+      const event: any = {
+        type: 'uploadAll',
+        url: this.routerService.upLoadFile,
+        method: 'POST',
+        data: { 
+          createUserId:this.userList.id,
+          webId:this.userList.webId
+        },
+        concurrency: 1,
+        withCredentials:true,
+        fieldName:'taskFile'
+      };
+      this.uploadInput.emit(event);
     }
-
     if(output.type === 'done'){
-      const taskId =  output.file.response.data;
-
-      //获取任务数组
-      const $days = this.elementRef.nativeElement.querySelectorAll('.days');
-      const $debugger = this.elementRef.nativeElement.querySelectorAll('.debugger');
-      const $test = this.elementRef.nativeElement.querySelectorAll('.test');
-      const $produc = this.elementRef.nativeElement.querySelectorAll('.produc');
-      // 重组 获取数据 
-      const developData = this.taskUserRegroup(this.developUsers,$days,1)
-      const debuggerData = this.taskUserRegroup(this.debuggers,$debugger,2)
-      const testData = this.taskUserRegroup(this.testUsers,$test,3)
-      const productData = this.taskUserRegroup(this.productUsers,$produc,4)
-      // 合并
-      var concatTaskData 
-      if(this.type == 201){
-         concatTaskData = developData.concat(testData);
-      }else{
-         concatTaskData = developData.concat(debuggerData,testData,productData);
-      }
-
-      this.addTaskService.saveTaskUser(taskId,this.type,this.webId,this.userList.id,JSON.stringify(concatTaskData)).subscribe( (request: any)=>{
-          console.log(request)
-      });
-
+      this.taskFile =  output.file.response.data;
     }
+  }
+
+  /**
+   * 上传附件
+   */
+  uploadFile() {
+    const event: any = {
+      type: 'uploadAll',
+      url: this.routerService.upLoadFile,
+      method: 'POST',
+      data: { 
+        createUserId:this.userList.id,
+        webId:this.userList.webId
+      },
+      concurrency: 1,
+      withCredentials:true,
+      fieldName:'taskFile'
+    };
+    this.uploadInput.emit(event);
   }
 
 }
