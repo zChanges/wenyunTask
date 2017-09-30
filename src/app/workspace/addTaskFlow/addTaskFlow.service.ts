@@ -81,7 +81,7 @@ export class AddTaskFlowService {
    */
   changeFailStatus(taskId,preDuty,strUserId,taskStatus,webId,taskType) {
     return this.http.get(
-      this.baseUrl + `task/changeFailStatus?pass=0&taskId=${taskId}&preDuty=${preDuty}
+      this.baseUrl + `task/changeFailStatus?pass=0&taskId=${taskId}&PreDuty=${preDuty}
       &strUserId=${strUserId}&taskStatus=${taskStatus}&webId=${webId}&taskType=${taskType}`
     );
   }

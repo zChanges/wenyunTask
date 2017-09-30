@@ -25,7 +25,7 @@ export class TaskInterceptorService implements HttpInterceptor {
             // }
             if (event instanceof HttpResponse) {
                  if (event.body) {
-                    if(event.body.data){
+                    if(event.body){
                         let newEvent = event.clone({body: event.body['data']});
                         return newEvent;
                     }else {

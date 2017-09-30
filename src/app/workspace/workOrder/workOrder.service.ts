@@ -37,6 +37,15 @@ export class WorkOrderService {
   }
 
 
+  /**
+   * 获取当前人岗位userPost
+   */
+
+  getCurrentPost(userId,webId) {
+    return this.http.get(this.baseUrl + `user/getCurrentPost?userId=${userId}&webId=${webId}`);
+  }
+
+
 
 
 }

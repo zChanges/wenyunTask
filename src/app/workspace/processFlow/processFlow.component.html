@@ -21,7 +21,7 @@
 
                 <div class="guide guideColor">
                   <div class="arrows"></div>
-                  <span class="guideTime">2017.9.25.11:55</span>
+                      <span class="guideTime">{{detialData.devFinish | date:'y-MM-dd HH:mm:ss'}}</span>
                 </div>
 
                 <nz-popover [nzTitle]="'联调'" style="float:left">
@@ -37,6 +37,7 @@
 
                 <div class="guide guideColor">
                   <div class="arrows"></div>
+                  <span class="guideTime">{{detialData.testFinish | date:'y-MM-dd HH:mm:ss'}}</span>
                 </div>
 
                 <nz-popover [nzTitle]="'测试'" style="float:left">
@@ -52,6 +53,7 @@
                
                 <div class="guide guideColor" >
                   <div class="arrows"></div>
+                  <span class="guideTime">{{detialData.acceptFinish | date:'y-MM-dd HH:mm:ss'}}</span>
                 </div>
 
                 <nz-popover [nzTitle]="'产品人员'" style="float:left">
@@ -79,7 +81,7 @@
                 <div nz-col [nzSpan]="6">
                   <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="8">
-                      <label>标题:</label>
+                      <label>标题</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
                       {{detialData.title}}
@@ -90,7 +92,7 @@
                 <div nz-col [nzSpan]="6">
                   <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="8">
-                      <label>描述:</label>
+                      <label>描述</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
                       {{detialData.description}}
@@ -101,10 +103,10 @@
                 <div nz-col [nzSpan]="6">
                   <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="8">
-                      <label>项目:</label>
+                      <label>项目</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
-                      {{detialData.projectId}}
+                      {{detialData.projectStr}}
                     </div>
                   </div>
                 </div>
@@ -112,10 +114,21 @@
                 <div nz-col [nzSpan]="6">
                   <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="8">
-                      <label>版本:</label>
+                      <label>版本</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
-                        {{detialData.versionId}}
+                        {{detialData.versionStr}}
+                    </div>
+                  </div>
+                </div>
+
+                <div nz-col [nzSpan]="6">
+                  <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSpan]="8">
+                      <label>产品</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSpan]="16">
+                        {{detialData.productStr}}
                     </div>
                   </div>
                 </div>
@@ -124,10 +137,10 @@
                 <div nz-col [nzSpan]="6">
                   <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSpan]="8">
-                      <label>需求:</label>
+                      <label>类型</label>
                     </div>
                     <div nz-form-control nz-col [nzSpan]="16">
-                      
+                      {{detialData.type}}
                     </div>
                   </div>
                 </div>
@@ -135,10 +148,10 @@
                 <div nz-col [nzSpan]="6">
                     <div nz-form-item nz-row>
                       <div nz-form-label nz-col [nzSpan]="8">
-                        <label>当前状态:</label>
+                        <label>当前状态</label>
                       </div>
                       <div nz-form-control nz-col [nzSpan]="16">
-                        {{detialData.todoStatusId}}
+                        {{detialData.todoStatusStr}}
                       </div>
                     </div>
                   </div>
@@ -146,7 +159,7 @@
                   <div nz-col [nzSpan]="6">
                       <div nz-form-item nz-row>
                         <div nz-form-label nz-col [nzSpan]="8">
-                          <label>工作量:</label>
+                          <label>工作量</label>
                         </div>
                         <div nz-form-control nz-col [nzSpan]="16">
                           {{detialData.workLoad}}天
@@ -157,7 +170,7 @@
                     <div nz-col [nzSpan]="6">
                         <div nz-form-item nz-row>
                           <div nz-form-label nz-col [nzSpan]="8">
-                            <label>开发完成时间:</label>
+                            <label>开发完成时间</label>
                           </div>
                           <div nz-form-control nz-col [nzSpan]="16">
                             {{detialData.devFinish | date:'y-MM-dd HH:mm:ss'}}
@@ -168,15 +181,13 @@
                       <div nz-col [nzSpan]="6">
                           <div nz-form-item nz-row>
                             <div nz-form-label nz-col [nzSpan]="8">
-                              <label>测试完成时间:</label>
+                              <label>测试完成时间</label>
                             </div>
                             <div nz-form-control nz-col [nzSpan]="16">
                               {{detialData.testFinish | date:'y-MM-dd HH:mm:ss'}}
                             </div>
                           </div>
                         </div>
-
-          
             </div>
         </nz-collapse>
     </nz-collapseset>
@@ -188,13 +199,13 @@
               <label><h4>任务单列表</h4></label>
           </div>
       </div>
-      <div class="table">
+      <div class="table" style="margin-top:20px">
         <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
             <thead nz-thead>
               <tr>
-                <th nz-th><span>开发人员</span></th>
+                <th nz-th><span>处理人</span></th>
                 <th nz-th><span>处理时间</span></th>
-                <th nz-th><span>当前状态</span></th>
+                <th nz-th><span>处理方式</span></th>
                 <th nz-th><span>状态</span></th>
                 <th nz-th><span>操作</span></th>
               </tr>
@@ -203,7 +214,7 @@
               <tr nz-tbody-tr *ngFor="let data of nzTable.data">
                 <td nz-td>{{data.createUserName}}</td>
                 <td nz-td>{{data.createData | date:'y-MM-dd HH:mm:ss'}}</td>
-                <td nz-td>{{data.status}}</td>
+                <td nz-td>{{data.statusStr}}</td>
                 <td nz-td>{{data.todoStatusStr}}</td>
                 <td nz-td>
                     <a (click)="edit(data)">下载附件</a>

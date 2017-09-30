@@ -11,8 +11,8 @@
           
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="userStyle"><a>中午好 谁谁谁</a></li>
-        <li routerLink='/login'><a>切换账号</a></li>
+        <li class="userStyle"><a>中午好 <b>{{user}}</b></a></li>
+        <li  (click)="loginOut()"><a>切换账号</a></li>
       </ul>
   </div>
   </div>

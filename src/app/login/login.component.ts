@@ -15,7 +15,7 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent implements OnInit {
   validateForm: FormGroup;
-  userName= '赵永平';
+  userName= '';
   passWord= '123123';
   isLoading = false;
   message:string;
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     });
     this.isLoading = false;
 
-    this.router.navigateByUrl('task');
+    // this.router.navigateByUrl('task');
     
   }
 

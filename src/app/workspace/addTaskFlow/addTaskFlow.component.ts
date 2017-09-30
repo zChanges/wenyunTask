@@ -1,14 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, EventEmitter } from "@angular/core";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { AddTaskFlowService } from './addTaskFlow.service';
 import {ActivatedRoute} from "@angular/router";
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes } from 'ngx-uploader';
 import { RouterService } from './../../service/router.service';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
@@ -25,13 +21,13 @@ export class AddTaskFlowComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private addTaskFlowService: AddTaskFlowService,
     private activatedRoute: ActivatedRoute,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private router: Router
   ) {
     this.uploadInput = new EventEmitter<UploadInput>();
     this.user = JSON.parse(window.localStorage.getItem('user'));
     this.activatedRoute.params.subscribe( res => {
       this.taskArgument = res;
-      console.log(res);
     });
   }
 
@@ -44,12 +40,14 @@ export class AddTaskFlowComponent implements OnInit {
 
   isDispose = 2;
   isLoading =  false;
-  isPass = true ;
+  isPass = null ;
   samePostUserList = [];
   strUserList = [];
-  strUserId = '';
+  strUserId:any;
   fileId = -1;
   nullNotGo = false;
+  state
+  preDuty='';
 
 
   textOptions = {
@@ -64,16 +62,11 @@ export class AddTaskFlowComponent implements OnInit {
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      radioValue: [null, [Validators.required]],
       isPass: [null, [Validators.required]],
-      people: [null, [Validators.required]],
-      newUserId:[null,[Validators.required]],
+      newUserId:[null],
+      strUserId:[null]
     });
     this.getDownList();
-  }
-
-  _log(value) {
-    console.log(value);
   }
 
 
@@ -86,6 +79,9 @@ export class AddTaskFlowComponent implements OnInit {
 
   changePass(val) {
     this.isDispose = val;
+    if(val==2){
+      this.isPass = null;
+    }
     // this.cdr.detectChanges();
   }
 
@@ -94,60 +90,57 @@ export class AddTaskFlowComponent implements OnInit {
    */
   getDownList() {
     this.addTaskFlowService.getCurrentDuty(this.taskArgument.taskId,this.user.id,this.user.webId).subscribe( (res:any) => {
-      // console.log(res)
       if(res.length == 1){
-        if(res[0].duty==1){
-          //没有不通过
-          this.nullNotGo = true;
-        }
+        res[0].duty==1 ? this.nullNotGo = false : this.nullNotGo = true;
       }
       this.taskUserList = res[0];
+      this.getPreDutyUser();
     })
 
 
     this.addTaskFlowService.getSamePostUser(this.user.id,this.user.webId).subscribe( (res:any)=> {
-      // console.log(res);
       this.samePostUserList = res;
     }) 
-
-   
   }
 
   /**
    * 保存
    */
   save() {
-    debugger
-    var state;
     if(this.isDispose == 2){
-      state = 2;
+      this.state = 2;
       this.turnOver();
     }else if(this.isDispose == 3){
-      state = this.isPass;
-      if(!this.nullNotGo){
+      this.state = this.isPass;
+      if(this.isPass == 1){//通过
         this.changeSuccessStatus();
-      }else{
+      }else if(this.isPass == 0){//不通过
         this.changeFailStatus();
       }
     }
+    
+  }
+
+  createTaskProcess() {
     this.addTaskFlowService.createTaskProcess(
       this.taskArgument.taskId,
       this.user.id,
       this.title,this.description,
       this.taskArgument.todoStatusId,
-      state,
+      this.state,
       this.fileId
     ).subscribe( res => {
-      console.log(res);
+      this.router.navigateByUrl('task/workOrder');
     })
   }
+
 
   /**
    * 移交
    */
   turnOver() {
     this.addTaskFlowService.handNewUser(this.user.id,this.newUserId,this.taskArgument.taskId).subscribe( res => {
-      console.log(res);
+      // console.log(res);
     })
   }
 
@@ -156,7 +149,7 @@ export class AddTaskFlowComponent implements OnInit {
    */
   changeSuccessStatus() {
     this.addTaskFlowService.changeSuccessStatus(this.taskArgument.taskId,this.user.id,this.taskArgument.todoStatusId,this.user.webId).subscribe( res => {
-      console.log(res);
+      this.createTaskProcess();
     })
   }
 
@@ -164,12 +157,13 @@ export class AddTaskFlowComponent implements OnInit {
    *  处理-不通过
    */
   changeFailStatus () {
+    this.strUserId = this.strUserId.join(',');
     this.addTaskFlowService.changeFailStatus(
-      this.taskArgument.taskId,this.taskUserList.duty,
+      this.taskArgument.taskId,this.preDuty,
       this.strUserId,this.taskArgument.todoStatusId,
       this.user.webId,this.taskUserList.type
     ).subscribe( res =>{
-      console.log(res);
+      this.createTaskProcess();
     });
   }
 
@@ -199,17 +193,21 @@ export class AddTaskFlowComponent implements OnInit {
   }
   
   getPreDutyUser() {
-    debugger
     this.addTaskFlowService.getPreDutyUser(this.taskArgument.taskId,this.taskUserList.duty,this.user.webId,this.taskUserList.type).subscribe( (res:any) => {
       setTimeout(()=>{
         console.log(res)
-        this.strUserList = res;
+        this.preDuty = res.preDuty;
+        this.strUserList = res.listPreDutyUser;
       },2000)
     });
   }
 
-
-     
+  /**
+   * 点击不通过获取关联人
+   */
+  getNotpass() {
+    this.getPreDutyUser();
+  }
 
   
 }

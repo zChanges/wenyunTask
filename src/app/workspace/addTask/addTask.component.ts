@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { RouterService } from './../../service/router.service';
 import { Component, OnInit, ElementRef, ViewChildren, ChangeDetectorRef, EventEmitter  } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
@@ -26,11 +26,11 @@ export class AddTaskComponent implements OnInit {
   projectId = "";
   versionId = "";
 
-  devFinish: string; //联调时间
-  testStart: string; //提测时间
-  testFinish: string; // 测试完成时间
-  acceptFinish: string; // 验收完成时间
-  description: string;
+  devFinish; //联调时间
+  testStart; //提测时间
+  testFinish; // 测试完成时间
+  acceptFinish; // 验收完成时间
+  description;
   type = 200; //任务类型（200需求，201bug）
   multipleSelected: any;
 
@@ -67,7 +67,8 @@ export class AddTaskComponent implements OnInit {
 
   // edit
   taskId = null;
-
+  routArgument;
+  editDisabled = false;
 
   constructor(
     private valueService: ValueService, 
@@ -77,9 +78,14 @@ export class AddTaskComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private PMService: PublicMethodService,
     private routerService: RouterService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.workLoadList = this.valueService.Days;
+    this.activatedRoute.params.subscribe( res => {
+      console.log(res);
+      this.routArgument = res;
+    });
   }
 
   ngOnInit() {
@@ -88,6 +94,12 @@ export class AddTaskComponent implements OnInit {
     this.webId = this.userList.webId;
     this.initValidateForm();
     this.getDownLoad();
+    if(this.routArgument.state == 'edit'){
+      setTimeout(()=>{
+        this.editGetData();
+      },1000)
+      this.editDisabled = true;
+    }
   }
 
   /**
@@ -159,6 +171,11 @@ export class AddTaskComponent implements OnInit {
    * 保存
    */
   save() {
+    if(this.routArgument.state == 'edit'){
+      this.upDataTask();
+      return;
+    }
+
     this.addTaskService.createTask(
       this.userList.id,this.title,this.description,this.projectId,this.versionId,
       this.productId,this.workLoad,this.type,this.PMService.dateUTC(this.devFinish),
@@ -263,18 +280,73 @@ export class AddTaskComponent implements OnInit {
 
   //编辑
   editGetData() {
-    this.addTaskService.getCommonTask(this.taskId).subscribe(res=>{
+    console.log(this.validateForm)
+    this.addTaskService.getCommonTask(this.routArgument.taskId).subscribe((res:any)=>{
       console.log(res);
+      this.title = res.title;
+      this.description = res.description;
+      this.projectId = res.projectId;
+      this.versionId = res.versionId;
+      this.productId = res.productId;
+      this.workLoad = res.workLoad;
+      this.type = res.type;
+      // this.devFinish = res.devFinish+'000';
+      // this.testStart = res.testStart+'000';
+      // this.testFinish = res.testFinish+'000';
+      // this.acceptFinish = res.acceptFinish+'000';
+      if(this.type == 200){
+        this.isTaskState = true
+      }else{
+        this.isTaskState = false;
+      }
+
+      // this.webId,this.taskFile
     });
 
-    this.addTaskService.getTaskUserList(this.taskId).subscribe(res=>{
+    this.addTaskService.getTaskUserList(this.routArgument.taskId).subscribe((res:any)=>{
       console.log(res);
+      res.forEach(element => {
+        switch (element.duty) {
+          case 1:
+          this.developUsers.push(element)
+          const $days = this.elementRef.nativeElement.querySelectorAll('.days');
+          // this.dayChange($days,this.developUsers);
+            break;
+          case 2:
+          this.debuggers.push(element)
+          const $debugger = this.elementRef.nativeElement.querySelectorAll('.debugger');
+            break;
+          case 3:
+          this.testUsers.push(element)
+          const $test = this.elementRef.nativeElement.querySelectorAll('.test');
+            break;
+          case 4:
+          this.productUsers.push(element)
+          const $produc = this.elementRef.nativeElement.querySelectorAll('.produc');
+            break;
+          default:
+            break;
+        }
+      });
+      debugger
     });
   }
 
+  dayChange(dom,data){
+    debugger
+    if(dom.length>0){
+      data.forEach((element,index) => {
+        dom[index].value = element.userWork;
+      });
+    }else{
+      dom[0].value = data[0].userWork;
+    }
+  }
+
+
   upDataTask(){
-    this.addTaskService.editTask(this.taskId,this.devFinish,this.testStart,this.testFinish,
-    this.acceptFinish,this.userList.webId).subscribe(res=>{
+    this.addTaskService.editTask(this.routArgument.taskId,this.PMService.dateUTC(this.devFinish),this.PMService.dateUTC(this.testStart),this.PMService.dateUTC(this.testFinish),
+    this.PMService.dateUTC(this.acceptFinish),this.userList.webId).subscribe(res=>{
       console.log(res);
       this.router.navigateByUrl('task/workOrder');
     })

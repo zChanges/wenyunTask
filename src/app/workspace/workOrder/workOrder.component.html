@@ -193,8 +193,8 @@
             </tr>
           </thead>
           <tbody nz-tbody>
-            <tr [ngClass]="{reds: data.isPostpone }" nz-tbody-tr *ngFor="let data of nzTable.data">
-              <td nz-td><a (click)="skipProcessFlow(data)">{{data.title}}</a></td>
+            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+              <td nz-td><i *ngIf="data.isPostpone" class="anticon anticon-frown-o overDue"></i><a (click)="skipProcessFlow(data)">{{data.title}}</a></td>
               <td nz-td>{{data.description}}</td>
               <td nz-td>{{data.type}}</td>
               <td nz-td>{{data.todoStatusStr}}</td>
@@ -206,9 +206,12 @@
               <td nz-td>{{data.createUserName}}</td>
               <td nz-td>{{data.createData | date:'y-MM-dd HH:mm:ss' }}</td>
               <td nz-td>
-                  <button nz-button [nzType]="'default'" (click)='skipTaskFlow(data)'>
-                      <span>编辑</span>
+                  <button *ngIf="taskType != 3 " [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='skipTaskFlow(data)'>
+                      <span>操作</span>
                   </button>
+                  <button *ngIf="taskType == 3 " [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='extension(data)'>
+                    <span>延期</span>
+                </button>
               </td>
             </tr>
         </tbody>

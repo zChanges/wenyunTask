@@ -30,6 +30,7 @@ export class WorkOrderComponent implements OnInit {
   versionId = '';
   taskUserId = '';
   type = ''; //类型
+  userPost=null;
 
   isDisabled = true;
 
@@ -67,7 +68,8 @@ export class WorkOrderComponent implements OnInit {
   ngOnInit() {
     this.getDownLoad();
     this.getPost();
-    this.loadTable();
+    this.getCurrentPost();
+    // this.loadTable();
   }
 
   /** 
@@ -109,15 +111,21 @@ export class WorkOrderComponent implements OnInit {
           })
           break;
         case '2':// 本周已处理
-          this.workOrderService.getAlreadyDeal(this.userList.id,this.userList.webId).subscribe(res => {
-            this._data = this.regroupData(res);
+          this.workOrderService.getAlreadyDeal(this.userList.id,this.userList.webId).subscribe((res:any) => {
+            this._data = this.regroupData(res.list);
           })
           break;
         case '3':// 由我创建，
         case '4':// 已关闭
+          var taskUserId = '';
+          if(this.taskUserId.length == 0){ 
+            taskUserId = '';
+          }else{
+            taskUserId = this.taskUserId[1]
+          }
           this.workOrderService.getTaskByProperty(this.userList.id,this.startTime,this.finishTime,
             this.taskStatus,this.productId,this.projectId,this.versionId,
-            this.taskUserId[1],this.userList.webId,this.type).subscribe(res => {
+            taskUserId,this.userList.webId,this.type).subscribe(res => {
               this._data = this.regroupData(res);
           })
           break;
@@ -185,6 +193,14 @@ export class WorkOrderComponent implements OnInit {
       ele['acceptFinish'] = ele['acceptFinish'] + '000';
 
       ele.type == 200 ? ele.type = '需求' : ele.type = 'BUG' ;
+      ele['editDisabled'] = true;
+      if(ele.todoStatusId ==102 || ele.todoStatusId ==108){
+        if(this.userPost==102){
+          ele['editDisabled'] = false;
+        }
+      }else if(this.userPost == ele.todoStatusId){
+        ele['editDisabled'] = false;
+      }
 
       this.valService.getDownState().forEach((item)=>{
         if(ele.todoStatusId == item.value){
@@ -192,7 +208,7 @@ export class WorkOrderComponent implements OnInit {
         }
       });
 
-      switch (ele.todoStatusId) {
+      switch (ele.todoStatusStr) {
         case '开发':
           ele.devFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
           break;
@@ -209,12 +225,7 @@ export class WorkOrderComponent implements OnInit {
           ele['isPostpone'] = false;
           break;
       }
-
-
-
-
     });
-    console.log(data)
     return data;
   }
   
@@ -224,6 +235,19 @@ export class WorkOrderComponent implements OnInit {
 
   skipProcessFlow(data) {
     this.router.navigate(["task/processFlow",{taskId:data.id}])
+  }
+
+
+  getCurrentPost() {
+    this.workOrderService.getCurrentPost(this.userList.id,this.userList.webId).subscribe( (res:any)=> {
+      console.log(res);
+      this.userPost = res.postId;
+      this.loadTable();
+    })
+  }
+
+  extension(data) {
+    this.router.navigate(["task/addTask",{taskId:data.id, todoStatusId:data.todoStatusId,state:'edit'}])
   }
 
 }
