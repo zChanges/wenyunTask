@@ -173,13 +173,14 @@
     </div>
     <div class="table">
         <!-- [nzPageSize]="10" -->
+        <!-- [nzBordered]="true" -->
       <nz-table #nzTable 
       [nzDataSource]="_data" 
       >
           <thead nz-thead>
             <tr>
               <th nz-th><span>标题</span></th>
-              <th nz-th><span>描述</span></th>
+              <th nz-th [nzWidth]="'15%'"><span>描述</span></th>
               <th nz-th><span>类型</span></th>
               <th nz-th><span>当前状态</span></th>
               <th nz-th><span>工作量</span></th>
@@ -210,7 +211,7 @@
                       <span>操作</span>
                   </button>
                   <button *ngIf="taskType == 3 " [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='extension(data)'>
-                    <span>延期</span>
+                    <span>编辑</span>
                 </button>
               </td>
             </tr>
@@ -219,3 +220,7 @@
     </div>
     
 </div>
+
+<!-- <button nz-button [nzType]="'info'" (click)="error()">
+    <span>失败提示</span>
+</button> -->

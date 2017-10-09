@@ -14,7 +14,7 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes } from 'ngx-upload
 })
 export class AddTaskComponent implements OnInit {
 
-  isEdit = false;
+  isEdit = true;
   userList:any;
   validateForm: FormGroup;
   uploadInput: EventEmitter<UploadInput>;
@@ -83,7 +83,6 @@ export class AddTaskComponent implements OnInit {
   ) {
     this.workLoadList = this.valueService.Days;
     this.activatedRoute.params.subscribe( res => {
-      console.log(res);
       this.routArgument = res;
     });
   }
@@ -99,6 +98,7 @@ export class AddTaskComponent implements OnInit {
         this.editGetData();
       },1000)
       this.editDisabled = true;
+      this.isEdit = false;
     }
   }
 
@@ -106,18 +106,9 @@ export class AddTaskComponent implements OnInit {
    * 获取下拉
    */
   getDownLoad() {
-    this.addTaskService.getProduct(this.webId).subscribe((res:any)=>{
-      this.productList = res;
-    })
-
-    this.addTaskService.getProject(this.webId).subscribe((res:any)=>{
-      this.projectList = res;
-    })
-
-    this.addTaskService.getProjectVersion(this.webId).subscribe((res:any)=>{
-      this.versionList = res;
-    })
-
+    this.getProductDown();
+    this.getProjectDown();
+    this.getProjectVersionDown();
     // 人
     this.addTaskService.getDevelopUser(this.webId).subscribe((res:any)=>{
       this.developUserList = res;
@@ -131,12 +122,33 @@ export class AddTaskComponent implements OnInit {
       this.productUserList = res;
     })
     this.cdr.detectChanges();
-    
-
   }
 
+  // 获取产品、项目、版本
+
+  getProductDown() {
+    this.addTaskService.getProduct(this.webId).subscribe((res:any)=>{
+      this.productList = res;
+    });
+  }
+
+  getProjectDown() {
+    this.addTaskService.getProject(this.webId).subscribe((res:any)=>{
+      this.projectList = res;
+    });
+  }
+
+  getProjectVersionDown() {
+    this.addTaskService.getProjectVersion(this.webId).subscribe((res:any)=>{
+      this.versionList = res;
+    });
+  }
+
+
+  
+
   /**
-   * 初始化数组
+   * 初始化验证
    */
   initValidateForm(){
     this.validateForm = this.fb.group({
@@ -203,7 +215,6 @@ export class AddTaskComponent implements OnInit {
       
             const taskId =  res;
             this.addTaskService.saveTaskUser(taskId,this.type,this.webId,this.userList.id,JSON.stringify(concatTaskData)).subscribe( (request: any)=>{
-                console.log(request)
                 this.router.navigateByUrl('task/workOrder');
             });
     })
@@ -237,7 +248,6 @@ export class AddTaskComponent implements OnInit {
 
 
   onUploadOutput(output: UploadOutput): void {
-    // console.log(output) 
     if(output.type === 'allAddedToQueue'){
       const event: any = {
         type: 'uploadAll',
@@ -278,11 +288,127 @@ export class AddTaskComponent implements OnInit {
   }
 
 
+  // 修改产品
+  productObject = {};
+  editRow = null;
+  editProduc(data) {
+    this.productObject[ data.id ] = { ...data };
+    this.editRow = data.id;
+  }
+
+  saveProduct(data) {
+    Object.assign(data, this.productObject[ data.id ]);
+    this.addTaskService.updateProduct(data.name,this.userList.id,data.id).subscribe( res=>{
+      this.editRow = null;
+      this.getProductDown();
+    });
+  }
+
+  delProduc(data) {
+    this.addTaskService.delProduct(this.userList.id,data.id).subscribe(res=>{
+      console.log(res);
+      this.getProductDown();
+    })
+  }
+
+
+  cancel(data) {
+    this.productObject[ data.key ] = {};
+    this.editRow = null;
+  }
+
+  addProduc(data){
+    this.addTaskService.addProduct(data,this.userList.id).subscribe(res=>{
+      console.log(res);
+      this.getProductDown();
+    })
+  }
+
+
+  // 修改版本
+  projectObject = {};
+  projectRow = null;
+  projectName = '';
+  editProject(data) {
+    this.projectObject[ data.id ] = { ...data };
+    this.projectRow = data.id;
+  }
+
+  saveProject(data) {
+    Object.assign(data, this.projectObject[ data.id ]);
+    this.addTaskService.updateProject(data.name,this.userList.id,data.id).subscribe( res=>{
+      this.projectRow = null;
+      this.getProjectVersionDown();
+    });
+  }
+
+  delProject(data) {
+    this.addTaskService.delProject(this.userList.id,data.id).subscribe(res=>{
+      console.log(res);
+      this.getProjectVersionDown();
+    })
+  }
+
+
+  cancelProject(data) {
+    this.projectObject[ data.key ] = {};
+    this.projectRow = null;
+  }
+
+  addProjectName(data){
+    this.addTaskService.addProject(data,this.userList.id).subscribe(res=>{
+      console.log(res);
+      this.getProjectDown();
+    })
+  }
+
+
+
+  // 修改产品
+  versionObject = {};
+  versionRow = null;
+  versionName = '';
+  editVersion(data) {
+    this.versionObject[ data.id ] = { ...data };
+    this.versionRow = data.id;
+  }
+
+  saveVersion(data) {
+    Object.assign(data, this.versionObject[ data.id ]);
+    this.addTaskService.updateprojectVersion(data.name,this.userList.id,data.id).subscribe( res=>{
+      this.versionRow = null;
+      this.getProjectVersionDown();
+    });
+  }
+
+  delVersion(data) {
+    this.addTaskService.delprojectVersion(this.userList.id,data.id).subscribe(res=>{
+      console.log(res);
+      this.getProjectVersionDown();
+    })
+  }
+
+
+  cancelVersion(data) {
+    this.versionObject[ data.key ] = {};
+    this.versionRow = null;
+  }
+
+  addVersionName(data){
+    this.addTaskService.addprojectVersion(data,this.userList.id).subscribe(res=>{
+      console.log(res);
+      this.getProjectVersionDown();
+    })
+  }
+  
+
+/**********************
+ ****    编辑      **** 
+ **********************/
+
   //编辑
   editGetData() {
-    console.log(this.validateForm)
     this.addTaskService.getCommonTask(this.routArgument.taskId).subscribe((res:any)=>{
-      console.log(res);
       this.title = res.title;
       this.description = res.description;
       this.projectId = res.projectId;
@@ -290,64 +416,63 @@ export class AddTaskComponent implements OnInit {
       this.productId = res.productId;
       this.workLoad = res.workLoad;
       this.type = res.type;
-      // this.devFinish = res.devFinish+'000';
-      // this.testStart = res.testStart+'000';
-      // this.testFinish = res.testFinish+'000';
-      // this.acceptFinish = res.acceptFinish+'000';
+      this.devFinish = Number(res.devFinish+'000');
+      this.testStart = Number(res.testStart+'000');
+      this.testFinish = Number(res.testFinish+'000');
+      this.acceptFinish = Number(res.acceptFinish+'000');
       if(this.type == 200){
         this.isTaskState = true
       }else{
         this.isTaskState = false;
       }
-
       // this.webId,this.taskFile
     });
 
     this.addTaskService.getTaskUserList(this.routArgument.taskId).subscribe((res:any)=>{
-      console.log(res);
       res.forEach(element => {
         switch (element.duty) {
           case 1:
           this.developUsers.push(element)
-          const $days = this.elementRef.nativeElement.querySelectorAll('.days');
-          // this.dayChange($days,this.developUsers);
+          this.dayChange('.days',this.developUsers);
             break;
           case 2:
           this.debuggers.push(element)
-          const $debugger = this.elementRef.nativeElement.querySelectorAll('.debugger');
+          this.dayChange('.debugger',this.debuggers);
             break;
           case 3:
           this.testUsers.push(element)
-          const $test = this.elementRef.nativeElement.querySelectorAll('.test');
+          this.dayChange('.test',this.testUsers);
             break;
           case 4:
           this.productUsers.push(element)
-          const $produc = this.elementRef.nativeElement.querySelectorAll('.produc');
+          this.dayChange('.produc',this.productUsers);
             break;
           default:
             break;
         }
       });
-      debugger
     });
   }
 
+  // 获取天数
   dayChange(dom,data){
-    debugger
-    if(dom.length>0){
-      data.forEach((element,index) => {
-        dom[index].value = element.userWork;
-      });
-    }else{
-      dom[0].value = data[0].userWork;
-    }
+    setTimeout(()=>{
+      const $dom = this.elementRef.nativeElement.querySelectorAll(dom);
+      if($dom.length>0){
+        data.forEach((element,index) => {
+          $dom[index].value = element.userWork;
+        });
+      }else{
+        $dom[0].value = data[0].userWork;
+      }
+    },500)
+
   }
 
-
+  // 更新日期
   upDataTask(){
     this.addTaskService.editTask(this.routArgument.taskId,this.PMService.dateUTC(this.devFinish),this.PMService.dateUTC(this.testStart),this.PMService.dateUTC(this.testFinish),
     this.PMService.dateUTC(this.acceptFinish),this.userList.webId).subscribe(res=>{
-      console.log(res);
       this.router.navigateByUrl('task/workOrder');
     })
   }

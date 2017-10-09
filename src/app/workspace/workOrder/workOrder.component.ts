@@ -6,6 +6,8 @@ import { WorkOrderService } from './workOrder.service';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/forkJoin';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { AddTaskFlowService } from './../addTaskFlow/addTaskFlow.service';
+import { NzModalService } from 'ng-zorro-antd';
 @Component({
   selector: "app-workOrder",
   templateUrl: "./workOrder.component.html",
@@ -59,7 +61,9 @@ export class WorkOrderComponent implements OnInit {
     private addTaskService: AddTaskService, 
     private valService:ValueService, 
     private workOrderService: WorkOrderService,
-    private router: Router
+    private router: Router,
+    private AddTaskFlowService: AddTaskFlowService,
+    private confirmServ: NzModalService
   ) {
     this.userList = JSON.parse(window.localStorage.getItem('user'))
     this.webId = this.userList.webId;
@@ -123,11 +127,13 @@ export class WorkOrderComponent implements OnInit {
           }else{
             taskUserId = this.taskUserId[1]
           }
-          this.workOrderService.getTaskByProperty(this.userList.id,this.startTime,this.finishTime,
+          var userId;
+          this.taskType != '4' ?  userId = this.userList.id : userId = '';
+          this.workOrderService.getTaskByProperty(userId,this.startTime,this.finishTime,
             this.taskStatus,this.productId,this.projectId,this.versionId,
             taskUserId,this.userList.webId,this.type).subscribe(res => {
               this._data = this.regroupData(res);
-          })
+          });
           break;
         default:
           break;
@@ -154,6 +160,8 @@ export class WorkOrderComponent implements OnInit {
       )
     });
   }
+
+
 
   pushPost(val,label,child):any{
     return {
@@ -202,6 +210,10 @@ export class WorkOrderComponent implements OnInit {
         ele['editDisabled'] = false;
       }
 
+      if(this.taskType == '3'){
+        ele['editDisabled'] = false;
+      }
+
       this.valService.getDownState().forEach((item)=>{
         if(ele.todoStatusId == item.value){
           ele['todoStatusStr'] = item.label;
@@ -230,7 +242,29 @@ export class WorkOrderComponent implements OnInit {
   }
   
   skipTaskFlow(data) {
-    this.router.navigate(["task/addTaskFlow",{taskId:data.id, todoStatusId:data.todoStatusId}])
+    if(data.todoStatusId == 108){
+      this.router.navigate(["task/addTaskFlow",{taskId:data.id, todoStatusId:data.todoStatusId}])
+      return;      
+    }
+    this.AddTaskFlowService.getCurrentDuty(data.id,this.userList.id,data.webId).subscribe((res:any)=>{
+      if(res.length > 0){
+        const duty = res[res.length - 1 ].duty;
+        if(res.length == 1){
+          if(duty == 2 && data.todoStatusId == 102){
+            this.error();
+            return
+          }
+        }
+      }
+      this.router.navigate(["task/addTaskFlow",{taskId:data.id, todoStatusId:data.todoStatusId}])
+    })
+  }
+
+  error() {
+    this.confirmServ.error({
+      title: '提示',
+      content: '当前已是待联调状态请勿重复操作！'
+    });
   }
 
   skipProcessFlow(data) {
@@ -240,7 +274,6 @@ export class WorkOrderComponent implements OnInit {
 
   getCurrentPost() {
     this.workOrderService.getCurrentPost(this.userList.id,this.userList.webId).subscribe( (res:any)=> {
-      console.log(res);
       this.userPost = res.postId;
       this.loadTable();
     })

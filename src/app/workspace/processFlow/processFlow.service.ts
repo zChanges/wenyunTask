@@ -27,4 +27,12 @@ export class ProcessFlowService {
     );
   }
 
+
+  getFile(fileId){
+    // return this.http.get(
+    //   this.baseUrl + `file/getFile?id=${fileId}`
+    // );
+    window.location.href = this.baseUrl + `file/getFile?id=${fileId}`;
+  }
+
 }

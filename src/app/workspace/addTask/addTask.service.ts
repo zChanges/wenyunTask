@@ -157,6 +157,90 @@ export class AddTaskService {
             &testFinish=${testFinish}&acceptFinish=${acceptFinish}&webId=${webId}`)
     }
 
+
+    /****************
+     *   修改删除 产品、项目
+     *****************/
+
+     /**
+      * 修改产品
+      */
+    updateProduct(code,userId,id) {
+        return this.http.get(
+            this.routerService.baseUrl + `product/updateProduct?code=${code}&name=${code}&userId=${userId}&id=${id}&del=0`)
+    }
     
+    /**
+     * 添加产品
+     */
+    addProduct(code,userId) {
+        return this.http.get(
+            this.routerService.baseUrl + `product/addProduct?code=${code}&name=${code}&userId=${userId}`)
+    }
+
+    /**
+     * 删除产品
+     */
+    delProduct(userId,id) {
+        return this.http.get(
+            this.routerService.baseUrl + `product/updateProduct?userId=${userId}&id=${id}&del=1`)
+    }
+
+
+
+
+    /**
+      * 修改项目
+      */
+      updateProject(code,userId,id) {
+        return this.http.get(
+            this.routerService.baseUrl + `project/updateProject?code=${code}&name=${code}&userId=${userId}&id=${id}&del=0`)
+    }
+    
+    /**
+     * 添加项目
+     */ 
+    addProject(code,userId) {
+        return this.http.get(
+            this.routerService.baseUrl + `project/addProject?code=${code}&name=${code}&userId=${userId}`)
+    }
+
+    /**
+     * 删除项目
+     */
+    delProject(userId,id) {
+        return this.http.get(
+            this.routerService.baseUrl + `project/updateProject?userId=${userId}&id=${id}&del=1`)
+    }
+
+
+    
+
+    /**
+      * 修改版本
+      */
+      updateprojectVersion(code,userId,id) {
+        return this.http.get(
+            this.routerService.baseUrl + `projectVersion/updateProjectVersion?code=${code}&name=${code}&userId=${userId}&id=${id}&del=0`)
+    }
+    
+    /**
+     * 添加版本
+     */ 
+    addprojectVersion(code,userId) {
+        return this.http.get(
+            this.routerService.baseUrl + `projectVersion/addProjectVersion?code=${code}&name=${code}&userId=${userId}`)
+    }
+
+    /**
+     * 删除版本
+     */
+    delprojectVersion(userId,id) {
+        return this.http.get(
+            this.routerService.baseUrl + `projectVersion/updateProjectVersion?userId=${userId}&id=${id}&del=1`)
+    }
+
+
+      
   
 }

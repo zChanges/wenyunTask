@@ -13,7 +13,12 @@ export class ProcessFlowComponent implements OnInit {
 
   taskId = '';
   detialData = '';
+  isBug = true;
   user;
+  duty1 = [];
+  duty2 = [];
+  duty3 = [];
+  duty4 = [];
   data = [
     {
       key    : 0,
@@ -36,7 +41,8 @@ export class ProcessFlowComponent implements OnInit {
   constructor(private processFlowService: ProcessFlowService,
     private activatedRoute: ActivatedRoute,
     private valService: ValueService,
-    private addTaskService: AddTaskService
+    private addTaskService: AddTaskService,
+    private AddTaskService: AddTaskService
   ) {
     this.activatedRoute.params.subscribe( res => {
       this.taskId = res.taskId;
@@ -44,6 +50,8 @@ export class ProcessFlowComponent implements OnInit {
 
     this.user = JSON.parse(window.localStorage.getItem('user'));
   }
+
+
 
   ngOnInit() {
 
@@ -54,7 +62,13 @@ export class ProcessFlowComponent implements OnInit {
       res['testFinish'] = res['testFinish'] + '000';
       res['devFinish'] = res['devFinish'] + '000';
 
-      res.type == 200 ? res.type = '需求' : res.type = 'BUG' ;
+      if(res.type == 200){
+        res.type = '需求'
+      }else{
+        res.type = 'BUG';
+        this.isBug = false;
+      }
+
       this.valService.getDownState().forEach((item)=>{
         if(res.todoStatusId == item.value){
           res['todoStatusStr'] = item.label;
@@ -90,6 +104,28 @@ export class ProcessFlowComponent implements OnInit {
     })
 
 
+    this.AddTaskService.getTaskUserList(this.taskId).subscribe( (res:any)=>{
+      console.log(res);
+      res.forEach(element => {
+        switch (element.duty) {
+          case 1:
+            this.duty1.push(element.userName)
+            break;
+          case 2:
+          this.duty2.push(element.userName)
+            break;
+          case 3:
+          this.duty3.push(element.userName)
+            break;
+          case 4:
+          this.duty4.push(element.userName)
+            break;
+          default:
+            break;
+        }
+      });
+    });
+
 
     this.processFlowService.getTaskProcess(this.taskId).subscribe( (res:any)=>{
       // this.data = res;
@@ -105,7 +141,7 @@ export class ProcessFlowComponent implements OnInit {
       ele['createData'] = ele['createData'] + '000';
       ele.type == 200 ? ele.type = '需求' : ele.type = 'BUG' ;
       if(ele['status'] == 0){
-        ele['statusStr'] = '未通过'
+        ele['statusStr'] = '打回'
       }else if(ele['status'] == 1){
         ele['statusStr'] = '通过'
       }else if(ele['status'] == 2){
@@ -122,6 +158,11 @@ export class ProcessFlowComponent implements OnInit {
 
   getProduct(){
     
+  }
+
+
+  getFile(fileId){
+    this.processFlowService.getFile(fileId);
   }
 
 }

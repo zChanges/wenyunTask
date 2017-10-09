@@ -13,19 +13,9 @@ export class TaskInterceptorService implements HttpInterceptor {
             withCredentials: true 
         });
         return next.handle(clonedRequest).map(event=>{
-            // if (event instanceof HttpResponse) {
-            //     if(event.body){
-            //         if(event.body.data){
-            //             return event.body.data
-            //         }else{
-            //             throw event.body.message;
-            //         }
-            //     }
-            //     return event
-            // }
             if (event instanceof HttpResponse) {
                  if (event.body) {
-                    if(event.body){
+                    if(event.body.code != 500){
                         let newEvent = event.clone({body: event.body['data']});
                         return newEvent;
                     }else {

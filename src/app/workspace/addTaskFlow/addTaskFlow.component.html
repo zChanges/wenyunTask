@@ -29,11 +29,11 @@
         <div nz-form-item nz-row>
             <div nz-form-label nz-col [nzOffset]='3'></div>
             <nz-button-group>
-                <button nz-button [nzType]="'primary'" (click)="changePass(2)">
-                    <span>移交</span>
-                </button>
-                <button nz-button [nzType]="'primary'" (click)="changePass(3)">
+                <button nz-button [nzType]="btnType" (click)="changePass(3)">
                     <span>处理</span>
+                </button>
+                <button nz-button [nzType]="btnTypes" (click)="changePass(2)">
+                    <span>移交</span>
                 </button>
             </nz-button-group>
 
