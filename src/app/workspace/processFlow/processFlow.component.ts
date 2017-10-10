@@ -12,8 +12,9 @@ import { AddTaskService } from './../addTask/addTask.service';
 export class ProcessFlowComponent implements OnInit {
 
   taskId = '';
-  detialData = '';
+  detialData = {};
   isBug = true;
+  todoStatus = 0;
   user;
   duty1 = [];
   duty2 = [];
@@ -27,17 +28,7 @@ export class ProcessFlowComponent implements OnInit {
       address: 'London, Park Lane no. 0',
     }
   ];
-  searchOptions = [
-    { value: "1", label: "杰克1" },
-    { value: "2", label: "露2" },
-    { value: "3", label: "汤姆3" },
-    { value: "4", label: "杰克4" },
-    { value: "5", label: "露西5" },
-    { value: "6", label: "汤姆6" },
-    { value: "7", label: "杰克7" },
-    { value: "8", label: "露西8" },
-    { value: "9", label: "汤姆9" }
-  ];
+
   constructor(private processFlowService: ProcessFlowService,
     private activatedRoute: ActivatedRoute,
     private valService: ValueService,
@@ -61,14 +52,15 @@ export class ProcessFlowComponent implements OnInit {
       res['testStart'] = res['testStart'] + '000';
       res['testFinish'] = res['testFinish'] + '000';
       res['devFinish'] = res['devFinish'] + '000';
-
+      
       if(res.type == 200){
         res.type = '需求'
       }else{
         res.type = 'BUG';
         this.isBug = false;
       }
-
+      this.todoStatus = Number(res.todoStatusId);
+      if(Number(this.todoStatus) == 108){ this.todoStatus = 102.5; };
       this.valService.getDownState().forEach((item)=>{
         if(res.todoStatusId == item.value){
           res['todoStatusStr'] = item.label;
@@ -105,7 +97,6 @@ export class ProcessFlowComponent implements OnInit {
 
 
     this.AddTaskService.getTaskUserList(this.taskId).subscribe( (res:any)=>{
-      console.log(res);
       res.forEach(element => {
         switch (element.duty) {
           case 1:
@@ -139,6 +130,7 @@ export class ProcessFlowComponent implements OnInit {
   regroupData(data) {
     data.forEach(ele => {
       ele['createData'] = ele['createData'] + '000';
+      ele['expand'] = true;
       ele.type == 200 ? ele.type = '需求' : ele.type = 'BUG' ;
       if(ele['status'] == 0){
         ele['statusStr'] = '打回'

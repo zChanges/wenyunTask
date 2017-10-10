@@ -200,6 +200,8 @@ export class WorkOrderComponent implements OnInit {
       ele['createData'] = ele['createData'] + '000';
       ele['acceptFinish'] = ele['acceptFinish'] + '000';
 
+      this.taskType == '1' ?  ele['isBtn'] = true :  ele['isBtn'] = false;
+      this.taskType == '3' ?  ele['isEdit'] = true :  ele['isEdit'] = false;
       ele.type == 200 ? ele.type = '需求' : ele.type = 'BUG' ;
       ele['editDisabled'] = true;
       if(ele.todoStatusId ==102 || ele.todoStatusId ==108){

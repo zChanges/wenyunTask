@@ -13,6 +13,15 @@
             background-color: #f7f7f7;
             border-color: #d9d9d9;
         }
+        .styleClass{
+            background: #38d143;
+            border-color: #38d143;
+            
+        }
+        .ant-btn-primary:hover{
+            background: #38d143 !important;
+            border-color: #38d143 !important; 
+        }
     }
     .guide{
         position: relative;
@@ -41,11 +50,21 @@
     padding-top:0px;
 }
 
-.styleClass{
-    background: #c0d473;
-    border-color: #c0d473;
-    :hover{
-        background: #c0d473;
-        border-color: #c0d473; 
-    }
+
+.data-title{
+    font-size:14px;
 }
+
+// .productClass{
+//     color:#D1D103;
+// }
+
+
+.developClass{
+    color: #0099CC;
+}
+
+// .testClass{
+//     color: #CC99CC;
+// }
+    

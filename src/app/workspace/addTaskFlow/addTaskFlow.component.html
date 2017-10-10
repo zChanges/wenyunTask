@@ -98,7 +98,7 @@
 
         <div nz-form-item>
             <div nz-form-label nz-col [nzOffset]='3'></div>
-            <button [disabled]="!validateForm.valid"  nz-button [nzType]="'primary'" (click)="save($event)" [nzSize]="'large'" [nzLoading]="isLoading">
+            <button [disabled]="!validateForm.valid"  nz-button [nzType]="'primary'" (click)="save()" [nzSize]="'large'" [nzLoading]="isLoading">
                 <i class="anticon anticon-save"></i>
                 <span>确定</span>
             </button>

@@ -6,7 +6,7 @@ import { ValueService } from "../../service/value.service";
 import { AddTaskService } from './addTask.service';
 import { PublicMethodService } from './../../service/publicMethod.service';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes } from 'ngx-uploader';
-
+import {NzModalService} from 'ng-zorro-antd';
 @Component({
   selector: "app-addTask",
   templateUrl: "./addTask.component.html",
@@ -70,6 +70,8 @@ export class AddTaskComponent implements OnInit {
   routArgument;
   editDisabled = false;
 
+  isSavePass = true;
+
   constructor(
     private valueService: ValueService, 
     private fb: FormBuilder,
@@ -79,7 +81,8 @@ export class AddTaskComponent implements OnInit {
     private PMService: PublicMethodService,
     private routerService: RouterService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private confirmServ: NzModalService
   ) {
     this.workLoadList = this.valueService.Days;
     this.activatedRoute.params.subscribe( res => {
@@ -163,11 +166,40 @@ export class AddTaskComponent implements OnInit {
       description: [null, [Validators.required]],
       taskState: [null, [Validators.required]],
       workLoad: [null, [Validators.required]],
-      developUsers: [null, [Validators.required]],
-      debuggers: [null, [Validators.required]],
-      testUsers: [null, [Validators.required]],
-      productUsers: [null, [Validators.required]],
+      developUsers: [null],
+      testUsers: [null],
+      debuggers: [null],
+      productUsers: [null],
       taskFile:[null]
+    });
+
+    if(this.routArgument.state == 'edit'){
+      this.validateForm = this.fb.group({
+        title: [null ],
+        productId: [null],
+        projectId: [null],
+        versionId: [null],
+        devFinish: [null, [Validators.required]],
+        testStart: [null, [Validators.required]],
+        testFinish: [null, [Validators.required]],
+        acceptFinish: [null, [Validators.required]],
+        description: [null],
+        taskState: [null],
+        workLoad: [null],
+        developUsers: [null],
+        debuggers: [null],
+        testUsers: [null],
+        productUsers: [null],
+        taskFile:[null]
+      });
+    }
+  }
+
+
+  changeValidBug(){
+    this.validateForm = this.fb.group({
+      debuggers: [null],
+      productUsers: [null]
     });
   }
 
@@ -179,10 +211,33 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
+  error() {
+    this.confirmServ.error({
+      title: '新建任务失败！',
+      content: '各职责任务人员必填'
+    });
+  }
+
   /**
    * 保存
    */
   save() {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+    }
+    if(!this.validateForm.valid){return};
+    if(this.type == 201){
+      if( this.developUsers.length < 1 || this.testUsers.length < 1){
+        this.error();
+        return
+      }
+    }else{
+      if( this.debuggers.length < 1 || this.productUsers.length < 1 || this.developUsers.length < 1 || this.testUsers.length < 1){
+        this.error();
+        return
+      }
+    }
+   
     if(this.routArgument.state == 'edit'){
       this.upDataTask();
       return;
@@ -194,7 +249,6 @@ export class AddTaskComponent implements OnInit {
       this.PMService.dateUTC(this.testStart),this.PMService.dateUTC(this.testFinish),
       this.PMService.dateUTC(this.acceptFinish),this.webId,this.taskFile
     ).subscribe( (res:any) => {
-
             //获取任务数组
             const $days = this.elementRef.nativeElement.querySelectorAll('.days');
             const $debugger = this.elementRef.nativeElement.querySelectorAll('.debugger');
@@ -224,15 +278,16 @@ export class AddTaskComponent implements OnInit {
    * 改变任务类型切换tab
    */
   changeTask() {
+    this.developUsers = [];
+    this.debuggers = [];
+    this.testUsers = [];
+    this.productUsers = [];
     if(this.type == 200){
       this.isTaskState = true
     }else{
       this.isTaskState = false;
     }
-    this.developUsers = [];
-    this.debuggers = [];
-    this.testUsers = [];
-    this.productUsers = [];
+
   }
 
   /**
@@ -306,7 +361,6 @@ export class AddTaskComponent implements OnInit {
 
   delProduc(data) {
     this.addTaskService.delProduct(this.userList.id,data.id).subscribe(res=>{
-      console.log(res);
       this.getProductDown();
     })
   }
@@ -319,7 +373,6 @@ export class AddTaskComponent implements OnInit {
 
   addProduc(data){
     this.addTaskService.addProduct(data,this.userList.id).subscribe(res=>{
-      console.log(res);
       this.getProductDown();
     })
   }

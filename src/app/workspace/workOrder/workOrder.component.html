@@ -207,10 +207,10 @@
               <td nz-td>{{data.createUserName}}</td>
               <td nz-td>{{data.createData | date:'y-MM-dd HH:mm:ss' }}</td>
               <td nz-td>
-                  <button *ngIf="taskType != 3 " [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='skipTaskFlow(data)'>
+                  <button *ngIf="data.isBtn" [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='skipTaskFlow(data)'>
                       <span>操作</span>
                   </button>
-                  <button *ngIf="taskType == 3 " [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='extension(data)'>
+                  <button *ngIf="data.isEdit" [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='extension(data)'>
                     <span>编辑</span>
                 </button>
               </td>

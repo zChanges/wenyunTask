@@ -305,7 +305,6 @@
       <div class="form-group" nz-form-item>
           <label class="col-sm-2 control-label">附件</label>
           <div class="col-sm-4">
-              <!-- <input type="file" [(ngModel)]="taskFile" (change)='getUpload($event)' formControlName="taskFile"> -->
               <input [disabled]="editDisabled" type="file" ngFileSelect (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
           </div>
       </div>
@@ -313,8 +312,7 @@
 
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-8">
-          <!-- [disabled]="!validateForm.valid" -->
-          <button  nz-button   [nzType]="'primary'" (click)="save($event)" [nzLoading]="isLoading">
+          <button  nz-button   [nzType]="'primary'" (click)="save()" [nzLoading]="isLoading">
             <i class="anticon anticon-save"></i>
             <span>确定</span>
           </button>
