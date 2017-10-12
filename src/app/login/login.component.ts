@@ -16,7 +16,7 @@ import { LoginService } from './login.service';
 export class LoginComponent implements OnInit {
   validateForm: FormGroup;
   userName= '';
-  passWord= '123123';
+  passWord= '';
   isLoading = false;
   message:string;
 

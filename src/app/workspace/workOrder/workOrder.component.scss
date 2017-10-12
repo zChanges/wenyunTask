@@ -2,9 +2,16 @@
     background: red;
 }
 .overDue{
-    font-size:20px;
-    color:red;
-    top: 4px;
-    left: -4px;
+    font-size: 16px;
+    color: red;
+    top: -21px;
+    left: 25px;
     position: relative;
+    font-weight: 700;
+}
+.pass{
+    color: lightgreen;
+}
+.notPass{
+    color:red;
 }

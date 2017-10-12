@@ -12,8 +12,9 @@ import { AddTaskService } from './../addTask/addTask.service';
 export class ProcessFlowComponent implements OnInit {
 
   taskId = '';
-  detialData = {};
+  detialData:any = {};
   isBug = true;
+  bug = false;
   todoStatus = 0;
   user;
   duty1 = [];
@@ -57,6 +58,7 @@ export class ProcessFlowComponent implements OnInit {
         res.type = '需求'
       }else{
         res.type = 'BUG';
+        this.bug = true;
         this.isBug = false;
       }
       this.todoStatus = Number(res.todoStatusId);
@@ -91,7 +93,6 @@ export class ProcessFlowComponent implements OnInit {
           }
         });
       })
-
       this.detialData = res;
     })
 

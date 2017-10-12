@@ -40,7 +40,7 @@ export class AddTaskFlowComponent implements OnInit {
 
   isDispose = 3;
   isLoading =  false;
-  isPass = null ;
+  isPass = 1 ;
   samePostUserList = [];
   strUserList = [];
   strUserId:any;

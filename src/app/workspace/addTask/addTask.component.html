@@ -64,11 +64,14 @@
           <span>修改</span>
         </button>
       </div>
-
+      <div class="form-group">
+        <label class="col-sm-2"></label>
+        <div style="color:red;">（待建任务单类型如是BUG则只需选择提测时间和测试完成时间！）</div>
+      </div>
       <div class="form-group" nz-form-item>
         <label class="col-sm-2 control-label">联调时间</label>
         <div class="col-sm-2" nz-form-control [nzValidateStatus]="validateForm.controls.devFinish">
-           <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'联调时间'" formControlName="devFinish" [(ngModel)]="devFinish"  [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+           <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'联调时间'" [nzDisabled]='isBug'  formControlName="devFinish" [(ngModel)]="devFinish"  [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
         </div>
 
         <label class="col-sm-1 control-label">提测时间</label>
@@ -85,7 +88,7 @@
 
         <label class="col-sm-1 control-label">验收完成时间</label>
         <div class="col-sm-2" nz-form-control [nzValidateStatus]="validateForm.controls.acceptFinish">
-          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'验收完成时间'" formControlName="acceptFinish" [(ngModel)]="acceptFinish" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+          <nz-datepicker  [nzShowTime]="true" [nzPlaceHolder]="'验收完成时间'" [nzDisabled]='isBug'  formControlName="acceptFinish" [(ngModel)]="acceptFinish" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
         </div>
       </div>
 
@@ -229,7 +232,7 @@
            <div *ngFor="let item of developUsers">
              <div class="form-group">
                 <div class="col-sm-12">
-                      <label class="col-sm-4 control-label">{{item.userName}}</label>
+                      <label class="col-sm-5 control-label">{{item.userName}}</label>
                       <div class="col-sm-6">
                           <select  class="form-control days input-sm" [disabled]='editDisabled'>
                               <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
@@ -244,7 +247,7 @@
            <div *ngFor="let item of debuggers">
              <div class="form-group">
                 <div class="col-sm-12">
-                      <label class="col-sm-4 control-label">{{item.userName}}</label>
+                      <label class="col-sm-5 control-label">{{item.userName}}</label>
                       <div class="col-sm-6">
                           <select  class="form-control debugger input-sm" [disabled]='editDisabled'>
                               <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
@@ -259,7 +262,7 @@
             <div *ngFor="let item of testUsers">
               <div class="form-group">
                  <div class="col-sm-12">
-                       <label class="col-sm-4 control-label">{{item.userName}}</label>
+                       <label class="col-sm-5 control-label">{{item.userName}}</label>
                        <div class="col-sm-6">
                            <select  class="form-control test input-sm" [disabled]='editDisabled'>
                                <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>
@@ -274,7 +277,7 @@
             <div *ngFor="let item of productUsers">
               <div class="form-group">
                  <div class="col-sm-12">
-                       <label class="col-sm-4 control-label">{{item.userName}}</label>
+                       <label class="col-sm-5 control-label">{{item.userName}}</label>
                        <div class="col-sm-6">
                            <select  class="form-control produc input-sm" [disabled]='editDisabled'>
                                <option *ngFor='let item of workLoadList' value="{{item.value}}">{{item.text}}</option>

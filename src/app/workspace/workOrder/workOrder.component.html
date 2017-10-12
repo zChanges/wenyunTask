@@ -32,11 +32,11 @@
               <label>搜索范围</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="9">
-              <nz-datepicker [nzDisabled]="isDisabled" name='startTime' [(ngModel)]="startTime"  [nzShowTime]="true" [nzPlaceHolder]="'开始时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+              <nz-datepicker [nzDisabled]="isDisabled"  (ngModelChange)="changeCascader()" name='startTime' [(ngModel)]="startTime"  [nzShowTime]="true" [nzPlaceHolder]="'开始时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
             </div>
             <div nz-form-control nz-col [nzSpan]="1"></div>
             <div nz-form-control nz-col [nzSpan]="9">
-              <nz-datepicker [nzDisabled]="isDisabled"  name='finishTime' [(ngModel)]="finishTime" [nzShowTime]="true" [nzPlaceHolder]="'结束时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
+              <nz-datepicker [nzDisabled]="isDisabled" (ngModelChange)="changeCascader()"   name='finishTime' [(ngModel)]="finishTime" [nzShowTime]="true" [nzPlaceHolder]="'结束时间'" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-datepicker>
             </div>
           </div>
         </div>
@@ -47,7 +47,11 @@
               <label>状态</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select name="taskStatus" [(ngModel)]="taskStatus" [nzDisabled]="isDisabled">
+                <nz-select name="taskStatus" 
+                  [(ngModel)]="taskStatus" 
+                  [nzDisabled]="isDisabled"
+                  (nzOpenChange)='searchTask($event)'
+                >
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
                     *ngFor="let item of taskStateList" 
@@ -65,7 +69,11 @@
               <label>产品</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select name="productId" [(ngModel)]="productId" [nzDisabled]="isDisabled">
+                <nz-select name="productId" 
+                  [(ngModel)]="productId" 
+                  [nzDisabled]="isDisabled"
+                  (nzOpenChange)='searchTask($event)'
+                >
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
                     *ngFor="let item of productList" 
@@ -84,7 +92,11 @@
               <label>项目</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select name="projectId" [(ngModel)]="projectId" [nzDisabled]="isDisabled">
+                <nz-select name="projectId" 
+                  [(ngModel)]="projectId" 
+                  [nzDisabled]="isDisabled"
+                  (nzOpenChange)='searchTask($event)'
+                >
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
                     *ngFor="let item of projectList" 
@@ -102,7 +114,11 @@
               <label>版本</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select name="versionId" [(ngModel)]="versionId" [nzDisabled]="isDisabled">
+                <nz-select name="versionId" 
+                  [(ngModel)]="versionId" 
+                  [nzDisabled]="isDisabled"
+                  (nzOpenChange)='searchTask($event)'
+                >
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
                     *ngFor="let item of versionList" 
@@ -120,7 +136,11 @@
               <label>类型</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="19">
-                <nz-select name="type" [(ngModel)]="type" [nzDisabled]="isDisabled">
+                <nz-select name="type" 
+                  [(ngModel)]="type" 
+                  [nzDisabled]="isDisabled"
+                  (nzOpenChange)='searchTask($event)'
+                >
                     <nz-option [nzLabel]="'请选择'" [nzValue]="''"></nz-option>  
                     <nz-option 
                     *ngFor="let item of typeList" 
@@ -144,6 +164,7 @@
                 name='taskUserId' 
                 [(ngModel)]='taskUserId'
                 [nzOptions]="_options"
+                (nzChange)='changeCascader()'
               >
               </nz-cascader>
             </div>
@@ -154,14 +175,14 @@
   </div>
 
   <!-- 查询按钮 -->
-  <div nz-row>
+  <!-- <div nz-row>
     <div nz-col [nzSpan]="24" style="text-align: right; padding:10px 20px">
-      <button nz-button [nzType]="'primary'" [nzLoading]="isSearch" (click)="searchTask()">
+      <button nz-button [nzType]="'primary'" [nzLoading]="isSearch" (click)="searchTask($event)">
         <i class="anticon anticon-search"></i>
         <span>查询</span>
       </button>
     </div>
-  </div>
+  </div> -->
 
 </form>
   
@@ -182,6 +203,7 @@
               <th nz-th><span>标题</span></th>
               <th nz-th [nzWidth]="'15%'"><span>描述</span></th>
               <th nz-th><span>类型</span></th>
+              <th nz-th><span>人物状态</span></th>
               <th nz-th><span>当前状态</span></th>
               <th nz-th><span>工作量</span></th>
               <th nz-th><span>联调时间</span></th>
@@ -195,10 +217,15 @@
           </thead>
           <tbody nz-tbody>
             <tr nz-tbody-tr *ngFor="let data of nzTable.data">
-              <td nz-td><i *ngIf="data.isPostpone" class="anticon anticon-frown-o overDue"></i><a (click)="skipProcessFlow(data)">{{data.title}}</a></td>
+              <td nz-td><a (click)="skipProcessFlow(data)">{{data.title}}</a></td>
               <td nz-td>{{data.description}}</td>
               <td nz-td>{{data.type}}</td>
-              <td nz-td>{{data.todoStatusStr}}</td>
+              <td nz-td>
+                <span *ngFor="let item of data.taskUserList">
+                  {{item.userName}} &nbsp; &nbsp; <span [ngClass]="{pass: item.statusId == 0}">{{item.status}}</span><br/>
+                </span>
+              </td>
+              <td nz-td>{{data.todoStatusStr}}<span *ngIf="data.isPostpone" class="overDue">超期</span></td>
               <td nz-td>{{data.workLoad}}天</td>
               <td nz-td>{{data.devFinish | date:'y-MM-dd HH:mm:ss'}}</td>
               <td nz-td>{{data.testStart | date:'y-MM-dd HH:mm:ss'}}</td>

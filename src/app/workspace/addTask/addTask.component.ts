@@ -65,6 +65,8 @@ export class AddTaskComponent implements OnInit {
   isLoading = false;
   isTaskState = true;
 
+  isBug = false;
+
   // edit
   taskId = null;
   routArgument;
@@ -283,9 +285,13 @@ export class AddTaskComponent implements OnInit {
     this.testUsers = [];
     this.productUsers = [];
     if(this.type == 200){
-      this.isTaskState = true
+      this.isTaskState = true;
+      this.isBug = false;
     }else{
       this.isTaskState = false;
+      this.isBug = true;
+      this.acceptFinish = 1483200000;
+      this.devFinish = 1483200000;
     }
 
   }
@@ -397,7 +403,6 @@ export class AddTaskComponent implements OnInit {
 
   delProject(data) {
     this.addTaskService.delProject(this.userList.id,data.id).subscribe(res=>{
-      console.log(res);
       this.getProjectVersionDown();
     })
   }
@@ -410,7 +415,6 @@ export class AddTaskComponent implements OnInit {
 
   addProjectName(data){
     this.addTaskService.addProject(data,this.userList.id).subscribe(res=>{
-      console.log(res);
       this.getProjectDown();
     })
   }
@@ -436,7 +440,6 @@ export class AddTaskComponent implements OnInit {
 
   delVersion(data) {
     this.addTaskService.delprojectVersion(this.userList.id,data.id).subscribe(res=>{
-      console.log(res);
       this.getProjectVersionDown();
     })
   }
@@ -449,7 +452,6 @@ export class AddTaskComponent implements OnInit {
 
   addVersionName(data){
     this.addTaskService.addprojectVersion(data,this.userList.id).subscribe(res=>{
-      console.log(res);
       this.getProjectVersionDown();
     })
   }
@@ -474,9 +476,13 @@ export class AddTaskComponent implements OnInit {
       this.testFinish = Number(res.testFinish+'000');
       this.acceptFinish = Number(res.acceptFinish+'000');
       if(this.type == 200){
-        this.isTaskState = true
+        this.isTaskState = true;
+        this.isBug = false;
       }else{
         this.isTaskState = false;
+        this.isBug = true;
+        this.devFinish = 0;
+        this.acceptFinish = 0;
       }
       // this.webId,this.taskFile
     });
@@ -524,8 +530,24 @@ export class AddTaskComponent implements OnInit {
 
   // 更新日期
   upDataTask(){
-    this.addTaskService.editTask(this.routArgument.taskId,this.PMService.dateUTC(this.devFinish),this.PMService.dateUTC(this.testStart),this.PMService.dateUTC(this.testFinish),
-    this.PMService.dateUTC(this.acceptFinish),this.userList.webId).subscribe(res=>{
+    var testStart, testFinish;
+    var devFinish, acceptFinish;
+    if(typeof(this.testStart) == 'number' || typeof(this.testFinish) == 'number'){
+      testStart = this.PMService.dateUTC(new Date(this.testStart));
+      testFinish = this.PMService.dateUTC(new Date(this.testFinish))
+    }else{
+      testStart = this.PMService.dateUTC(this.testStart);
+      testFinish = this.PMService.dateUTC(this.testFinish)
+    }
+    if(this.type == 201){
+      devFinish = 0 ;
+      acceptFinish = 0;
+    }else{
+      devFinish = this.PMService.dateUTC(this.devFinish)
+      acceptFinish = this.PMService.dateUTC(this.acceptFinish)
+    }
+    this.addTaskService.editTask(this.routArgument.taskId,devFinish,testStart,testFinish,
+      acceptFinish,this.userList.webId).subscribe(res=>{
       this.router.navigateByUrl('task/workOrder');
     })
   }

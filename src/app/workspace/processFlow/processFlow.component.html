@@ -24,6 +24,7 @@
                 <div class="guide guideColor">
                   <div class="arrows"></div>
                       <span *ngIf="isBug" class="guideTime">{{detialData.devFinish | date:'y-MM-dd HH:mm:ss'}}</span>
+                      <span *ngIf="bug" class="guideTime">{{detialData.testStart | date:'y-MM-dd HH:mm:ss'}}</span>
                 </div>
 
                 <nz-popover *ngIf="isBug" [nzTitle]="'联调'" style="float:left" >
