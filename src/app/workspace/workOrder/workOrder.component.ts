@@ -228,52 +228,37 @@ export class WorkOrderComponent implements OnInit {
         }
       });
 
-
-      if(ele.type == '需求'){
-        switch (ele.todoStatusStr) {
-          case '开发':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,1);
+      switch (ele.todoStatusStr) {
+        case '开发':
+          ele['taskUserList'] = this.getDuty(ele.taskUserList,1);
+          if(ele.type == '需求'){
             ele.devFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
-            break;
-          case '联调':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,2);
+          }else{
             ele.testStart - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
-            break;
-          case '测试':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,3);
-            ele.testFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
-            break;
-          case '产品':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,4);
+          }
+          break;
+        case '联调':
+          ele['taskUserList'] = this.getDuty(ele.taskUserList,2);
+          if(ele.type == '需求'){
+            ele.testStart - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
+          }
+          break;
+        case '测试':
+          ele['taskUserList'] = this.getDuty(ele.taskUserList,3);
+          ele.testFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
+          break;
+        case '产品':
+          ele['taskUserList'] = this.getDuty(ele.taskUserList,4);
+          if(ele.type == '需求'){
             ele.acceptFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
-            break;
-          default:
-            ele['taskUserList'] = this.getDuty([],0)
-            ele['isPostpone'] = false;
-            break;
-        }
-      }else{
-        switch (ele.todoStatusStr) {
-          case '开发':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,1);
-            ele.testStart - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
-            break;
-          case '联调':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,2);
-            break;
-          case '测试':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,3);
-            ele.testFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
-            break;
-          case '产品':
-            ele['taskUserList'] = this.getDuty(ele.taskUserList,4);
-            break;
-          default:
-            ele['taskUserList'] = this.getDuty([],0)
-            ele['isPostpone'] = false;
-            break;
-        }
+          }
+          break;
+        default:
+          ele['taskUserList'] = this.getDuty([],0)
+          ele['isPostpone'] = false;
+          break;
       }
+
 
     });
     return data;
