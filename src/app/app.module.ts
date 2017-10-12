@@ -12,16 +12,11 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 
 // AJAX拦截器
-import {
-  HttpClientModule,
-  HttpRequest,
-  HTTP_INTERCEPTORS
-} from "@angular/common/http";
+import { HttpClientModule, HttpRequest, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TaskInterceptorService } from "./taskInterceptor.service";
 
 // 插件
 import { NgZorroAntdModule } from "ng-zorro-antd";
-
 
 // Service
 import { RouterService } from "./service/router.service";
@@ -29,8 +24,12 @@ import { LoginService } from "./login/login.service";
 import { ValueService } from "./service/value.service";
 import { PublicMethodService } from "./service/publicMethod.service";
 
+// pipe
+import { DateAppendzeroPipe } from './pipe/dateAppendzero.pipe';
+
+
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, LoginComponent,DateAppendzeroPipe],
   imports: [
     BrowserModule,
     AppRoutesModule,
@@ -39,7 +38,7 @@ import { PublicMethodService } from "./service/publicMethod.service";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     RouterService,
@@ -57,3 +56,4 @@ import { PublicMethodService } from "./service/publicMethod.service";
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+  
