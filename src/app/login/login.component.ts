@@ -1,3 +1,4 @@
+import { userInfo } from './userInfo.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.isLoading = true;
-    this.loginService.login(this.userName, this.passWord).subscribe( res => {
+    this.loginService.login(this.userName, this.passWord).subscribe( (res:userInfo) => {
       this.isLoading = false;
       this.router.navigateByUrl('task');
       window.localStorage.setItem('user',JSON.stringify(res));

@@ -115,6 +115,7 @@ export class AddTaskFlowComponent implements OnInit {
    * 保存
    */
   save() {
+    this.isLoading = true;
     if(this.isDispose == 2){
       this.state = 2;
       this.turnOver();
@@ -126,8 +127,9 @@ export class AddTaskFlowComponent implements OnInit {
         this.changeFailStatus();
       }
     }
-    1
   }
+
+
 
   createTaskProcess() {
     this.addTaskFlowService.createTaskProcess(
@@ -138,7 +140,10 @@ export class AddTaskFlowComponent implements OnInit {
       this.state,
       this.fileId
     ).subscribe( res => {
+      this.isLoading = false;
       this.router.navigateByUrl('task/workOrder');
+    },res => {
+      this.isLoading = false;
     })
   }
 
@@ -149,6 +154,8 @@ export class AddTaskFlowComponent implements OnInit {
   turnOver() {
     this.addTaskFlowService.handNewUser(this.user.id,this.newUserId,this.taskArgument.taskId).subscribe( res => {
       this.createTaskProcess();
+    },res=>{
+      this.isLoading = false;
     })
   }
 
@@ -158,6 +165,8 @@ export class AddTaskFlowComponent implements OnInit {
   changeSuccessStatus() {
     this.addTaskFlowService.changeSuccessStatus(this.taskArgument.taskId,this.user.id,this.taskArgument.todoStatusId,this.user.webId).subscribe( res => {
       this.createTaskProcess();
+    },res=>{
+      this.isLoading = false;
     })
   }
 
@@ -172,6 +181,8 @@ export class AddTaskFlowComponent implements OnInit {
       this.user.webId,this.taskUserList.type
     ).subscribe( res =>{
       this.createTaskProcess();
+    },res=>{
+      this.isLoading = false;
     });
   }
 

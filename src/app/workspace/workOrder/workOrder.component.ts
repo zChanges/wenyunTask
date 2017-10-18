@@ -1,3 +1,4 @@
+import { waitTaskInfo } from './workOrderInfo.model';
 import { ValueService } from './../../service/value.service';
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
@@ -23,8 +24,8 @@ export class WorkOrderComponent implements OnInit {
   typeList = [];
   taskTypeList = []; // 任务单类型数据
   taskType='1'; // 任务单类型值
-  startTime = ''; // 开始时间
-  finishTime = ''; // 结束时间
+  startTime:any = ''; // 开始时间
+  finishTime:any = ''; // 结束时间
   taskStateList = [];
   taskStatus = ''; // 状态
   productId = ''; // 产品id
@@ -115,7 +116,7 @@ export class WorkOrderComponent implements OnInit {
     if(event){return};
       switch (this.taskType) {
         case '1':// 待处理
-          this.workOrderService.getWaitTask(this.userList.id,this.userList.webId).subscribe(res => {
+          this.workOrderService.getWaitTask(this.userList.id,this.userList.webId).subscribe((res:waitTaskInfo) => {
               this._data = this.regroupData(res);
           })
           break;
@@ -134,6 +135,13 @@ export class WorkOrderComponent implements OnInit {
           }
           var userId;
           this.taskType != '4' ?  userId = this.userList.id : userId = '';
+          if(this.startTime == 0){
+            this.startTime = '';
+          }  
+          if(this.finishTime == 0){
+            this.finishTime = '';
+          }  
+
           this.workOrderService.getTaskByProperty(userId,this.startTime,this.finishTime,
             this.taskStatus,this.productId,this.projectId,this.versionId,
             taskUserId,this.userList.webId,this.type).subscribe(res => {
@@ -198,13 +206,23 @@ export class WorkOrderComponent implements OnInit {
 
 
   regroupData(data) {
-    data.forEach(ele => {
+    data.forEach((ele:waitTaskInfo) => {
 
-      ele['testFinish'] = ele['testFinish'] + '000';
-      ele['testStart'] = ele['testStart'] + '000';
-      ele.type == 201 ?  ele['devFinish'] = '' :  ele['devFinish'] = ele['devFinish'] + '000';
-      ele['createData'] = ele['createData'] + '000';
-      ele.type == 201 ?  ele['acceptFinish'] = '' :  ele['acceptFinish'] = ele['acceptFinish'] + '000';
+      ele.testFinish = ele.testFinish + '000';
+      // ele['testFinish'] = ele['testFinish'] + '000';
+      
+      ele.testStart = ele.testStart + '000';
+      // ele['testStart'] = ele['testStart'] + '000';
+      
+      ele.type == 201 ?  ele.devFinish = '' :  ele.devFinish = ele.devFinish + '000';
+      // ele.type == 201 ?  ele['devFinish'] = '' :  ele['devFinish'] = ele['devFinish'] + '000';
+
+      ele.createData = ele.createData + '000';
+      // ele['createData'] = ele['createData'] + '000';
+      
+      ele.type == 201 ?  ele.acceptFinish = '' :  ele.acceptFinish = ele.acceptFinish + '000';
+      // ele.type == 201 ?  ele['acceptFinish'] = '' :  ele['acceptFinish'] = ele['acceptFinish'] + '000';
+      
 
       this.taskType == '1' ?  ele['isBtn'] = true :  ele['isBtn'] = false;
       this.taskType == '3' ?  ele['isEdit'] = true :  ele['isEdit'] = false;
@@ -232,25 +250,25 @@ export class WorkOrderComponent implements OnInit {
         case '开发':
           ele['taskUserList'] = this.getDuty(ele.taskUserList,1);
           if(ele.type == '需求'){
-            ele.devFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
+            Number(ele.devFinish) - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
           }else{
-            ele.testStart - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
+            Number(ele.testStart) - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
           }
           break;
         case '联调':
           ele['taskUserList'] = this.getDuty(ele.taskUserList,2);
           if(ele.type == '需求'){
-            ele.testStart - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
+            Number(ele.testStart) - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
           }
           break;
         case '测试':
           ele['taskUserList'] = this.getDuty(ele.taskUserList,3);
-          ele.testFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
+          Number(ele.testFinish) - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
           break;
         case '产品':
           ele['taskUserList'] = this.getDuty(ele.taskUserList,4);
           if(ele.type == '需求'){
-            ele.acceptFinish - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
+            Number(ele.acceptFinish) - Date.parse(String(new Date())) >= 0 ? ele['isPostpone'] = false : ele['isPostpone'] = true;
           }
           break;
         default:
@@ -266,7 +284,7 @@ export class WorkOrderComponent implements OnInit {
 
 
   getDuty(data,duty) {
-    let array = [];
+    let array: any = [];
     data.forEach(element => {
       if(element.duty == duty){
         let status;

@@ -9,7 +9,7 @@ export class PublicMethodService {
    * @param date 时间
    */
   dateUTC(date:any){
-    if(date =='' || date == 0){ return '' };
+    if(date =='' || date == 0 || !date){ return '' };
     const str = String(Date.parse(date));
     return Number(str.substr(0,str.length - 3));
   }

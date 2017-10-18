@@ -244,7 +244,7 @@ export class AddTaskComponent implements OnInit {
       this.upDataTask();
       return;
     }
-
+    this.isLoading = true;
     this.addTaskService.createTask(
       this.userList.id,this.title,this.description,this.projectId,this.versionId,
       this.productId,this.workLoad,this.type,this.PMService.dateUTC(this.devFinish),
@@ -272,8 +272,9 @@ export class AddTaskComponent implements OnInit {
             const taskId =  res;
             this.addTaskService.saveTaskUser(taskId,this.type,this.webId,this.userList.id,JSON.stringify(concatTaskData)).subscribe( (request: any)=>{
                 this.router.navigateByUrl('task/workOrder');
-            });
-    })
+                this.isLoading = false;
+            },rej=>{ this.isLoading = false;});
+    },rej=>{ this.isLoading = false;});
   }
 
   /**
