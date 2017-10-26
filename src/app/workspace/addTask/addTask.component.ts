@@ -74,6 +74,8 @@ export class AddTaskComponent implements OnInit {
 
   isSavePass = true;
 
+  isFilelading = false;
+
   constructor(
     private valueService: ValueService, 
     private fb: FormBuilder,
@@ -228,6 +230,15 @@ export class AddTaskComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
     }
     if(!this.validateForm.valid){return};
+
+    if(this.isFilelading){
+      this.confirmServ.error({
+        title: '新建任务失败！',
+        content: '文件正在上传中,请稍后……'
+      });
+      return;
+    }
+
     if(this.type == 201){
       if( this.developUsers.length < 1 || this.testUsers.length < 1){
         this.error();
@@ -324,9 +335,11 @@ export class AddTaskComponent implements OnInit {
         fieldName:'taskFile'
       };
       this.uploadInput.emit(event);
+      this.isFilelading = true;
     }
     if(output.type === 'done'){
       this.taskFile =  output.file.response.data;
+      this.isFilelading = false;
     }
   }
 

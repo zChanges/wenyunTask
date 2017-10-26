@@ -195,8 +195,17 @@
     <div class="table">
         <!-- [nzPageSize]="10" -->
         <!-- [nzBordered]="true" -->
+        <!-- [nzDataSource]="_data"  -->
+        <!-- (nzPageSizeChange)="refreshData(true)" -->
+        <!-- [nzShowSizeChanger]="true" -->
+        
       <nz-table #nzTable 
-      [nzDataSource]="_data" 
+        [nzAjaxData]="_data"
+        [nzLoading]="_loading"
+        [nzTotal]="_total"
+        [(nzPageIndex)]="_pageIndex"
+        (nzPageIndexChange)="refreshData(_pageIndex)"
+        [(nzPageSize)]="_pageSize"
       >
           <thead nz-thead>
             <tr>

@@ -37,6 +37,12 @@ export class WorkOrderComponent implements OnInit {
 
   isDisabled = true;
 
+  _loading = false;
+  _total = 0;
+  _pageIndex = 1;
+  _pageSize = 10;
+
+
 
   _options  = [
     {
@@ -112,18 +118,38 @@ export class WorkOrderComponent implements OnInit {
     this.searchTask(false);
   }
 
+  refreshData(pageIndex){
+    console.log(pageIndex)
+    var userId = '';
+    this.taskType != '4' ?  userId = this.userList.id : userId = '';
+    var taskUserId = '';
+    if(this.taskUserId.length == 0){ 
+      taskUserId = '';
+    }else{
+      taskUserId = this.taskUserId[1]
+    }
+    this.getTaskBy(userId,this.startTime,this.finishTime,
+      this.taskStatus,this.productId,this.projectId,this.versionId,
+      taskUserId,this.userList.webId,this.type,pageIndex,this._pageSize);
+  }
+
   searchTask (event) {
+    this._loading = true;
     if(event){return};
       switch (this.taskType) {
         case '1':// 待处理
-          this.workOrderService.getWaitTask(this.userList.id,this.userList.webId).subscribe((res:waitTaskInfo) => {
+          this.workOrderService.getWaitTask(this.userList.id,this.userList.webId).subscribe((res: waitTaskInfo) => {
               this._data = this.regroupData(res);
-          })
+              this._loading = false;
+            this._total = 0;
+          },rej=>{  this._loading = false; });
           break;
         case '2':// 本周已处理
           this.workOrderService.getAlreadyDeal(this.userList.id,this.userList.webId).subscribe((res:any) => {
             this._data = this.regroupData(res.list);
-          })
+            this._loading = false;
+            this._total = 0;
+          },rej=>{  this._loading = false; });
           break;
         case '3':// 由我创建，
         case '4':// 已关闭
@@ -142,15 +168,30 @@ export class WorkOrderComponent implements OnInit {
             this.finishTime = '';
           }  
 
-          this.workOrderService.getTaskByProperty(userId,this.startTime,this.finishTime,
+          this.getTaskBy(userId,this.startTime,this.finishTime,
             this.taskStatus,this.productId,this.projectId,this.versionId,
-            taskUserId,this.userList.webId,this.type).subscribe(res => {
-              this._data = this.regroupData(res);
-          });
+            taskUserId,this.userList.webId,this.type,this._pageIndex,this._pageSize);
+
+          // this.workOrderService.getTaskByProperty(userId,this.startTime,this.finishTime,
+          //   this.taskStatus,this.productId,this.projectId,this.versionId,
+          //   taskUserId,this.userList.webId,this.type,this._pageSize,this._pageIndex).subscribe((res:any) => {
+          //     this._data = this.regroupData(res.data);
+          //     this._loading = false;
+          //     this._total = res.pageDataCount;
+          //   },rej=>{  this._loading = false; });
           break;
         default:
           break;
       }
+  }
+
+  getTaskBy(userId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,type,pageIndex,pageSize) {
+    this.workOrderService.getTaskByProperty(userId,startTime,finishTime,taskStatus,productId,
+      projectId,versionId,taskUserId,webId,type,pageIndex,pageSize).subscribe((res:any) => {
+        this._data = this.regroupData(res.data);
+        this._loading = false;
+        this._total = res.pageDataCount;
+      },rej=>{  this._loading = false; });
   }
 
   // 获取所有岗位

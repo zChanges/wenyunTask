@@ -29,10 +29,10 @@ export class WorkOrderService {
   /**
    * 由我创建，已关闭，未关闭
    */
-  getTaskByProperty(createUserId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,taskType){
+  getTaskByProperty(createUserId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,taskType,pageNumber,pageSize){
     return this.http.get(
         this.baseUrl + `task/getTaskByProperty?createUserId=${createUserId}&startTime=${this.publicMethodService.dateUTC(startTime)}&finishTime=${this.publicMethodService.dateUTC(finishTime)}&taskStatus=${taskStatus}
-        &productId=${productId}&projectId=${projectId}&versionId=${versionId}&taskUserId=${taskUserId}&webId=${webId}&taskType=${taskType}`
+        &productId=${productId}&projectId=${projectId}&versionId=${versionId}&taskUserId=${taskUserId}&webId=${webId}&taskType=${taskType}&pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
 
