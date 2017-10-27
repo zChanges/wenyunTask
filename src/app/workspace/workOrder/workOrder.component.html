@@ -234,7 +234,7 @@
                   {{item.userName}} &nbsp; &nbsp; <span [ngClass]="{pass: item.statusId == 0}">{{item.status}}</span><br/>
                 </span>
               </td>
-              <td nz-td>{{data.todoStatusStr}}<span *ngIf="data.isPostpone" class="overDue">超期</span></td>
+              <td nz-td>{{data.todoStatusStr}}<span *ngIf="data.isPostpone" class="overDue nowrap">超期</span></td>
               <td nz-td>{{data.workLoad}}天</td>
               <td nz-td>{{data.devFinish | date:'y-MM-dd HH:mm:ss'}}</td>
               <td nz-td>{{data.testStart | date:'y-MM-dd HH:mm:ss'}}</td>
