@@ -38,6 +38,8 @@ export class AddTaskFlowComponent implements OnInit {
   taskUserList:any;
   newUserId = '';
 
+  duty;
+
   isDispose = 3;
   isLoading =  false;
   isPass = 1 ;
@@ -82,7 +84,7 @@ export class AddTaskFlowComponent implements OnInit {
   changePass(val) {
     this.isDispose = val;
     if(val==2){
-      this.isPass = null;
+      this.isPass = 1;
       this.btnType='';
       this.btnTypes='primary';
     }else if(val == 3){
@@ -99,7 +101,16 @@ export class AddTaskFlowComponent implements OnInit {
     this.addTaskFlowService.getCurrentDuty(this.taskArgument.taskId,this.user.id,this.user.webId).subscribe( (res:any) => {
       if(res.length == 1){
         res[0].duty==1 ? this.nullNotGo = false : this.nullNotGo = true;
+        this.duty = res[0].duty;
       }
+
+      if(this.taskArgument.todoStatusId == 102 && res.length > 1){
+            this.duty = 1;
+      }else if(this.taskArgument.todoStatusId == 108 && res.length > 1){
+            this.duty = 2;
+      }
+
+
       this.taskUserList = res[0];
       if(!this.taskUserList){ return;};
       this.getPreDutyUser();
@@ -107,8 +118,26 @@ export class AddTaskFlowComponent implements OnInit {
 
 
     this.addTaskFlowService.getSamePostUser(this.user.id,this.user.webId).subscribe( (res:any)=> {
-      this.samePostUserList = res;
+
+
+        if(this.taskArgument.todoStatusId == 108){
+            
+            return 
+        }
+
+        JSON.parse(this.taskArgument.users).forEach((element,index) => {
+            res.forEach((item,index) => {
+                if(element.userId == item.userId){
+                    res.splice(index,1);
+                }
+            });
+        });
+        this.samePostUserList = res;
+        
     });
+
+
+
   }
 
   /**
@@ -152,7 +181,7 @@ export class AddTaskFlowComponent implements OnInit {
    * 移交
    */
   turnOver() {
-    this.addTaskFlowService.handNewUser(this.user.id,this.newUserId,this.taskArgument.taskId).subscribe( res => {
+    this.addTaskFlowService.handNewUser(this.user.id,this.newUserId,this.taskArgument.taskId,this.duty).subscribe( res => {
       this.createTaskProcess();
     },res=>{
       this.isLoading = false;
@@ -212,11 +241,17 @@ export class AddTaskFlowComponent implements OnInit {
   }
   
   getPreDutyUser() {
-
+   
     this.addTaskFlowService.getPreDutyUser(this.taskArgument.taskId,this.taskUserList.duty,this.user.webId,this.taskUserList.type).subscribe( (res:any) => {
       setTimeout(()=>{
         this.preDuty = res.preDuty;
         this.strUserList = res.listPreDutyUser;
+
+        if(this.taskArgument.todoStatusId == 108){
+            this.samePostUserList = res.listPreDutyUser;
+            return 
+        }
+
       },2000)
     });
   }

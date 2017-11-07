@@ -29,10 +29,10 @@ export class WorkOrderService {
   /**
    * 由我创建，已关闭，未关闭
    */
-  getTaskByProperty(createUserId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,taskType,pageNumber,pageSize){
+  getTaskByProperty(createUserId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,taskType,pageNumber,pageSize,title){
     return this.http.get(
         this.baseUrl + `task/getTaskByProperty?createUserId=${createUserId}&startTime=${this.publicMethodService.dateUTC(startTime)}&finishTime=${this.publicMethodService.dateUTC(finishTime)}&taskStatus=${taskStatus}
-        &productId=${productId}&projectId=${projectId}&versionId=${versionId}&taskUserId=${taskUserId}&webId=${webId}&taskType=${taskType}&pageNumber=${pageNumber}&pageSize=${pageSize}`
+        &productId=${productId}&projectId=${projectId}&versionId=${versionId}&taskUserId=${taskUserId}&webId=${webId}&taskType=${taskType}&pageNumber=${pageNumber}&pageSize=${pageSize}&title=${title}`
     );
   }
 
@@ -46,6 +46,9 @@ export class WorkOrderService {
   }
 
 
+  delete(taskId){
+      return this.http.get(this.baseUrl + `task/deleteTask?taskId=${taskId}`);
+  }
 
 
 }

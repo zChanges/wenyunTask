@@ -171,6 +171,18 @@
           </div>
         </div>
 
+        <div nz-col [nzSpan]="6">
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSpan]="5">
+                    <label>标题</label>
+                </div>
+                <div nz-form-control nz-col [nzSpan]="19">
+                    <nz-input name='title' [nzDisabled]="isDisabled"  [nzSize]="'large'" (nzBlur)="searchTask(false)"  [(ngModel)]="title" [nzPlaceHolder]="'请输入标题'"></nz-input>
+                </div>
+            </div>
+        </div>
+
+
     </div>
   </div>
 
@@ -246,9 +258,12 @@
                   <button *ngIf="data.isBtn" [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='skipTaskFlow(data)'>
                       <span>操作</span>
                   </button>
-                  <button *ngIf="data.isEdit" [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='extension(data)'>
+                  <button *ngIf="data.isEdit && data.todoStatusStr != '关闭'" [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='extension(data)'>
                     <span>编辑</span>
-                </button>
+                  </button>
+                  <button *ngIf="data.isEdit && data.todoStatusStr != '关闭'" [disabled]="data.editDisabled" nz-button [nzType]="'default'" (click)='delete(data)'>
+                    <span>删除</span>
+                  </button>
               </td>
             </tr>
         </tbody>

@@ -46,7 +46,8 @@ constructor() { }
             { value: "108", label: "联调" },
             { value: "103", label: "测试" },
             { value: "105", label: "产品" },
-            { value: "106", label: "关闭" }
+            { value: "106", label: "关闭" },
+            { value: "107", label: "未关闭" }
         ]
     }
 

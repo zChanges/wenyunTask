@@ -34,6 +34,7 @@ export class WorkOrderComponent implements OnInit {
   taskUserId = '';
   type = ''; //类型
   userPost=null;
+  title = '';
 
   isDisabled = true;
 
@@ -130,7 +131,7 @@ export class WorkOrderComponent implements OnInit {
     }
     this.getTaskBy(userId,this.startTime,this.finishTime,
       this.taskStatus,this.productId,this.projectId,this.versionId,
-      taskUserId,this.userList.webId,this.type,pageIndex,this._pageSize);
+      taskUserId,this.userList.webId,this.type,pageIndex,this._pageSize,this.title);
   }
 
   searchTask (event) {
@@ -170,7 +171,7 @@ export class WorkOrderComponent implements OnInit {
 
           this.getTaskBy(userId,this.startTime,this.finishTime,
             this.taskStatus,this.productId,this.projectId,this.versionId,
-            taskUserId,this.userList.webId,this.type,this._pageIndex,this._pageSize);
+            taskUserId,this.userList.webId,this.type,this._pageIndex,this._pageSize,this.title);
 
           // this.workOrderService.getTaskByProperty(userId,this.startTime,this.finishTime,
           //   this.taskStatus,this.productId,this.projectId,this.versionId,
@@ -185,9 +186,9 @@ export class WorkOrderComponent implements OnInit {
       }
   }
 
-  getTaskBy(userId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,type,pageIndex,pageSize) {
+  getTaskBy(userId,startTime,finishTime,taskStatus,productId,projectId,versionId,taskUserId,webId,type,pageIndex,pageSize,title) {
     this.workOrderService.getTaskByProperty(userId,startTime,finishTime,taskStatus,productId,
-      projectId,versionId,taskUserId,webId,type,pageIndex,pageSize).subscribe((res:any) => {
+      projectId,versionId,taskUserId,webId,type,pageIndex,pageSize,title).subscribe((res:any) => {
         this._data = this.regroupData(res.data);
         this._loading = false;
         this._total = res.pageDataCount;
@@ -227,6 +228,10 @@ export class WorkOrderComponent implements OnInit {
 
   transitionArray(data) {
     const arr = data;
+    if(!Array.isArray(arr)){
+        return;
+    }
+    if(arr.length == 0){return};
     arr.forEach(item => {
       item['value'] = item['userId'];
       item['label'] = item['userName'];
@@ -330,7 +335,7 @@ export class WorkOrderComponent implements OnInit {
       if(element.duty == duty){
         let status;
         element.status == 0 ? status = '进行中' : status = '开发完成'
-        array.push({userName:element.userName,status: status,statusId:element.status});
+        array.push({userName:element.userName,status: status,statusId:element.status,userId:element.userId});
       }
     });
     return array
@@ -338,7 +343,7 @@ export class WorkOrderComponent implements OnInit {
   
   skipTaskFlow(data) {
     if(data.todoStatusId == 108){
-      this.router.navigate(["task/addTaskFlow",{taskId:data.id, todoStatusId:data.todoStatusId}])
+      this.router.navigate(["task/addTaskFlow",{taskId:data.id, todoStatusId:data.todoStatusId,users:JSON.stringify(data.taskUserList)}])
       return;      
     }
     this.AddTaskFlowService.getCurrentDuty(data.id,this.userList.id,data.webId).subscribe((res:any)=>{
@@ -351,7 +356,7 @@ export class WorkOrderComponent implements OnInit {
           }
         }
       }
-      this.router.navigate(["task/addTaskFlow",{taskId:data.id, todoStatusId:data.todoStatusId}])
+      this.router.navigate(["task/addTaskFlow",{taskId:data.id, todoStatusId:data.todoStatusId,users:JSON.stringify(data.taskUserList)}])
     })
   }
 
@@ -376,6 +381,13 @@ export class WorkOrderComponent implements OnInit {
 
   extension(data) {
     this.router.navigate(["task/addTask",{taskId:data.id, todoStatusId:data.todoStatusId,state:'edit'}])
+  }
+
+  // 删除
+  delete(data) {
+    this.workOrderService.delete(data.id).subscribe(res=>{
+        this.searchTask(false);
+    })
   }
 
 }

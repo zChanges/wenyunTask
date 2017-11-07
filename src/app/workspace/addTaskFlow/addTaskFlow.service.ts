@@ -52,9 +52,9 @@ export class AddTaskFlowService {
   /**
    * 移交
    */
-  handNewUser(oldUserId,newUserId,taskId) {
+  handNewUser(oldUserId,newUserId,taskId,duty) {
     return this.http.get(
-      this.baseUrl + `task/handNewUser?oldUserId=${oldUserId}&newUserId=${newUserId}&taskId=${taskId}`
+      this.baseUrl + `task/handNewUser?oldUserId=${oldUserId}&newUserId=${newUserId}&taskId=${taskId}&duty=${duty}`
     );
   }
 
