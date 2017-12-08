@@ -17,8 +17,9 @@ export class WorkspaceComponent implements OnInit {
 
   loginOut() {
     this.LoginService.loginOut().subscribe( res=>{
+          window.localStorage.clear();
           this.router.navigateByUrl('login');
-    })
+    });
   }
 
 }

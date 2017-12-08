@@ -120,7 +120,6 @@ export class WorkOrderComponent implements OnInit {
   }
 
   refreshData(pageIndex){
-    console.log(pageIndex)
     var userId = '';
     this.taskType != '4' ?  userId = this.userList.id : userId = '';
     var taskUserId = '';
@@ -135,6 +134,7 @@ export class WorkOrderComponent implements OnInit {
   }
 
   searchTask (event) {
+    this._pageIndex = 1;
     this._loading = true;
     if(event){return};
       switch (this.taskType) {
@@ -384,10 +384,17 @@ export class WorkOrderComponent implements OnInit {
   }
 
   // 删除
-  delete(data) {
-    this.workOrderService.delete(data.id).subscribe(res=>{
-        this.searchTask(false);
-    })
+  delete = (data)=> {
+    var self = this;
+    this.confirmServ.confirm({
+        title  : '提示',
+        content: '<b>确定删除次任务么</b>',
+        onOk(){
+            self.workOrderService.delete(data.id).subscribe(res=>{
+                self.searchTask(false);
+            })
+        }
+      });
   }
 
 }
