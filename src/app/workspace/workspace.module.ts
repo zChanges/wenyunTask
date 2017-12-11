@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { WorkspaceRoutes } from './workspace.routing';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // 插件
 import { NgZorroAntdModule } from 'ng-zorro-antd';
@@ -21,6 +21,10 @@ import { WorkOrderService } from './workOrder/workOrder.service';
 import { AddTaskFlowService } from './addTaskFlow/addTaskFlow.service';
 import { ProcessFlowService } from './processFlow/processFlow.service';
 
+// 插件
+// import { QuillModule } from 'ngx-quill';
+import { QuillEditorComponent } from '../commonComponents/quill-editor/quill-editor.component'; 
+
 
 @NgModule({
   imports: [
@@ -29,7 +33,7 @@ import { ProcessFlowService } from './processFlow/processFlow.service';
     FormsModule,
     NgZorroAntdModule.forRoot(),
     ReactiveFormsModule,
-    FroalaEditorModule.forRoot(), 
+    FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     NgUploaderModule
   ],
@@ -39,12 +43,13 @@ import { ProcessFlowService } from './processFlow/processFlow.service';
     AddTaskFlowComponent,
     WorkOrderComponent,
     ProcessFlowComponent,
+    QuillEditorComponent
   ],
-  providers:[
+  providers: [
     AddTaskService,
     WorkOrderService,
     AddTaskFlowService,
     ProcessFlowService
   ]
 })
-export class WorkspaceModule { }
+export class WorkspaceModule {}

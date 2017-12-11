@@ -1,35 +1,40 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { RouterModule } from "@angular/router";
-import { NgModule, ModuleWithProviders } from "@angular/core";
-import { HttpModule } from "@angular/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppRoutesModule } from "./app.routing";
+import { AppRoutesModule } from './app.routing';
 
 // Component
-import { AppComponent } from "./app.component";
-import { LoginComponent } from "./login/login.component";
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 
 // AJAX拦截器
-import { HttpClientModule, HttpRequest, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { TaskInterceptorService } from "./taskInterceptor.service";
+import {
+  HttpClientModule,
+  HttpRequest,
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
+import { TaskInterceptorService } from './taskInterceptor.service';
 
 // 插件
-import { NgZorroAntdModule } from "ng-zorro-antd";
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+// import { QuillModule } from 'ngx-quill';
+
 
 // Service
-import { RouterService } from "./service/router.service";
-import { LoginService } from "./login/login.service";
-import { ValueService } from "./service/value.service";
-import { PublicMethodService } from "./service/publicMethod.service";
+import { RouterService } from './service/router.service';
+import { LoginService } from './login/login.service';
+import { ValueService } from './service/value.service';
+import { PublicMethodService } from './service/publicMethod.service';
 
 // pipe
 import { DateAppendzeroPipe } from './pipe/dateAppendzero.pipe';
 
-
 @NgModule({
-  declarations: [AppComponent, LoginComponent,DateAppendzeroPipe],
+  declarations: [AppComponent, LoginComponent, DateAppendzeroPipe],
   imports: [
     BrowserModule,
     AppRoutesModule,
@@ -38,7 +43,7 @@ import { DateAppendzeroPipe } from './pipe/dateAppendzero.pipe';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     RouterService,
@@ -56,4 +61,3 @@ import { DateAppendzeroPipe } from './pipe/dateAppendzero.pipe';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-  

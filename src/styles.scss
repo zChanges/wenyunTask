@@ -6,6 +6,7 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '../node_modules/froala-editor/css/froala_editor.pkgd.min.css';
 @import '~froala-editor/css/froala_style.min.css';
 
+@import '../node_modules/quill/dist/quill.snow.css';
 body{
     font-size:14px !important;
     background: #fafbfc !important;

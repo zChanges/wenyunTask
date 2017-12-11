@@ -1,18 +1,21 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { RouterService } from './../../service/router.service';
-import { Component, OnInit, ElementRef, ViewChildren, ChangeDetectorRef, EventEmitter  } from "@angular/core";
+import { Component, OnInit, ElementRef,ViewChild, ViewChildren, ChangeDetectorRef, EventEmitter  } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { ValueService } from "../../service/value.service";
 import { AddTaskService } from './addTask.service';
 import { PublicMethodService } from './../../service/publicMethod.service';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes } from 'ngx-uploader';
 import {NzModalService} from 'ng-zorro-antd';
+import Quill from 'quill';
 @Component({
   selector: "app-addTask",
   templateUrl: "./addTask.component.html",
   styleUrls: ["./addTask.component.scss"]
 })
 export class AddTaskComponent implements OnInit {
+
+
 
   isEdit = true;
   userList:any;
@@ -93,6 +96,7 @@ export class AddTaskComponent implements OnInit {
       this.routArgument = res;
     });
   }
+  
 
   ngOnInit() {
     this.userList = JSON.parse(window.localStorage.getItem('user'))
@@ -108,6 +112,7 @@ export class AddTaskComponent implements OnInit {
       this.isEdit = false;
     }
   }
+  
 
   /**
    * 获取下拉
@@ -564,6 +569,12 @@ export class AddTaskComponent implements OnInit {
       acceptFinish,this.userList.webId).subscribe(res=>{
       this.router.navigateByUrl('task/workOrder');
     })
+  }
+
+
+
+  logChange($event: any) {
+    console.log($event);
   }
 
 }

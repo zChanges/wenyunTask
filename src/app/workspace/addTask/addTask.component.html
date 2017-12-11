@@ -95,7 +95,9 @@
       <div class="form-group" nz-form-item>
         <label class="col-sm-2 control-label">详细描述</label>
         <div class="col-sm-6" nz-form-control [nzValidateStatus]="validateForm.controls.description">
-            <nz-input [nzDisabled]='editDisabled' [(ngModel)]="description" formControlName="description" [nzType]="'textarea'" [nzRows]="'5'" [nzPlaceHolder]="''"></nz-input>
+          <quill-editor  #editor (onContentChanged)="logChange($event);" [style]="{height: '200px'}"  [readOnly]="editDisabled" [(ngModel)]="description" placeholder='详细描述' formControlName="description"></quill-editor>
+          {{description}}
+          <!-- <nz-input [nzDisabled]='editDisabled' [(ngModel)]="description" formControlName="description" [nzType]="'textarea'" [nzRows]="'5'" [nzPlaceHolder]="''"></nz-input> -->
         </div>
       </div>
 
